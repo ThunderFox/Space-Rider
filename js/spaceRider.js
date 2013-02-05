@@ -455,8 +455,8 @@ var SPACERIDER = (function() {
       var ext = Modernizr.audio.ogg ? 'ogg' : 'mp3';
 
         var audio_files = [
-            ["start", root + "motor." + ext],
-            ["crash", root + "crash." + ext]
+            ["audio/start", root + "audio/motor." + ext],
+            ["audio/crash", root + "audio/crash." + ext]
         ];
 
         load(audio_files, function () { loaded(); });
