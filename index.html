@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Space Rider</title>
+    
+    <style type="text/css">
+       * { margin:0px; padding:0px; }
+       body { width:450px; margin:0px ; background:white; }
+       #helicopter { margin: 10px 0px; font-family:SilkScreenBold; }
+       a { font-family:SilkScreen; color:white; text-decoration:none; }
+       a:hover { text-decoration:underline; }
+
+    </style>
+
+</head>
+
+<body>
+
+  <span style="font-family:SilkScreenBold;"> </span>
+
+  <div id="spaceRider"></div>
+
+  <script src="js/helicopter.js"></script>
+  <script src="js/modernizr-1.5.min.js"></script>
+
+  <script>
+
+    var families = [ "SilkScreenBold", "SilkScreen"];
+
+    var INIT = (function (m, SPACERIDER, families) {
+
+      var numLoaded  = 0, 
+          numFonts   = families.length,
+          spaceRider = document.getElementById("spaceRider");
+
+      function loaded() { 
+        if (m.canvas) {
+          SPACERIDER.init(spaceRider, "./");
+        } else {    
+          el.innerHTML = "navigateur non compatible";
+        }    
+      };
+
+      function fontLoaded(family, desc) {
+        if (++numLoaded === numFonts) {
+          loaded();
+        }
+      };
+    
+      return {"fontLoaded" : fontLoaded};
+
+    })(Modernizr, SPACERIDER, families);
+
+    WebFontConfig = { 
+      custom : { 
+        families : families, 
+        urls     : ["css/silkscreenbold.css", "css/silkscreen.css"]
+      },
+      fontactive : INIT.fontLoaded
+    };
+
+  </script>
+
+  <script src="js/webfont.js"></script>
+
+</body>
+</html>
