@@ -1,3 +1,6 @@
+/**********************************************************************************************************************************************************
+*											Space Rider parameters
+*************************************************************************************************************************************************************/
 var space = {};
 
 space.Consts = [
@@ -102,14 +105,16 @@ space.Screen = function (params) {
         var i,
             size = (100 - _gap) / 2,
             obj  = {"top":size, "bottom":size};
-
+		
         for (i = 0; i < _numLines; i += 1) {
             _terrain.push(obj);
+			
         }
     }
-/*
-Draw() : It's background of the map (we must change)!!!!
-*/
+
+/**********************************************************************************************************************************************************
+*											Draw() : It's background of the map (we must change) It's blanck!!!!
+*************************************************************************************************************************************************************/
     function draw(ctx) {
         ctx.fillStyle = space.Color.BACKGROUND;
 		ctx.fillRect(0, 0, _width, _height);
@@ -119,15 +124,16 @@ Draw() : It's background of the map (we must change)!!!!
     function toPix(userPos) {
         return _height - (_height * (userPos / 100));
     }
-/*
-randomNum() : generate random points (top and bottom)
-*/
+/**********************************************************************************************************************************************************
+*												randomNum() : generate random points in order to delimit the map (top and bottom)
+*************************************************************************************************************************************************************/
+
     function randomNum(low, high) {
         return low + Math.floor(Math.random() * (high - low));
     }
-/*
-Moveterrain() makes it possible to advance the space flight
-*/
+/**********************************************************************************************************************************************************
+*												Moveterrain() makes it possible to advance the space flight
+*************************************************************************************************************************************************************/
     function moveTerrain() {
 
         var toAdd, len, rand,
@@ -156,28 +162,40 @@ Moveterrain() makes it possible to advance the space flight
             "top":last.top + toAdd.top,
             "bottom":last.bottom + toAdd.bottom
         });
-        _terrain.shift();
+      _terrain.shift();
     }
-
+/**********************************************************************************************************************************************************
+*												Drawterrain () to delimit the map (bottom and top)
+*************************************************************************************************************************************************************/
     function drawTerrain(ctx) {
 
         var i, obj, bottom;
 
         ctx.fillStyle = space.Color.BLOCK;
-
-        for (i = 0; i < _numLines; i += 1) {
-            obj = _terrain[i];
-            bottom = obj.bottom;
-		    ctx.fillRect(Math.floor(i * _lineWidth), 0,
-                         Math.ceil(_lineWidth), obj.top * _lineHeight);
-		    ctx.fillRect(Math.floor(i * _lineWidth),
-                         _height - bottom * _lineHeight,
-                         Math.ceil(_lineWidth),
-                         _height);
+		
+          for (i = 0; i < _numLines; i += 1) {
+              obj = _terrain[i];
+		      bottom = obj.bottom;
+			 // ctx.beginPath();
+			// ctx.moveTo(0, 0); // give the (x,y) coordinates
+			  // ctx.lineTo(Math.ceil(_lineWidth), obj.top * _lineHeight);
+			  // ctx.lineTo(obj.top * _lineHeight, Math.ceil(_lineWidth));
+			 // ctx.moveTo( Math.floor(i * _lineWidth),_height - bottom * _lineHeight);
+			 // ctx.lineTo(Math.ceil(_lineWidth),_height);
+			 // ctx.stroke();
+	
+		     ctx.fillRect(Math.floor(i * _lineWidth), 0,
+                           Math.ceil(_lineWidth), obj.top * _lineHeight);
+		     ctx.fillRect(Math.floor(i * _lineWidth),
+                           _height - bottom * _lineHeight,
+                            Math.ceil(_lineWidth),
+                            _height);
         }
 
     }
-
+/**********************************************************************************************************************************************************
+*												DrawUser () Draw the ship
+*************************************************************************************************************************************************************/
     function drawUser(ctx, user, trail, alternate) {
 
         var i, len, mid, image;
@@ -191,10 +209,9 @@ Moveterrain() makes it possible to advance the space flight
         ctx.fill();
         ctx.closePath();
     }
-
-/*
-collided () to manage collisions
-*/
+/**********************************************************************************************************************************************************
+*												collided () to manage collisions
+*************************************************************************************************************************************************************/
    function collided(pos) {
 
         var midPoint = Math.round(_terrain.length * 0.25),
@@ -225,100 +242,9 @@ collided () to manage collisions
     };
 };
 
-/**********************************************************************************************************************************************************
-*												Audio test part 
-*************************************************************************************************************************************************************/
-space.Audio = function(game) {
-
-    var files          = [],
-        endEvents      = [],
-        progressEvents = [],
-        playing        = [];
-
-    function load(name, path, cb) {
-
-        var f = files[name] = document.createElement("audio");
-
-        progressEvents[name] = function(event) { progress(event, name, cb); };
-
-        f.addEventListener("canplaythrough", progressEvents[name], true);
-        f.setAttribute("preload", "auto");
-        f.setAttribute("autobuffer", "true");
-        f.setAttribute("src", path);
-        f.pause();
-    }
-
-    function progress(event, name, callback) {
-        if (event.loaded === event.total && typeof callback === "function") {
-            callback();
-            files[name].removeEventListener("canplaythrough",
-                                            progressEvents[name], true);
-        }
-    }
-
-    function disableSound() {
-        for (var i = 0; i < playing.length; i++) {
-            files[playing[i]].pause();
-            files[playing[i]].currentTime = 0;
-        }
-        playing = [];
-    }
-
-    function stop(file) {
-        files[file].pause();
-        files[file].currentTime = 0;
-    }
-
-    function ended(name) {
-
-        var i, tmp = [], found = false;
-
-        files[name].removeEventListener("ended", endEvents[name], true);
-
-        for (i = 0; i < playing.length; i++) {
-            if (!found && playing[i]) {
-                found = true;
-            } else {
-                tmp.push(playing[i]);
-            }
-        }
-        playing = tmp;
-    }
-
-    function play(name) {
-        if (!game.soundDisabled()) {
-            endEvents[name] = function() { ended(name); };
-            playing.push(name);
-            files[name].addEventListener("ended", endEvents[name], true);
-            files[name].play();
-        }
-    }
-
-    function pause() {
-        for (var i = 0; i < playing.length; i++) {
-            files[playing[i]].pause();
-        }
-    }
-
-    function resume() {
-        for (var i = 0; i < playing.length; i++) {
-            files[playing[i]].play();
-        }
-    }
-
-    return {
-        "disableSound" : disableSound,
-        "load"         : load,
-        "play"         : play,
-        "stop"         : stop,
-        "pause"        : pause,
-        "resume"       : resume
-    };
-};
-
 var SPACERIDER = (function() {
 
-    /* Generate Constants from Heli.Consts arrays */
+   
     (function (glob, consts) {
         for (var x, i = 0; i < consts.length; i += 1) {
             glob[consts[i].name] = {};
@@ -331,7 +257,6 @@ var SPACERIDER = (function() {
     var state       = space.State.WAITING,
         thrustersOn = false,
         timer       = null,
-        audio       = null,
         screen      = null,
         user        = null,
         pos         = 0,
@@ -339,7 +264,7 @@ var SPACERIDER = (function() {
        _tick        = 0;
 
     function mouseDown(e) {
-        audio.play("start");
+      
         thrustersOn = true;
         if (e.target.nodeName === "CANVAS" && state === space.State.WAITING) {
             newGame();
@@ -347,7 +272,7 @@ var SPACERIDER = (function() {
     }
 
     function mouseUp(e) {
-        audio.stop("start");
+      
         thrustersOn = false;
     }
 
@@ -374,14 +299,10 @@ var SPACERIDER = (function() {
         ctx.fillText(text, x, y);
     }
 
-    function soundDisabled() {
-        return localStorage.soundDisabled === "true";
-    }
-
     function mainLoop() {
 
         ++_tick;
-
+	
         if (state === space.State.PLAYING) {
 
             pos = user.move(thrustersOn);
@@ -398,12 +319,12 @@ var SPACERIDER = (function() {
 
                 state = space.State.DYING;
                 died = _tick;
+			
 
             }
             screen.drawUser(ctx, pos, user.trail(), true);
 
         } else if (state === space.State.DYING && (_tick - died) > (space.FPS / 1)) {
-
             state = space.State.WAITING;
             window.clearInterval(timer);
             timer = null;
@@ -417,10 +338,11 @@ var SPACERIDER = (function() {
         }
 
     }
-/*
-* this function iniatilize the main frame
- */   function init(wrapper, root) {
-
+/**********************************************************************************************************************************************************
+*												this function iniatilize the main frame
+*************************************************************************************************************************************************************/
+ function init(wrapper, root) {
+		
         var width  = wrapper.offsetWidth,
             height = (width / 4) * 3,
             canvas = document.createElement("canvas");
@@ -432,9 +354,7 @@ var SPACERIDER = (function() {
 
         ctx = canvas.getContext('2d');
 
-		audio = new space.Audio({
-            "soundDisabled" : soundDisabled
-        });
+
         screen = new space.Screen({
             "tick"   : tick,
             "width"  : width,
@@ -446,36 +366,15 @@ var SPACERIDER = (function() {
         screen.draw(ctx);
 
         dialog("Loading ...");
-
-        // disable sound while it sucks
-        if (typeof localStorage.soundDisabled === "undefined") {
-            localStorage.soundDisabled = true;
-        }
-
-      var ext = Modernizr.audio.ogg ? 'ogg' : 'mp3';
-
-        var audio_files = [
-            ["audio/start", root + "audio/motor." + ext],
-            ["audio/crash", root + "audio/crash." + ext]
-        ];
-
-        load(audio_files, function () { loaded(); });
+	
+      loaded();// start the game
     }
+/**********************************************************************************************************************************************************
+*											This function allows you to customize the homepage (the title)
+*************************************************************************************************************************************************************/
 
-  function load(arr, loaded) {
-
-        if (arr.length === 0) {
-            loaded();
-        } else {
-            var x = arr.pop();
-            audio.load(x[0], x[1], function() { load(arr, loaded); });
-        }
-    }
-/*
-This function allows you to customize the homepage (the title)
-*/
     function startScreen() {
-
+		
         screen.draw(ctx);
         screen.drawTerrain(ctx);
 
@@ -488,10 +387,12 @@ This function allows you to customize the homepage (the title)
         y = screen.height() / 3;
 
         ctx.fillText(text, x, y);
-		ctx.fillText("touch the screen to start", x - 105, y + 66);
+		ctx.fillText("touch the screen to start", x -60, y + 66);
 
     }
-
+/**********************************************************************************************************************************************************
+*												this function iniatilize the main frame
+*************************************************************************************************************************************************************/
 
     function loaded() {
 
