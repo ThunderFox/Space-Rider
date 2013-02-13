@@ -8,7 +8,7 @@ space.Consts = [
   {name: "Dir",   consts: ["UP", "DOWN"]}
 ];
 
-space.FOOTER_HEIGHT = 30;
+space.FOOTER_HEIGHT = 20;
 space.FPS           = 19;
 
 space.Color = {
@@ -86,10 +86,15 @@ space.Screen = function (params) {
         heliHeight   = (30 / params.height) * 100, // Convert px to %
         _terrain     = [],
         img = new Image(),
-        img2 = new Image();
+        img2 = new Image();//image du vaisseau
+		image_background_haut= new Image();
+		//image_background_milieu=new Image();
 
     img.src = 'images/spatiale2.png';
-    img2.src = 'images/spatiale1.png';
+    img2.src = 'images/spatiale.png';
+	image_background_haut.src='images/bacHaut.png';
+	//image_background_milieu.src='images/bacMilieu.png';
+	
 
     function width()  { return _width; }
     function height() { return _height; }
@@ -99,7 +104,7 @@ space.Screen = function (params) {
         manitude = null;
         changeDir = 0;
         _randomBlock = null;
-        _gap = 80; // The gap between the top and the bottom part
+        _gap = 90; // The gap between the top and the bottom part
         _terrain = [];
 
         var i,
@@ -116,9 +121,17 @@ space.Screen = function (params) {
 *											Draw() : It's background of the map (we must change) It's blanck!!!!
 *************************************************************************************************************************************************************/
     function draw(ctx) {
-        ctx.fillStyle = space.Color.BACKGROUND;
-		ctx.fillRect(0, 0, _width, _height);
-        ctx.fill();
+		//var patternBackgroundMilieu;
+      
+		//patternBackgroundMilieu = ctx.createPattern(image_background_milieu, "repeat");
+	    //ctx.fillStyle = patternBackgroundMilieu;
+		ctx.fillStyle = space.Color.BACKGROUND;
+	    ctx.fillRect(0, 0, _width, _height);
+		ctx.fill();
+		
+		// //ctx.fillStyle = space.Color.BACKGROUND;
+		// ctx.fillRect(0, 0, _width, _height);
+        
     }
 
     function toPix(userPos) {
@@ -138,7 +151,7 @@ space.Screen = function (params) {
 
         var toAdd, len, rand,
             last = _terrain[Math.round(_terrain.length-1)];
-
+			        
         if (changeDir === 0) {
             _direction = (_direction === space.Dir.DOWN) ? space.Dir.UP : space.Dir.DOWN;
             len = (_direction === space.Dir.DOWN) ? last.bottom : last.top;
@@ -169,13 +182,17 @@ space.Screen = function (params) {
 *************************************************************************************************************************************************************/
     function drawTerrain(ctx) {
 
-        var i, obj, bottom;
+        var i, obj, bottom,pattern;
 
-        ctx.fillStyle = space.Color.BLOCK;
+        pattern = ctx.createPattern(image_background_haut, "repeat");
+		ctx.fillStyle = pattern;
+		
+		
 		
           for (i = 0; i < _numLines; i += 1) {
               obj = _terrain[i];
 		      bottom = obj.bottom;
+			  //alert (Math.ceil(_lineWidth));
 			 // ctx.beginPath();
 			// ctx.moveTo(0, 0); // give the (x,y) coordinates
 			  // ctx.lineTo(Math.ceil(_lineWidth), obj.top * _lineHeight);
@@ -183,14 +200,18 @@ space.Screen = function (params) {
 			 // ctx.moveTo( Math.floor(i * _lineWidth),_height - bottom * _lineHeight);
 			 // ctx.lineTo(Math.ceil(_lineWidth),_height);
 			 // ctx.stroke();
-	
-		     ctx.fillRect(Math.floor(i * _lineWidth), 0,
+		
+				ctx.rect(Math.floor(i * _lineWidth), 0,
                            Math.ceil(_lineWidth), obj.top * _lineHeight);
-		     ctx.fillRect(Math.floor(i * _lineWidth),
+			
+				ctx.rect(Math.floor(i * _lineWidth),
                            _height - bottom * _lineHeight,
                             Math.ceil(_lineWidth),
                             _height);
+				
+				ctx.fill();
         }
+		  
 
     }
 /**********************************************************************************************************************************************************
@@ -319,12 +340,15 @@ var SPACERIDER = (function() {
 
                 state = space.State.DYING;
                 died = _tick;
+				
 			
 
             }
             screen.drawUser(ctx, pos, user.trail(), true);
+			
 
         } else if (state === space.State.DYING && (_tick - died) > (space.FPS / 1)) {
+			dialog("Game Over ...");
             state = space.State.WAITING;
             window.clearInterval(timer);
             timer = null;
