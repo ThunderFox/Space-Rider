@@ -15,7 +15,7 @@ space.Color = {
     BACKGROUND  : "#FFFFFF", BLOCK         : "#BD8D46",
     HOME_TEXT   : "#403B37", RAND_BLOCK    : "#403B37",
     USER        : "#FFFF00", TARGET_STROKE : "#B24524",
-    DIALOG_TEXT : "#333333", FOOTER_BG     : "#403B37",
+    DIALOG_TEXT : "#FFFFFF", FOOTER_BG     : "#403B37",
     FOOTER_TEXT : "#C3CCB5"
 }
 
@@ -88,12 +88,12 @@ space.Screen = function (params) {
         img = new Image(),
         img2 = new Image();//image du vaisseau
 		image_background_haut= new Image();
-		//image_background_milieu=new Image();
+		image_background_milieu=new Image();
 
     img.src = 'images/spatiale2.png';
     img2.src = 'images/spatiale.png';
 	image_background_haut.src='images/bacHaut.png';
-	//image_background_milieu.src='images/bacMilieu.png';
+	image_background_milieu.src='images/bacMilieu.png';
 	
 
     function width()  { return _width; }
@@ -118,19 +118,15 @@ space.Screen = function (params) {
     }
 
 /**********************************************************************************************************************************************************
-*											Draw() : It's background of the map (we must change) It's blanck!!!!
+*											Draw() : It's background of the map
 *************************************************************************************************************************************************************/
     function draw(ctx) {
-		//var patternBackgroundMilieu;
+		var patternBackgroundMilieu;
       
-		//patternBackgroundMilieu = ctx.createPattern(image_background_milieu, "repeat");
-	    //ctx.fillStyle = patternBackgroundMilieu;
-		ctx.fillStyle = space.Color.BACKGROUND;
-	    ctx.fillRect(0, 0, _width, _height);
+		patternBackgroundMilieu = ctx.createPattern(image_background_milieu, "repeat");
+	    ctx.fillStyle = patternBackgroundMilieu;
+		ctx.fillRect(0, 0, _width, _height);
 		ctx.fill();
-		
-		// //ctx.fillStyle = space.Color.BACKGROUND;
-		// ctx.fillRect(0, 0, _width, _height);
         
     }
 
