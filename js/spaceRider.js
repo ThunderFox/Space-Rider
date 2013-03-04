@@ -1,15 +1,25 @@
-/**********************************************************************************************************************************************************
-*											Space Rider parameters
-*************************************************************************************************************************************************************/
+/*************************
+*Space Rider parameters										
+**************************/
+/*
+création de l'objet space
+*/
 var space = {};
 
+/*
+Tableau contenant la liste des états possible du vaisseau
+avec deux variables state et DIR
+*/
 space.Consts = [
   {name: "State", consts: ["WAITING", "PAUSED", "PLAYING", "DYING"]},
   {name: "Dir",   consts: ["UP", "DOWN"]}
 ];
 
-space.FOOTER_HEIGHT = 20;
-space.FPS           = 19;
+//space.FOOTER_HEIGHT = 300;
+/*
+nombre img/sec déplacement du vaisseau
+*/
+space.FPS = 19;
 
 space.Color = {
     BACKGROUND  : "#FFFFFF", BLOCK         : "#BD8D46",
@@ -21,29 +31,40 @@ space.Color = {
 
 space.User = function (params) {
 
-    var _distance = 0,
+    var _distance = 0,// distance parcourrue par le vaisseau
         position = null,
         _trail   = null,
         momentum = null;
-
-
+		
+/*******************************************************************************************
+*distance() :fonction qui retourne la distance parcourue par le vaisseau
+*******************************************************************************************/
     function distance() {
         return _distance;
     }
-
+/*******************************************************************************************
+*distance() :fonction permettant de réinitialiser les champs suivants:
+la distance, la position initial du vaisseau, momentum calculé en fonction du click effectué
+par l'utilisateur
+*******************************************************************************************/
     function reset() {
         _distance = 0;
         position = 50; // initial position of the space flight 
         _trail = [];
         momentum = 0;//position of ths space flight when moving
     }
-
+/******************************************************************************************
+*move (thrusters) permet de faire avancer le vaisseau. thrusters est un boolean
+qui est multiplié par un coefficient en fonction du click (haut ou bas)
+effectué par l'utilisateur.
+*******************************************************************************************/
     function move(thrusters) {
 
         _distance += 1;
 
-        momentum += ((thrusters) ? 0.4 : -0.5);
+		momentum += ((thrusters) ? 0.4 : -0.5);
         position += momentum;
+		console.log(params.tick());
 
         if (params.tick() % 2 === 0) {
             _trail.push(position);
@@ -118,7 +139,7 @@ space.Screen = function (params) {
     }
 
 /**********************************************************************************************************************************************************
-*											Draw() : It's background of the map
+*Draw() : It's background of the map
 *************************************************************************************************************************************************************/
     function draw(ctx) {
 		var patternBackgroundMilieu;
@@ -134,14 +155,14 @@ space.Screen = function (params) {
         return _height - (_height * (userPos / 100));
     }
 /**********************************************************************************************************************************************************
-*												randomNum() : generate random points in order to delimit the map (top and bottom)
+*randomNum() : generate random points in order to delimit the map (top and bottom)
 *************************************************************************************************************************************************************/
 
     function randomNum(low, high) {
         return low + Math.floor(Math.random() * (high - low));
     }
 /**********************************************************************************************************************************************************
-*												Moveterrain() makes it possible to advance the space flight
+*Moveterrain() makes it possible to advance the space flight
 *************************************************************************************************************************************************************/
     function moveTerrain() {
 
@@ -174,7 +195,7 @@ space.Screen = function (params) {
       _terrain.shift();
     }
 /**********************************************************************************************************************************************************
-*												Drawterrain () to delimit the map (bottom and top)
+*Drawterrain () to delimit the map (bottom and top)
 *************************************************************************************************************************************************************/
     function drawTerrain(ctx) {
 
@@ -211,7 +232,7 @@ space.Screen = function (params) {
 
     }
 /**********************************************************************************************************************************************************
-*												DrawUser () Draw the ship
+*DrawUser () Draw the ship
 *************************************************************************************************************************************************************/
     function drawUser(ctx, user, trail, alternate) {
 
@@ -227,13 +248,14 @@ space.Screen = function (params) {
         ctx.closePath();
     }
 /**********************************************************************************************************************************************************
-*												collided () to manage collisions
+*collided () to manage collisions
 *************************************************************************************************************************************************************/
    function collided(pos) {
 
         var midPoint = Math.round(_terrain.length * 0.25),
             middle = _terrain[midPoint],
             size = heliHeight / 2;
+	
 
         var hitBlock = (_randomBlock === midPoint ||
                         _randomBlock === midPoint-1) &&
@@ -318,7 +340,7 @@ var SPACERIDER = (function() {
 
     function mainLoop() {
 
-        ++_tick;
+      // ++_tick;
 	
         if (state === space.State.PLAYING) {
 
@@ -359,7 +381,7 @@ var SPACERIDER = (function() {
 
     }
 /**********************************************************************************************************************************************************
-*												this function iniatilize the main frame
+*this function iniatilize the main frame
 *************************************************************************************************************************************************************/
  function init(wrapper, root) {
 		
@@ -390,7 +412,7 @@ var SPACERIDER = (function() {
       loaded();// start the game
     }
 /**********************************************************************************************************************************************************
-*											This function allows you to customize the homepage (the title)
+*This function allows you to customize the homepage (the title)
 *************************************************************************************************************************************************************/
 
     function startScreen() {
@@ -411,7 +433,7 @@ var SPACERIDER = (function() {
 
     }
 /**********************************************************************************************************************************************************
-*												this function iniatilize the main frame
+*this function iniatilize the main frame
 *************************************************************************************************************************************************************/
 
     function loaded() {
