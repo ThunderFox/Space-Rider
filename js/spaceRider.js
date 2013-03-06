@@ -319,9 +319,12 @@ var SPACERIDER = (function() {
     function mainLoop() {
 
         ++_tick;
+		var music = document.getElementById('music');
+		var boom = document.getElementById('boom');
 	
         if (state === space.State.PLAYING) {
-
+			
+			music.play();
             pos = user.move(thrustersOn);
             screen.moveTerrain();
 
@@ -348,12 +351,14 @@ var SPACERIDER = (function() {
             state = space.State.WAITING;
             window.clearInterval(timer);
             timer = null;
+			music.pause();
+			music.currentTime = 0;
+			boom.play();
         } else if (state === space.State.DYING) {
 
             screen.draw(ctx);
             screen.drawTerrain(ctx);
             screen.drawUser(ctx, pos, user.trail(), false);
-
 
         }
 
@@ -388,6 +393,7 @@ var SPACERIDER = (function() {
         dialog("Loading ...");
 	
       loaded();// start the game
+	  
     }
 /**********************************************************************************************************************************************************
 *											This function allows you to customize the homepage (the title)
@@ -408,6 +414,7 @@ var SPACERIDER = (function() {
 
         ctx.fillText(text, x, y);
 		ctx.fillText("touch the screen to start", x -60, y + 66);
+		
 
     }
 /**********************************************************************************************************************************************************
