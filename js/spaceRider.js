@@ -30,7 +30,9 @@ space.Color = {
 }
 
 space.User = function (params) {
-
+/*******************************************************************************************
+*déclaration des variables
+*************************************************************************/
     var _distance = 0,// distance parcourrue par le vaisseau
         position = null,
         _trail   = null,
@@ -50,7 +52,7 @@ par l'utilisateur
     function reset() {
         _distance = 0;
         position = 50; // initial position of the space flight 
-        _trail = [];
+        _trail = []; //stock les positions du vaisseau 
         momentum = 0;//position of ths space flight when moving
     }
 /******************************************************************************************
@@ -65,18 +67,21 @@ effectué par l'utilisateur.
 		momentum += ((thrusters) ? 0.4 : -0.5);
         position += momentum;
 		console.log(params.tick());
+		console.log (distance());
 
         if (params.tick() % 2 === 0) {
             _trail.push(position);
         }
 
         if (_trail.length > 4) {
-            _trail.shift();
+            _trail.shift(); // supprime le premier élement de l'arrayList "_trail".
         }
 
         return position;
     }
-
+/******************************************************************************************
+fonction qui retourne un tableau contenant les positions du vaisseau
+*******************************************************************************************/
     function trail() {
         return _trail;
     }
@@ -340,7 +345,7 @@ var SPACERIDER = (function() {
 
     function mainLoop() {
 
-      // ++_tick;
+      ++_tick;
 	
         if (state === space.State.PLAYING) {
 
