@@ -140,7 +140,7 @@ space.Screen = function (params) {
             last = _terrain[Math.round(_terrain.length-1)];
 
         if (changeDir === 0) {
-            _direction = (_direction === space.Dir.DOWN) ? space.Dir.UP : space.Dir.DOWN;
+            _direction = (_direction === space.Dir.DOWN) ? space.Dir.UP	 : space.Dir.DOWN;
             len = (_direction === space.Dir.DOWN) ? last.bottom : last.top;
             magnitude = randomNum(1, 4);
             changeDir = randomNum(5, len / magnitude);
@@ -184,12 +184,8 @@ space.Screen = function (params) {
 			 // ctx.lineTo(Math.ceil(_lineWidth),_height);
 			 // ctx.stroke();
 	
-		     ctx.fillRect(Math.floor(i * _lineWidth), 0,
-                           Math.ceil(_lineWidth), obj.top * _lineHeight);
-		     ctx.fillRect(Math.floor(i * _lineWidth),
-                           _height - bottom * _lineHeight,
-                            Math.ceil(_lineWidth),
-                            _height);
+		     ctx.fillRect(Math.floor(i * _lineWidth), 0, Math.ceil(_lineWidth), obj.top * _lineHeight);
+		     ctx.fillRect(Math.floor(i * _lineWidth), _height - bottom * _lineHeight, Math.ceil(_lineWidth), _height);
         }
 
     }
