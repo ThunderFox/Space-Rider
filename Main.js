@@ -15,6 +15,8 @@ var obsEx = null;
 var vitesse = 20;
 var collisionVaisseau;
 var nbToursStart=0;
+var limiteTop;
+var limiteDown;
  
 
 init();
@@ -78,20 +80,24 @@ function init(){
 	
 	this.contextJeu = canvasJeu.getContext("2d");
 	
-	this.monVaisseau = new Vaisseau(10, 30, 25, 20); //creation du vaisseau
-	
 	this.scoreBarre = new ScoreBarre(0,0,this.canvasJeu.width,40,1); //creation de la barre de scores
+	
+	//limite top et down representent les limites de generation d'obstacles et de navigation du vaisseau
+	this.limiteTop = this.scoreBarre.getHeight();
+	this.limiteDown = this.canvasJeu.height;
+	
+	this.monVaisseau = new Vaisseau(10, this.limiteTop+100, 25, 20); //creation du vaisseau
 	
 	//initialisation de la liste d'obstacles
 	mesObstacles = new Obstacles();
 	
 	
-	mesObstacles.add(this.generateObstacle(canvasJeu.height-30,this.scoreBarre.getHeight()));
-	mesObstacles.add(this.generateObstacle(canvasJeu.height-30,this.scoreBarre.getHeight()));
-	mesObstacles.add(this.generateObstacle(canvasJeu.height-30,this.scoreBarre.getHeight()));
-	mesObstacles.add(this.generateObstacle(canvasJeu.height-30,this.scoreBarre.getHeight()));
-	mesObstacles.add(this.generateObstacle(canvasJeu.height-30,this.scoreBarre.getHeight()));
-	mesObstacles.add(this.generateObstacle(canvasJeu.height-30,this.scoreBarre.getHeight()));
+	mesObstacles.add(this.generateObstacle(this.limiteDown-30,this.limiteTop));
+	mesObstacles.add(this.generateObstacle(this.limiteDown-30,this.limiteTop));
+	mesObstacles.add(this.generateObstacle(this.limiteDown-30,this.limiteTop));
+	mesObstacles.add(this.generateObstacle(this.limiteDown-30,this.limiteTop));
+	mesObstacles.add(this.generateObstacle(this.limiteDown-30,this.limiteTop));
+	mesObstacles.add(this.generateObstacle(this.limiteDown-30,this.limiteTop));
 	
 	
 	/*mesObstacles.add(this.generateObstacle(350,10));
@@ -433,7 +439,7 @@ function attractionTerrestre()
 	var tailleTerrain = this.canvasJeu.height;
 	var endroitCle = (tailleTerrain-tailleVaisseau);
 	
-	if(this.monVaisseau.getPosY()>=endroitCle)
+	if(this.monVaisseau.getPosY()>=endroitCle || this.monVaisseau.getPosY()<=this.limiteTop)
 	{
 		bool=false;
 		
