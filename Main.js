@@ -411,10 +411,9 @@ function creerTerrain()
 	this.dessiner("scoreBarre",this.scoreBarre.getPosX(),this.scoreBarre.getPosY(),this.scoreBarre.getWidth(),this.scoreBarre.getHeight());
 	
 	this.dessiner("score",this.scoreBarre.getWidth()-70,this.scoreBarre.getPosY()+30,"","");//score
-	//this.dessiner("score",this.scoreBarre.getWidth()-570,this.scoreBarre.getPosY()+30,"","");//pause
 	this.dessiner("distance",this.scoreBarre.getWidth()-570,this.scoreBarre.getPosY()+30,"","");//meilleure distance
 	
-	
+	this.contextJeu.fillText("pause",250,30);// sera remplacé par un bouton pause
 	this.contextJeu.strokeStyle="black";
 	this.contextJeu.strokeRect(0,0,canvasJeu.width, canvasJeu.height);
 	
