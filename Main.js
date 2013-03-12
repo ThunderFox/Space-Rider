@@ -17,6 +17,7 @@ var collisionVaisseau;
 var nbToursStart=0;
 var limiteTop;
 var limiteDown;
+var score;//score effectué par le joueur
  
 
 init();
@@ -63,6 +64,13 @@ function dessiner(type,x,y,w,h){
 		this.contextJeu.font="25px Arial";
 		this.contextJeu.fillText(this.gererScore(),x,y);
 	}
+	else if(type=="distance")
+	{
+		this.contextJeu.fillStyle="white";
+		this.contextJeu.font="25px Arial";
+		this.contextJeu.fillText(this.Distance(),x,y);
+	}
+	
 	
 	return true;
 
@@ -402,7 +410,10 @@ function creerTerrain()
 	
 	this.dessiner("scoreBarre",this.scoreBarre.getPosX(),this.scoreBarre.getPosY(),this.scoreBarre.getWidth(),this.scoreBarre.getHeight());
 	
-	this.dessiner("score",this.scoreBarre.getWidth()-70,this.scoreBarre.getPosY()+30,"","");
+	this.dessiner("score",this.scoreBarre.getWidth()-70,this.scoreBarre.getPosY()+30,"","");//score
+	//this.dessiner("score",this.scoreBarre.getWidth()-570,this.scoreBarre.getPosY()+30,"","");//pause
+	this.dessiner("distance",this.scoreBarre.getWidth()-570,this.scoreBarre.getPosY()+30,"","");//meilleure distance
+	
 	
 	this.contextJeu.strokeStyle="black";
 	this.contextJeu.strokeRect(0,0,canvasJeu.width, canvasJeu.height);
@@ -497,7 +508,7 @@ function gererScore()
 {
 	var temps = 0;
 	var coefficient = this.scoreBarre.getCoeff();
-	var score;
+	
 	
 	temps=this.tempsJeu;
 	score=Math.floor(temps*coefficient);
@@ -505,6 +516,22 @@ function gererScore()
 	return score;
 	
 
+}
+//***********************************************************************************
+
+//Fonction permettant de stocker la meilleure distance
+function Distance()
+{
+	 if (this.score > bestDistance()) {
+            localStorage.bestDistance = this.score;
+         }
+	return localStorage.bestDistance;
+}
+//***********************************************************************************
+
+//Fonction qui permet de recuperer la meilleure distance
+function bestDistance() {
+      return parseInt(localStorage.bestDistance || 0, 10);
 }
 //***********************************************************************************
 
@@ -538,8 +565,7 @@ function minuteur()
 				temps++;
 				secA=secB;
 			}
-			
-			
+
 			
 		}
 		
