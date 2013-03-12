@@ -1,9 +1,11 @@
-var canvasJeu;
-var contextJeu;
-var monVaisseau;
-var mesObstacles;
-var unObstacle;
-var myInterval;
+var canvasJeu; //mon canvas
+var contextJeu; //le context du canvas
+var monVaisseau; //le vaisseau avec le quel je joue
+var scoreBarre; //la barre contenant les infos comme le score
+var mesObstacles; // la collection d'obstacles
+var unObstacle; //un obstacle de la liste
+var myInterval; //l'interval permettant de gerer la boucle principale
+var tempsJeu = 0;
 var play = 0;
 var pause = 0;
 var stop = 0;
@@ -12,10 +14,10 @@ var obsEntrant = null
 var obsEx = null;
 var vitesse = 20;
 var collisionVaisseau;
+var nbToursStart=0;
  
 
 init();
-ajoutListener();
 sleep(1000);
 
 if(stop!=1)
@@ -46,6 +48,19 @@ function dessiner(type,x,y,w,h){
 		this.contextJeu.fillStyle="red";
 		this.contextJeu.fillRect(x,y,w,h);
 	}
+	else if(type=="scoreBarre")
+	{
+		this.contextJeu.fillStyle="blue";
+		this.contextJeu.fillRect(x,y,w,h);
+		this.contextJeu.strokeStyle="black";
+		this.contextJeu.strokeRect(x,y,w,h);
+	}
+	else if(type=="score")
+	{
+		this.contextJeu.fillStyle="white";
+		this.contextJeu.font="25px Arial";
+		this.contextJeu.fillText(this.gererScore(),x,y);
+	}
 	
 	return true;
 
@@ -57,24 +72,26 @@ function init(){
 
 	console.log("init");
 	
-	canvasJeu = document.getElementById("canvasGame");
-	canvasJeu.width = 600;
-	canvasJeu.height = 400;
+	this.canvasJeu = document.getElementById("canvasGame");
+	this.canvasJeu.width = 600;
+	this.canvasJeu.height = 400;
 	
-	contextJeu = canvasJeu.getContext("2d");
+	this.contextJeu = canvasJeu.getContext("2d");
 	
-	monVaisseau = new Vaisseau(10, 30, 25, 20); //creation du vaisseau
+	this.monVaisseau = new Vaisseau(10, 30, 25, 20); //creation du vaisseau
+	
+	this.scoreBarre = new ScoreBarre(0,0,this.canvasJeu.width,40,1); //creation de la barre de scores
 	
 	//initialisation de la liste d'obstacles
 	mesObstacles = new Obstacles();
 	
 	
-	mesObstacles.add(this.generateObstacle(canvasJeu.height-30,10));
-	mesObstacles.add(this.generateObstacle(canvasJeu.height-30,10));
-	mesObstacles.add(this.generateObstacle(canvasJeu.height-30,10));
-	mesObstacles.add(this.generateObstacle(canvasJeu.height-30,10));
-	mesObstacles.add(this.generateObstacle(canvasJeu.height-30,10));
-	mesObstacles.add(this.generateObstacle(canvasJeu.height-30,10));
+	mesObstacles.add(this.generateObstacle(canvasJeu.height-30,this.scoreBarre.getHeight()));
+	mesObstacles.add(this.generateObstacle(canvasJeu.height-30,this.scoreBarre.getHeight()));
+	mesObstacles.add(this.generateObstacle(canvasJeu.height-30,this.scoreBarre.getHeight()));
+	mesObstacles.add(this.generateObstacle(canvasJeu.height-30,this.scoreBarre.getHeight()));
+	mesObstacles.add(this.generateObstacle(canvasJeu.height-30,this.scoreBarre.getHeight()));
+	mesObstacles.add(this.generateObstacle(canvasJeu.height-30,this.scoreBarre.getHeight()));
 	
 	
 	/*mesObstacles.add(this.generateObstacle(350,10));
@@ -100,11 +117,21 @@ function init(){
 //Fonction qui marque le debut du jeu
 function start(){
 	
-	//monVaisseau = new Vaisseau(10, 30, 25, 20); //creation du vaisseau
+	ajoutListener();
+	
+	//GERER LE TEMPS DE JEU
+	this.nbToursStart++;
+	if(this.nbToursStart==20)
+	{
+		this.tempsJeu++;
+		this.nbToursStart=0;
+	}
+	
 	
 	//this.stop=0;
 	this.pause = 0;
 	this.play = 1;
+	
 	
 	this.contextJeu.clearRect(0, 0, 600, 400);//on rafraichi notre canvas
 	
@@ -126,8 +153,10 @@ function start(){
 		{
 			clearInterval(this.myInterval);
 			this.stopJeu();
+			this.supprimerListener();
 		}
 
+	
 	
 }
 //***********************************************************************************
@@ -169,7 +198,6 @@ function generateObstacle(max,min)
 //Fonction pour bouger les obstacles
 function mooveObstacle()
 {
-	console.log("mooveObstacle, rentre dans la fonction");
 	var obsExPrecedent;
 	
 	if(obsEntrant==null && stop!=1)//si obsEntrant n'a pas été initialisé
@@ -284,11 +312,11 @@ function mooveObstacle()
 				
 				if( obsEx!=null && obsEx.getPosX() <= -25)//si obsEx n'est plus visible alors qu'il existe
 				{
-					console.log("---------------------------------obsEx nest plus visible = "+positionObstacle);
+					console.log("obsEx nest plus visible = "+positionObstacle);
 					
 					if(obsTMP!=null)//si obsTMP contient un objet
 					{
-						console.log("------>>> obsTMP existe");
+						console.log("obsTMP existe");
 						this.mesObstacles.removeFirst();
 						this.obsEx = obsEntrant;
 						this.obsEntrant = obsTMP;
@@ -296,7 +324,7 @@ function mooveObstacle()
 					}
 					else
 					{
-						console.log("------>>> obsTMP est null");
+						console.log("obsTMP est null");
 						if(mesObstacles.get(this.positionObstacle+1)!=null)
 						{
 							mesObstacles.removeFirst();
@@ -321,7 +349,7 @@ function mooveObstacle()
 			
 			//supprimer obsEntrant de la liste
 			
-			
+			this.play=0;
 			this.stop=1;
 			
 			
@@ -365,8 +393,15 @@ function creerTerrain()
 	
 	this.contextJeu.fillStyle="yellow";
 	this.contextJeu.fillRect(0,0,canvasJeu.width, canvasJeu.height);
+	
+	this.dessiner("scoreBarre",this.scoreBarre.getPosX(),this.scoreBarre.getPosY(),this.scoreBarre.getWidth(),this.scoreBarre.getHeight());
+	
+	this.dessiner("score",this.scoreBarre.getWidth()-70,this.scoreBarre.getPosY()+30,"","");
+	
 	this.contextJeu.strokeStyle="black";
 	this.contextJeu.strokeRect(0,0,canvasJeu.width, canvasJeu.height);
+	
+	
 
 }
 //***********************************************************************************
@@ -394,22 +429,24 @@ function stopJeu()
 function attractionTerrestre()
 {
 	var bool;
+	var tailleVaisseau = this.monVaisseau.getHeight();
+	var tailleTerrain = this.canvasJeu.height;
+	var endroitCle = (tailleTerrain-tailleVaisseau);
 	
-	if(this.monVaisseau.getPosY()>=this.canvasJeu.height)
+	if(this.monVaisseau.getPosY()>=endroitCle)
 	{
-		console.log("vaisseau mort");
 		bool=false;
+		
 		this.monVaisseau.setVivant(false);
 		this.stop=1;
+		this.play=0;
 	}
 	else
 	{
-		console.log(">>>> rentre dans attractionTerrestre");
 		var nb = this.monVaisseau.getPosY();
 		nb = nb + 5;
-		console.log("nouveau posY nb = "+nb);
+		
 		this.monVaisseau.setPosY(nb);
-		console.log(">>>> rentre dans attractionTerrestre, posY = "+this.monVaisseau.getPosY());
 		this.dessiner("vaisseau",monVaisseau.getPosX(),monVaisseau.getPosY(),monVaisseau.getWidth(),monVaisseau.getHeight());
 	}
 
@@ -420,14 +457,91 @@ function attractionTerrestre()
 function ajoutListener()
 {
 	console.log("ajoutListener");
-	this.canvasJeu.addEventListener("mouseup", eventAction(), false);
+	window.addEventListener("mousedown", eventAction, false);
 
 }
 //***********************************************************************************
 
-function eventAction()
+//Fonction qui supprime le listener sur le canvas
+function supprimerListener()
 {
-	console.log("----------------------------------->>>> rentre blabla");
-	this.monVaisseau.setPosY(this.monVaisseau.getPosY()-10);
+	console.log("supprimeListener");
+	window.removeEventListener("mousedown", eventAction, false);
 
 }
+//***********************************************************************************
+
+//Fonction qui definie le comportement suite à l'execution d'un listener sur le canvas
+function eventAction()
+{
+	var i=0;
+	while(i<=10)
+	{
+		var y = this.monVaisseau.getPosY();
+		y = y-3;
+		this.monVaisseau.setPosY(y);
+		i++;
+	}
+
+}
+//***********************************************************************************
+
+//Fonction qui gere le calcul du score
+function gererScore()
+{
+	var temps = 0;
+	var coefficient = this.scoreBarre.getCoeff();
+	var score;
+	
+	temps=this.tempsJeu;
+	score=Math.floor(temps*coefficient);
+	
+	return score;
+	
+
+}
+//***********************************************************************************
+
+//Fonction qui gere le temps de partie (NE FONCTIONNE PAS)
+function minuteur()
+{
+	console.log("rentre dans minuteur");
+	
+	var temps=0;
+	var date = new Date();
+	var secA = date.getSeconds();
+	var secB;
+	
+	if(this.play==1)
+	{
+		
+		
+		if(pause==1)
+		{
+			console.log("jeu en pause");
+			this.tempsJeu=this.tempsJeu;
+		}
+		else
+		{
+			secB = date.getSeconds();
+			
+			console.log("rentre dans le while ELSE, secB =  "+secB);
+			
+			if(secA!=secB)
+			{
+				temps++;
+				secA=secB;
+			}
+			
+			
+			
+		}
+		
+		this.tempsJeu=temps;
+	
+	}
+	
+	this.tempsJeu=0;
+	
+}
+//***********************************************************************************

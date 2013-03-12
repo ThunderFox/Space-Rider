@@ -15,7 +15,6 @@ function Obstacle(x,y,w,h){
     }
 	
     Obstacle.prototype.setPosY = function(y) { 
-        alert("parametre: " + y);
 		this.posY=y;
     }
 	
