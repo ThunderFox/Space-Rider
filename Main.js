@@ -42,18 +42,24 @@ function dessiner(type,x,y,w,h){
 	
 	if(type=="vaisseau")
 	{
-		this.contextJeu.fillStyle="black";
-		this.contextJeu.fillRect(x,y,w,h);
+		//this.contextJeu.fillStyle="black";
+		//this.contextJeu.fillRect(x,y,w,h);
+		ship = new Image();
+		ship.src = 'img/spatiale.png';
+		this.contextJeu.drawImage(ship, x, y);
 	}
 	else if(type=="obstacle")
 	{
 		//this.contextJeu.fillStyle=this.randomColor();
-		this.contextJeu.fillStyle="red";
-		this.contextJeu.fillRect(x,y,w,h);
+		obst = new Image();
+		obst.src = 'img/obstacle.png';
+		this.contextJeu.drawImage(obst, x, y);
+		//this.contextJeu.fillStyle="red";
+		//this.contextJeu.fillRect(x,y,w,h);
 	}
 	else if(type=="scoreBarre")
 	{
-		this.contextJeu.fillStyle="blue";
+		this.contextJeu.fillStyle="black";
 		this.contextJeu.fillRect(x,y,w,h);
 		this.contextJeu.strokeStyle="black";
 		this.contextJeu.strokeRect(x,y,w,h);
@@ -131,6 +137,9 @@ function init(){
 //Fonction qui marque le debut du jeu
 function start(){
 	
+	//on récupère le bruitage du reacteur du vaisseau
+	var reactor = document.getElementById('reactor');
+	
 	ajoutListener();
 	
 	//GERER LE TEMPS DE JEU
@@ -162,9 +171,12 @@ function start(){
 			//mesObstacles.add(this.generateObstacle(canvasJeu.height-30,10));
 			this.mooveObstacle();
 			this.attractionTerrestre();
+			reactor.play();
 		}
 		else
 		{
+			reactor.pause();
+			reactor.currentTime = 0;
 			clearInterval(this.myInterval);
 			this.stopJeu();
 			this.supprimerListener();
@@ -404,9 +416,11 @@ function randomColor()
 //Fonction qui creer le terrain et le vaisseau
 function creerTerrain()
 {
-	
-	this.contextJeu.fillStyle="yellow";
-	this.contextJeu.fillRect(0,0,canvasJeu.width, canvasJeu.height);
+	background = new Image();
+	background.src = 'img/bacMilieu.png';
+	this.contextJeu.drawImage(background, 0, 0);
+	//this.contextJeu.fillStyle="yellow";
+	//this.contextJeu.fillRect(0,0,canvasJeu.width, canvasJeu.height);
 	
 	this.dessiner("scoreBarre",this.scoreBarre.getPosX(),this.scoreBarre.getPosY(),this.scoreBarre.getWidth(),this.scoreBarre.getHeight());
 	

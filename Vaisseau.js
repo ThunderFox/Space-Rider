@@ -45,6 +45,8 @@ function Vaisseau(x,y,w,h){
 	
 	Vaisseau.prototype.getVaisseau = function(ctx) {
 		console.log("rentre dans getVaisseau");
+		//img = new Image();
+		//img.src = 'img/spatiale.png';
 		ctx.fillStyle="black";
 		ctx.fillRect(this.PosX,this.posY,this.width,this.height);
     }
