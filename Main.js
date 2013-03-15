@@ -112,8 +112,7 @@ function init(){
 	mesObstacles.add(this.generateObstacle(this.limiteDown-30,this.limiteTop));
 	mesObstacles.add(this.generateObstacle(this.limiteDown-30,this.limiteTop));
 	mesObstacles.add(this.generateObstacle(this.limiteDown-30,this.limiteTop));
-	
-	
+
 	/*mesObstacles.add(this.generateObstacle(350,10));
 	mesObstacles.add(this.generateObstacle(350,10));
 	mesObstacles.add(this.generateObstacle(350,10));
