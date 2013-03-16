@@ -5,19 +5,19 @@ var scoreBarre; //la barre contenant les infos comme le score
 var mesObstacles; // la collection d'obstacles
 var unObstacle; //un obstacle de la liste
 var myInterval; //l'interval permettant de gerer la boucle principale
-var tempsJeu = 0;
-var play = 0;
-var pause = 0;
-var stop = 0;
-var positionObstacle = 0;
-var obsEntrant = null
-var obsEx = null;
-var vitesse = 20;
-var collisionVaisseau;
-var nbToursStart=0;
-var limiteTop;
-var limiteDown;
-var score;//score effectué par le joueur
+var tempsJeu = 0; //permet de savoir cb de secondes la partie dure
+var play = 0; //si je jeu est en route
+var pause = 0;//si la pause est active
+var stop = 0;//si le jeu est fini
+var positionObstacle = 0;//permet d'avoir la position de l'obstacle dans la liste
+var obsEntrant = null;//initialise obsEntrant
+var obsEx = null;//initialise obsEx
+var vitesse = 20;//vitesse de deplacement des obstacles
+var collisionVaisseau;//permet de savoir si une collision est survenue
+var nbToursStart=0;//compte le nombre d'appels de la fonction start
+var limiteTop;//limite du terrain en haut
+var limiteDown;//limite du terrain en bas
+var niveauFini = false;//pour savoir si le niveau est fini ou non
  
 
 init();
@@ -70,11 +70,11 @@ function dessiner(type,x,y,w,h){
 		this.contextJeu.font="25px Arial";
 		this.contextJeu.fillText(this.gererScore(),x,y);
 	}
-	else if(type=="distance")
+	else if(type=="bestScore")
 	{
 		this.contextJeu.fillStyle="white";
 		this.contextJeu.font="25px Arial";
-		this.contextJeu.fillText(this.Distance(),x,y);
+		this.contextJeu.fillText(this.saveBestScore(),x,y);
 	}
 	
 	
@@ -100,7 +100,7 @@ function init(){
 	this.limiteTop = this.scoreBarre.getHeight();
 	this.limiteDown = this.canvasJeu.height;
 	
-	this.monVaisseau = new Vaisseau(10, this.limiteTop+100, 25, 20); //creation du vaisseau
+	this.monVaisseau = new Vaisseau(50, this.limiteTop+100, 25, 20); //creation du vaisseau
 	
 	//initialisation de la liste d'obstacles
 	mesObstacles = new Obstacles();
@@ -112,7 +112,8 @@ function init(){
 	mesObstacles.add(this.generateObstacle(this.limiteDown-30,this.limiteTop));
 	mesObstacles.add(this.generateObstacle(this.limiteDown-30,this.limiteTop));
 	mesObstacles.add(this.generateObstacle(this.limiteDown-30,this.limiteTop));
-
+	
+	
 	/*mesObstacles.add(this.generateObstacle(350,10));
 	mesObstacles.add(this.generateObstacle(350,10));
 	mesObstacles.add(this.generateObstacle(350,10));
@@ -136,10 +137,11 @@ function init(){
 //Fonction qui marque le debut du jeu
 function start(){
 	
+	//on ajoute le listener
+	ajoutListener();
+	
 	//on récupère le bruitage du reacteur du vaisseau
 	var reactor = document.getElementById('reactor');
-	
-	ajoutListener();
 	
 	//GERER LE TEMPS DE JEU
 	this.nbToursStart++;
@@ -376,6 +378,7 @@ function mooveObstacle()
 			
 			this.play=0;
 			this.stop=1;
+			this.niveauFini = true;
 			
 			
 			
@@ -417,16 +420,18 @@ function creerTerrain()
 {
 	background = new Image();
 	background.src = 'img/bacMilieu.png';
-	this.contextJeu.drawImage(background, 0, 0);
+	this.contextJeu.drawImage(background, 0, 0);//arriere plan
+	
 	//this.contextJeu.fillStyle="yellow";
 	//this.contextJeu.fillRect(0,0,canvasJeu.width, canvasJeu.height);
 	
-	this.dessiner("scoreBarre",this.scoreBarre.getPosX(),this.scoreBarre.getPosY(),this.scoreBarre.getWidth(),this.scoreBarre.getHeight());
+	this.dessiner("scoreBarre",this.scoreBarre.getPosX(),this.scoreBarre.getPosY(),this.scoreBarre.getWidth(),this.scoreBarre.getHeight());//barre de score
 	
 	this.dessiner("score",this.scoreBarre.getWidth()-70,this.scoreBarre.getPosY()+30,"","");//score
-	this.dessiner("distance",this.scoreBarre.getWidth()-570,this.scoreBarre.getPosY()+30,"","");//meilleure distance
+	this.dessiner("bestScore",30,this.scoreBarre.getPosY()+30,"","");//meilleure distance >> PK???
 	
 	this.contextJeu.fillText("pause",250,30);// sera remplacé par un bouton pause
+	
 	this.contextJeu.strokeStyle="black";
 	this.contextJeu.strokeRect(0,0,canvasJeu.width, canvasJeu.height);
 	
@@ -442,13 +447,24 @@ function stopJeu()
 			
 	this.obsEx = null;
 	this.obsEntrant = null;
-			
-	this.contextJeu.fillStyle="black";
-	this.contextJeu.fillRect(0,0,canvasJeu.width,canvasJeu.height);
-	this.contextJeu.fillStyle="white";
-	this.contextJeu.font="40px Arial";
-	this.contextJeu.fillText("NIVEAU TERMINE",120,200);
-			
+	
+	if(niveauFini)
+	{
+		this.contextJeu.fillStyle="red";
+		this.contextJeu.fillRect(0,0,canvasJeu.width,canvasJeu.height);
+		this.contextJeu.fillStyle="white";
+		this.contextJeu.font="40px Arial";
+		this.contextJeu.fillText("NIVEAU TERMINE",120,200);
+	}
+	else
+	{
+		this.contextJeu.fillStyle="black";
+		this.contextJeu.fillRect(0,0,canvasJeu.width,canvasJeu.height);
+		this.contextJeu.fillStyle="red";
+		this.contextJeu.font="40px Arial";
+		this.contextJeu.fillText("GAME OVER",160,200);
+	}
+	
 	this.stop=1;
 
 }
@@ -462,7 +478,7 @@ function attractionTerrestre()
 	var tailleTerrain = this.canvasJeu.height;
 	var endroitCle = (tailleTerrain-tailleVaisseau);
 	
-	if(this.monVaisseau.getPosY()>=endroitCle || this.monVaisseau.getPosY()<=this.limiteTop)
+	if(this.monVaisseau.getPosY()>=endroitCle || this.monVaisseau.getPosY()<=this.limiteTop-10)
 	{
 		bool=false;
 		
@@ -520,7 +536,7 @@ function gererScore()
 {
 	var temps = 0;
 	var coefficient = this.scoreBarre.getCoeff();
-	
+	var score;
 	
 	temps=this.tempsJeu;
 	score=Math.floor(temps*coefficient);
@@ -528,22 +544,6 @@ function gererScore()
 	return score;
 	
 
-}
-//***********************************************************************************
-
-//Fonction permettant de stocker la meilleure distance
-function Distance()
-{
-	 if (this.score > bestDistance()) {
-            localStorage.bestDistance = this.score;
-         }
-	return localStorage.bestDistance;
-}
-//***********************************************************************************
-
-//Fonction qui permet de recuperer la meilleure distance
-function bestDistance() {
-      return parseInt(localStorage.bestDistance || 0, 10);
 }
 //***********************************************************************************
 
@@ -577,7 +577,8 @@ function minuteur()
 				temps++;
 				secA=secB;
 			}
-
+			
+			
 			
 		}
 		
@@ -587,5 +588,21 @@ function minuteur()
 	
 	this.tempsJeu=0;
 	
+}
+//***********************************************************************************
+
+//Fonction permettant de stocker la meilleure distance
+function saveBestScore()
+{
+	 if (this.score > getBestScore()) {
+            localStorage.bestScore = this.score;
+         }
+	return localStorage.bestScore;
+}
+//***********************************************************************************
+
+//Fonction qui permet de recuperer la meilleure distance
+function getBestScore() {
+      return parseInt(localStorage.bestScore || 0, 10);
 }
 //***********************************************************************************
