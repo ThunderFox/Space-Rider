@@ -18,6 +18,7 @@ var nbToursStart=0;//compte le nombre d'appels de la fonction start
 var limiteTop;//limite du terrain en haut
 var limiteDown;//limite du terrain en bas
 var niveauFini = false;//pour savoir si le niveau est fini ou non
+var score;
  
 
 init();
@@ -428,7 +429,7 @@ function creerTerrain()
 	this.dessiner("scoreBarre",this.scoreBarre.getPosX(),this.scoreBarre.getPosY(),this.scoreBarre.getWidth(),this.scoreBarre.getHeight());//barre de score
 	
 	this.dessiner("score",this.scoreBarre.getWidth()-70,this.scoreBarre.getPosY()+30,"","");//score
-	this.dessiner("bestScore",30,this.scoreBarre.getPosY()+30,"","");//meilleure distance >> PK???
+	this.dessiner("bestScore",30,this.scoreBarre.getPosY()+30,"","");//meilleur score
 	
 	this.contextJeu.fillText("pause",250,30);// sera remplacé par un bouton pause
 	
@@ -536,7 +537,7 @@ function gererScore()
 {
 	var temps = 0;
 	var coefficient = this.scoreBarre.getCoeff();
-	var score;
+	
 	
 	temps=this.tempsJeu;
 	score=Math.floor(temps*coefficient);
@@ -593,11 +594,12 @@ function minuteur()
 
 //Fonction permettant de stocker la meilleure distance
 function saveBestScore()
-{
+{	
 	 if (this.score > getBestScore()) {
             localStorage.bestScore = this.score;
+			alert (this.localStorage.bestScore);
          }
-	return localStorage.bestScore;
+	return this.localStorage.bestScore;
 }
 //***********************************************************************************
 

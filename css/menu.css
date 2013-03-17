@@ -1,0 +1,165 @@
+body
+{
+background-image:url(../img/back.jpg);
+background-repeat: no-repeat;
+}
+/* conteneur principal */
+#mainframe {
+	max-width : 600px;
+	max-height: 400px;
+}
+
+
+/* menu principal*/
+#cssmenu {
+	margin: 0;
+	padding: 0;
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	
+}
+#cssmenu{
+	width: 232px;
+	hight: 400px;
+}
+#cssmenu ul{
+	list-style: none;
+	text-indent: 0px;
+}
+#cssmenu li{
+	margin-top: 20px;
+}
+#cssmenu a{
+	font: 12px Verdana;
+	padding: 4px;
+	color: #646464;
+	display:block;
+	padding: 6px 30px;
+	height: 20px;
+	text-decoration: none;
+	background: url('../img/background.gif');
+}
+#cssmenu a:hover{
+	background: url('../img/highlight.gif') no-repeat right;
+	padding: 6px 40px;
+}
+
+div#cssmenu
+{
+   margin-left: 23%;
+   margin-right: auto;
+  
+}
+/****************************************************
+ * 	titre principal
+ *****************************************************/
+
+#titre {
+	font-size : 38px ;
+    color : #FFFFFF ;
+    text-shadow : 4px 1px 3px #000 ;
+	text-align :center;
+}
+/****************************************************
+ * 	titre : menu difficulte
+ *****************************************************/
+
+#titre_difficulte {
+
+    color : #FFFFFF ;
+    text-shadow : 4px 1px 3px #000 ;
+	text-align :center;
+}
+
+/****************************************************
+ * 	titre : option
+ *****************************************************/
+
+#titre_option {
+
+    color : #FFFFFF ;
+    text-shadow : 4px 1px 3px #000 ;
+	text-align :center;
+}
+
+/****************************************************
+ * 	Boutons difficultés
+ *****************************************************/
+.push_button{
+	position:relative;
+	width:84px;
+	color:#FFF;
+	display:block;
+	text-decoration:none;
+	margin:24px auto;
+	border-radius:5px;
+	border:solid 1px #D94E3B;
+	background:#cb3b27;
+	text-align:center;
+	padding:20px 30px;
+	-webkit-transition: all 0.1s;
+	-moz-transition: all 0.1s;
+	transition: all 0.1s;
+	-webkit-box-shadow: 0px 9px 0px #84261a;
+        -moz-box-shadow: 0px 9px 0px #84261a;
+        box-shadow: 0px 9px 0px #84261a;
+}
+
+.push_button:active{
+    -webkit-box-shadow: 0px 2px 0px #84261a;
+    -moz-box-shadow: 0px 2px 0px #84261a;
+    box-shadow: 0px 2px 0px #84261a;
+    position:relative;
+    top:7px;
+}
+
+/****************************************************
+ * 	Sound option
+ *****************************************************/
+ 
+ .onoffswitch {
+    position: relative; width: 90px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+	 padding-left: 250px;
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 2px solid #999999; border-radius: 20px;
+}
+.onoffswitch-inner {
+    width: 200%; margin-left: -100%;
+    -moz-transition: margin 0.3s ease-in 0s; -webkit-transition: margin 0.3s ease-in 0s;
+    -o-transition: margin 0.3s ease-in 0s; transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
+    font-size: 19px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+}
+.onoffswitch-inner:before {
+    content: "ON";
+    padding-left: 12px;
+    background-color: #2FCCFF; color: #FFFFFF;
+}
+.onoffswitch-inner:after {
+    content: "OFF";
+    padding-right: 12px;
+    background-color: #EEEEEE; color: #999999;
+    text-align: right;
+}
+.onoffswitch-switch {
+    width: 13px; margin: 8.5px;
+    background: #FFFFFF;
+    border: 2px solid #999999; border-radius: 20px;
+    position: absolute; top: 0; bottom: 0; right: 56px;
+    -moz-transition: all 0.3s ease-in 0s; -webkit-transition: all 0.3s ease-in 0s;
+    -o-transition: all 0.3s ease-in 0s; transition: all 0.3s ease-in 0s; 
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px; 
+}
