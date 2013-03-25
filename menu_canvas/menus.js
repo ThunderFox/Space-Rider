@@ -68,7 +68,7 @@ function canvas_propriete() {
 	this.context= this.canvas.getContext('2d');
 	this.canvas.width = 600;
 	this.canvas.height = 400;
-	this.imageback.src = 'back.png';//image background
+	this.imageback.src = './img_menu/back.png';//image background
 	this.init_posBouton();
 	this.context.drawImage(this.imageback, 0, 0);
 }
@@ -77,11 +77,11 @@ function canvas_propriete() {
 function menu_principal(){
 	
 	titre = new Image();
-	titre.src = 'title.png';
+	titre.src = './img_menu/title.png';
 
 	this.canvas_propriete();
-	this.bplay.src='button_play.png';
-	this.bOption.src='button_settings.png';
+	this.bplay.src='./img_menu/button_play.png';
+	this.bOption.src='./img_menu/button_settings.png';
 	
 	this.context.font = "50pt Calibri,Geneva,Arial";
 	this.context.fillStyle = "#FFFF00";
@@ -100,14 +100,14 @@ function menu_principal(){
 /*Menu difficulte*/
 function menu_difficulte(){
 	mode_select = new Image();
-	mode_select.src = 'mode_select.png';
+	mode_select.src = './img_menu/mode_select.png';
 
 	this.canvas_propriete();
 	
-	this.bEasy.src='easy.png';
-	this.bMedium.src='medium.png';
-	this.bHard.src='hard.png';
-	this.bBack.src='button_back.png';
+	this.bEasy.src='./img_menu/easy.png';
+	this.bMedium.src='./img_menu/medium.png';
+	this.bHard.src='./img_menu/hard.png';
+	this.bBack.src='./img_menu/button_back.png';
 	
 	this.context.font = "25pt Calibri,Geneva,Arial";
 	this.context.fillStyle = "#FFFF00";
@@ -129,9 +129,9 @@ function menu_difficulte(){
 function menu_setting() {
 	canvas_propriete();
 	
-	this.bOn.src='play.jpg';
-	this.bOff.src='option.jpg';
-	this.bBack.src='button_back.png';
+	this.bOn.src='./img_menu/play.jpg';
+	this.bOff.src='./img_menu/option.jpg';
+	this.bBack.src='./img_menu/button_back.png';
 	
 	this.context.font = "25pt Calibri,Geneva,Arial";
 	this.context.fillStyle = "#FFFF00";
