@@ -37,7 +37,8 @@ var bOffCoordsY=170, bOffCoordsX=210;
 var stateMenu = {
 	menuPrincipal : 0,
 	menuDifficultes : 1,
-	menuSettings : 2
+	menuSettings : 2,
+	menuChoiceShip :3 
 	
 	}
 
@@ -214,6 +215,27 @@ function menu_setting() {
 	window.addEventListener('click',listenerMenuSetting,false);
 }
 
+/*Menu choix vaisseau - permet au joueur de choisir un vaiseau*/
+function menuChoiceShip() {
+
+	canvas_propriete();
+	
+	context.font = "25pt Calibri,Geneva,Arial";
+	context.fillStyle = "#FFFF00";
+	context.fillText("vaisseau", 200, 60);
+/****************************************************************
+code vaisseau à placer ici
+
+*********************************************************************/
+	
+	context.drawImage(bBack, bBackCoordsX, bBackCoordsY,TimageLong,TimageLargBack);
+	
+	window.removeEventListener('click', listenerMenuPrincipal, false);
+	window.removeEventListener('click', listenerMenuDifficulte, false);
+	window.removeEventListener('click',listenerMenuSetting,false);
+	window.addEventListener('click',listenerMenuChoiceShip,false);
+}
+
 /*ajout du listener sur le menu principal*/
 function listenerMenuPrincipal(event){
 	var x=event.pageX - canvasLeft,
@@ -255,6 +277,7 @@ function listenerMenuDifficulte(event){
 		(bEasy.height <= y && y <= bEasy.height+TimageLarg)) {
 		
 		console.log("easy clicke");
+		stateMenuSelected = 3;
 	
 		
 		}//if
@@ -263,7 +286,7 @@ function listenerMenuDifficulte(event){
 			(bMedium.height <= y && y <= bMedium.height+TimageLarg )){
 		
 		console.log("medium clicke");
-
+		stateMenuSelected = 3;
 
 		}//if
 
@@ -271,7 +294,7 @@ function listenerMenuDifficulte(event){
 			(bHard.height <= y && y <= bHard.height+TimageLarg )){
 		
 		console.log("hard clicke");
-
+		stateMenuSelected = 3;
 
 		}//if
 		
@@ -319,6 +342,27 @@ function listenerMenuSetting(event){
 		}//if
 }
 
+/*ajout du listener sur le menu choix vaisseau*/
+function listenerMenuChoiceShip(event){
+	
+	var x=event.pageX - canvasLeft,
+		y=event.pageY - canvasTop;
+
+		/*************************
+		//boutons du menu setting
+		**************************/
+
+
+		if( (bBack.width <= x &&  x <= bBack.width+TimageLong ) && 
+			(bBack.height <= y && y <= bBack.height+TimageLarg )){
+		
+			console.log("back3 clicke");
+			stateMenuSelected = 1;
+
+
+		}//if
+}
+/*Mainframe : fonction principale */
 function fenetre()
 {
 if(compteurImagesTotales==compteurImagesChargees){
@@ -328,6 +372,8 @@ if(compteurImagesTotales==compteurImagesChargees){
 		case 1 : menu_difficulte();
 				 break;
 		case 2 : menu_setting();
+				 break;
+		case 3 : menuChoiceShip();
 				 break;
 	}
 }//if
