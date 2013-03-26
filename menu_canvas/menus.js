@@ -175,9 +175,11 @@ function menu_principal(){
 	
 	window.removeEventListener('click', listenerMenuSetting, false);
 	window.removeEventListener('click', listenerMenuDifficulte, false);
+	window.removeEventListener('click', listenerMenuChoiceShip, false);
 	window.addEventListener('click',listenerMenuPrincipal,false);
 
 }
+
 
 /*Menu difficulte*/
 function menu_difficulte(){
@@ -193,6 +195,7 @@ function menu_difficulte(){
 	
 	window.removeEventListener('click', listenerMenuPrincipal, false);
 	window.removeEventListener('click', listenerMenuSetting, false);
+	window.removeEventListener('click', listenerMenuChoiceShip, false);
 	window.addEventListener('click', listenerMenuDifficulte,false);
 	
 }
@@ -211,7 +214,8 @@ function menu_setting() {
 	context.drawImage(bBack, bBackCoordsX, bBackCoordsY,TimageLong,TimageLargBack);
 	
 	window.removeEventListener('click', listenerMenuPrincipal, false);
-	window.removeEventListener('click', listenerMenuDifficulte, false);
+	window.removeEventListener('click', listenerMenuDifficulte, false);	
+	window.removeEventListener('click', listenerMenuChoiceShip, false);
 	window.addEventListener('click',listenerMenuSetting,false);
 }
 
@@ -349,7 +353,7 @@ function listenerMenuChoiceShip(event){
 		y=event.pageY - canvasTop;
 
 		/*************************
-		//boutons du menu setting
+		//boutons du menu choice ship
 		**************************/
 
 
