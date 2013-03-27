@@ -180,7 +180,6 @@ function menu_principal(){
 
 }
 
-
 /*Menu difficulte*/
 function menu_difficulte(){
 	
