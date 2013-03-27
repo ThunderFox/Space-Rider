@@ -48,62 +48,62 @@ var stateMenuSelected = 0;
 ajout des images	
 **********************************/
 
-	bplay.src='button_play.png';
+	bplay.src='./img_menu/button_play.png';
 	compteurImagesTotales++;
 	bplay.onload = function(){
 		compteurImagesChargees++;
 	};
 
-	bOption.src='button_settings.png';
+	bOption.src='./img_menu/button_settings.png';
 	compteurImagesTotales++;
 	bOption.onload = function(){
 		compteurImagesChargees++;
 	};
 	
-	titre.src = 'title.png';
+	titre.src = './img_menu/title.png';
 	compteurImagesTotales++;
 	titre.onload = function(){
 		compteurImagesChargees++;
 	};
 
-	mode_select.src = 'mode_select.png';
+	mode_select.src = './img_menu/mode_select.png';
 	compteurImagesTotales++;
 	mode_select.onload = function(){
 		compteurImagesChargees++;
 	};
-	bEasy.src='easy.png';
+	bEasy.src='./img_menu/easy.png';
 	compteurImagesTotales++;
 	bEasy.onload = function(){
 		compteurImagesChargees++;
 	};
-	bMedium.src='medium.png';
+	bMedium.src='./img_menu/medium.png';
 	compteurImagesTotales++;
 	bMedium.onload = function(){
 		compteurImagesChargees++;
 	};
-	bHard.src='hard.png';
+	bHard.src='./img_menu/hard.png';
 	compteurImagesTotales++;
 	bHard.onload = function(){
 		compteurImagesChargees++;
 	};
-	bBack.src='button_back.png';
+	bBack.src='./img_menu/button_back.png';
 	compteurImagesTotales++;
 	bBack.onload = function(){
 		compteurImagesChargees++;
 	};	
 	
-	bOn.src='play.jpg';
+	bOn.src='./img_menu/play.jpg';
 	compteurImagesTotales++;
 	bOn.onload = function(){
 		compteurImagesChargees++;
 	};
-	bOff.src='option.jpg';
+	bOff.src='./img_menu/option.jpg';
 	compteurImagesTotales++;
 	bOff.onload = function(){
 		compteurImagesChargees++;
 	};
 
-	imageback.src = 'back.png';
+	imageback.src = './img_menu/back.png';
 	compteurImagesTotales++;
 	imageback.onload = function(){
 		compteurImagesChargees++;
@@ -161,6 +161,7 @@ function canvas_propriete() {
 	canvas.height = 400;
 	init_posBouton();
 	context.drawImage(imageback, 0, 0);
+
 }
 
 /*Menu principal*/
@@ -182,7 +183,7 @@ function menu_principal(){
 
 /*Menu difficulte*/
 function menu_difficulte(){
-	
+
 	canvas_propriete();
 	
 	context.drawImage(mode_select, 150, 60);
