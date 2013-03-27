@@ -1,4 +1,6 @@
 /* variables globales*/
+var compteurImagesChargees = 0;
+var compteurImagesTotales = 0;
 var canvas;
 var context;
 //permet de déterminer la position de l'élément dans le canvas
@@ -13,6 +15,8 @@ var bHard=new Image();//bouton hard
 var bBack=new Image();//bouton back
 var bOn=new Image();//bouton On sound
 var bOff=new Image();//bouton Off sound
+var titre = new Image();//image titre
+var mode_select = new Image();//image selection mode
 var TimageLong=230;
 var TimageLarg=40, TimageLargBack=30;
 var ModLong=160;
@@ -29,41 +33,128 @@ var bHardCoordsY=240, bHardCoordsX=220;
 //position des boutons menu setting
 var bOnCoordsY=80, bOnCoordsX=210;
 var bOffCoordsY=170, bOffCoordsX=210;
+//different etat du menu
+var stateMenu = {
+	menuPrincipal : 0,
+	menuDifficultes : 1,
+	menuSettings : 2,
+	menuChoiceShip :3 
+	
+	}
+
+var stateMenuSelected = 0;
+
+/**********************************
+ajout des images	
+**********************************/
+
+	bplay.src='button_play.png';
+	compteurImagesTotales++;
+	bplay.onload = function(){
+		compteurImagesChargees++;
+	};
+
+	bOption.src='button_settings.png';
+	compteurImagesTotales++;
+	bOption.onload = function(){
+		compteurImagesChargees++;
+	};
+	
+	titre.src = 'title.png';
+	compteurImagesTotales++;
+	titre.onload = function(){
+		compteurImagesChargees++;
+	};
+
+	mode_select.src = 'mode_select.png';
+	compteurImagesTotales++;
+	mode_select.onload = function(){
+		compteurImagesChargees++;
+	};
+	bEasy.src='easy.png';
+	compteurImagesTotales++;
+	bEasy.onload = function(){
+		compteurImagesChargees++;
+	};
+	bMedium.src='medium.png';
+	compteurImagesTotales++;
+	bMedium.onload = function(){
+		compteurImagesChargees++;
+	};
+	bHard.src='hard.png';
+	compteurImagesTotales++;
+	bHard.onload = function(){
+		compteurImagesChargees++;
+	};
+	bBack.src='button_back.png';
+	compteurImagesTotales++;
+	bBack.onload = function(){
+		compteurImagesChargees++;
+	};	
+	
+	bOn.src='play.jpg';
+	compteurImagesTotales++;
+	bOn.onload = function(){
+		compteurImagesChargees++;
+	};
+	bOff.src='option.jpg';
+	compteurImagesTotales++;
+	bOff.onload = function(){
+		compteurImagesChargees++;
+	};
+
+	imageback.src = 'back.png';
+	compteurImagesTotales++;
+	imageback.onload = function(){
+		compteurImagesChargees++;
+	};
 
 
+var myInterval = (function() {
+	return window.requestAnimationFrame ||
+		   window.mozRequestAnimationFrame ||
+           window.webkitRequestAnimationFrame ||
+		   window.msRequestAnimationFrame ||
+		   function(callback) {
+			window.setTimeout(callback, 1000/60);
+		   };
+})();
+
+window.requestAnimationFrame = myInterval;
 
 /*permet d'initaliser la position des boutons dans la canvas*/
 function init_posBouton(){
 	//menu principal
-	this.bplay.width=this.bPlayCoordsX; 
-	this.bplay.height=this.bPlayCoordsY;
-	this.bOption.width=this.bOptionsCoordsX;
-	this.bOption.height=this.b0ptionCoordsY;
+	bplay.width=bPlayCoordsX; 
+	bplay.height=bPlayCoordsY;
+	bOption.width=bOptionsCoordsX;
+	bOption.height=b0ptionCoordsY;
 	
 	//menu difficulte
-	this.bEasy.width=this.bEasyCoordsX; 
-	this.bEasy.height=this.bEasyCoordsY;
-	this.bMedium.width=this.bMediumCoordsX;
-	this.bMedium.height=this.bMediumCoordsY;
-	this.bHard.width=this.bHardCoordsX;
-	this.bHard.height=this.bHardCoordsY;
+	bEasy.width=bEasyCoordsX; 
+	bEasy.height=bEasyCoordsY;
+	bMedium.width=bMediumCoordsX;
+	bMedium.height=bMediumCoordsY;
+	bHard.width=bHardCoordsX;
+	bHard.height=bHardCoordsY;
 	
 	//menu setting
-	this.bOn.width=this.bOnCoordsX;
-	this.bOn.height=this.bOnCoordsY;
-	this.bOff.width=this.bOffCoordsX;
-	this.bOff.height=this.bOffCoordsY;
+	bOn.width=bOnCoordsX;
+	bOn.height=bOnCoordsY;
+	bOff.width=bOffCoordsX;
+	bOff.height=bOffCoordsY;
 	
 	//bouton back
-	this.bBack.width=this.bBackCoordsX;
-	this.bBack.height=this.bBackCoordsY;
+	bBack.width=bBackCoordsX;
+	bBack.height=bBackCoordsY;
 	
-	this.canvasLeft=this.canvas.offsetLeft;
-	this.canvasTop=this.canvas.offsetTop;
+	canvasLeft=canvas.offsetLeft;
+	canvasTop=canvas.offsetTop;
 }
 
 /*Canvas propriete - preparation du canvas*/
 function canvas_propriete() {
+
 	this.canvas = document.getElementById('myCanvas');
 	this.context= this.canvas.getContext('2d');
 	this.canvas.width = 600;
@@ -71,34 +162,36 @@ function canvas_propriete() {
 	this.imageback.src = './img_menu/back.png';//image background
 	this.init_posBouton();
 	this.context.drawImage(this.imageback, 0, 0);
+
 }
 
 /*Menu principal*/
 function menu_principal(){
-	
+
 	titre = new Image();
 	titre.src = './img_menu/title.png';
 
 	this.canvas_propriete();
 	this.bplay.src='./img_menu/button_play.png';
 	this.bOption.src='./img_menu/button_settings.png';
-	
-	this.context.font = "50pt Calibri,Geneva,Arial";
-	this.context.fillStyle = "#FFFF00";
-	//this.context.fillText("Space Rider", 130, 90);
-	this.context.drawImage(titre, 80, 60);
 
-	this.context.drawImage(this.bplay, this.bPlayCoordsX, this.bPlayCoordsY,this.TimageLong,this.TimageLarg);
-	this.context.drawImage(this.bOption, this.bOptionsCoordsX, this.b0ptionCoordsY,this.TimageLong,this.TimageLarg);
+	
+	context.drawImage(titre, 80, 60);
+
+	context.drawImage(bplay, bPlayCoordsX, bPlayCoordsY,TimageLong,TimageLarg);
+	context.drawImage(bOption, bOptionsCoordsX, b0ptionCoordsY,TimageLong,TimageLarg);
 	
 	window.removeEventListener('click', listenerMenuSetting, false);
 	window.removeEventListener('click', listenerMenuDifficulte, false);
+	window.removeEventListener('click', listenerMenuChoiceShip, false);
 	window.addEventListener('click',listenerMenuPrincipal,false);
 
 }
 
+
 /*Menu difficulte*/
 function menu_difficulte(){
+
 	mode_select = new Image();
 	mode_select.src = './img_menu/mode_select.png';
 
@@ -109,46 +202,66 @@ function menu_difficulte(){
 	this.bHard.src='./img_menu/hard.png';
 	this.bBack.src='./img_menu/button_back.png';
 	
-	this.context.font = "25pt Calibri,Geneva,Arial";
-	this.context.fillStyle = "#FFFF00";
-	//this.context.fillText("Mode select", 200, 60);
-	this.context.drawImage(mode_select, 150, 60);
+	context.drawImage(mode_select, 150, 60);
 
-	this.context.drawImage(this.bEasy, this.bEasyCoordsX, this.bEasyCoordsY,this.ModLong,this.ModLarg);
-	this.context.drawImage(this.bMedium, this.bMediumCoordsX, this.bMediumCoordsY,this.ModLong,this.ModLarg);
-	this.context.drawImage(this.bHard, this.bHardCoordsX, this.bHardCoordsY,this.ModLong,this.ModLarg);
-	this.context.drawImage(this.bBack, this.bBackCoordsX, this.bBackCoordsY,this.TimageLong,this.TimageLargBack);
+	context.drawImage(bEasy, bEasyCoordsX, bEasyCoordsY,ModLong,ModLarg);
+	context.drawImage(bMedium, bMediumCoordsX, bMediumCoordsY,ModLong,ModLarg);
+	context.drawImage(bHard, bHardCoordsX, bHardCoordsY,ModLong,ModLarg);
+	context.drawImage(bBack, bBackCoordsX, bBackCoordsY,TimageLong,TimageLargBack);
 	
 	window.removeEventListener('click', listenerMenuPrincipal, false);
 	window.removeEventListener('click', listenerMenuSetting, false);
+	window.removeEventListener('click', listenerMenuChoiceShip, false);
 	window.addEventListener('click', listenerMenuDifficulte,false);
 	
 }
 
 /*Menu parametre*/
 function menu_setting() {
+
 	canvas_propriete();
 	
 	this.bOn.src='./img_menu/play.jpg';
 	this.bOff.src='./img_menu/option.jpg';
 	this.bBack.src='./img_menu/button_back.png';
-	
-	this.context.font = "25pt Calibri,Geneva,Arial";
-	this.context.fillStyle = "#FFFF00";
-	this.context.fillText("Sound On/Off", 200, 60);
 
-	this.context.drawImage(this.bOn, this.bOnCoordsX, this.bOnCoordsY,this.TimageLong,this.TimageLarg);
-	this.context.drawImage(this.bOff, this.bOffCoordsX, this.bOffCoordsY,this.TimageLong,this.TimageLarg);
-	this.context.drawImage(this.bBack, this.bBackCoordsX, this.bBackCoordsY,this.TimageLong,this.TimageLargBack);
+	context.font = "25pt Calibri,Geneva,Arial";
+	context.fillStyle = "#FFFF00";
+	context.fillText("Sound On/Off", 200, 60);
+
+	context.drawImage(bOn, bOnCoordsX, bOnCoordsY,TimageLong,TimageLarg);
+	context.drawImage(bOff, bOffCoordsX, bOffCoordsY,TimageLong,TimageLarg);
+	context.drawImage(bBack, bBackCoordsX, bBackCoordsY,TimageLong,TimageLargBack);
+	
+	window.removeEventListener('click', listenerMenuPrincipal, false);
+	window.removeEventListener('click', listenerMenuDifficulte, false);	
+	window.removeEventListener('click', listenerMenuChoiceShip, false);
+	window.addEventListener('click',listenerMenuSetting,false);
+}
+
+/*Menu choix vaisseau - permet au joueur de choisir un vaiseau*/
+function menuChoiceShip() {
+
+	canvas_propriete();
+	
+	context.font = "25pt Calibri,Geneva,Arial";
+	context.fillStyle = "#FFFF00";
+	context.fillText("vaisseau", 200, 60);
+/****************************************************************
+code vaisseau à placer ici
+
+*********************************************************************/
+	
+	context.drawImage(bBack, bBackCoordsX, bBackCoordsY,TimageLong,TimageLargBack);
 	
 	window.removeEventListener('click', listenerMenuPrincipal, false);
 	window.removeEventListener('click', listenerMenuDifficulte, false);
-	window.addEventListener('click',listenerMenuSetting,false);
+	window.removeEventListener('click',listenerMenuSetting,false);
+	window.addEventListener('click',listenerMenuChoiceShip,false);
 }
 
 /*ajout du listener sur le menu principal*/
 function listenerMenuPrincipal(event){
-
 	var x=event.pageX - canvasLeft,
 		y=event.pageY - canvasTop;
 
@@ -156,26 +269,27 @@ function listenerMenuPrincipal(event){
 	//boutons du menu principal
 	**************************/
 		
-		if( (this.bplay.width <= x &&  x <= this.bplay.width+this.TimageLong ) && 
-			(this.bplay.height <= y && y <= this.bplay.height+this.TimageLarg)) {
-			
-		console.log("play clicke");
-		this.menu_difficulte();
+		if( (bplay.width <= x &&  x <= bplay.width+TimageLong ) && 
+			(bplay.height <= y && y <= bplay.height+TimageLarg)) {
+
+			stateMenuSelected = 1;
+			console.log("play clicke");
 
 		}//if
 
-		if( (this.bOption.width <= x &&  x <= this.bOption.width+this.TimageLong ) && 
-			(this.bOption.height <= y && y <= this.bOption.height+this.TimageLarg )){
+		if( (bOption.width <= x &&  x <= bOption.width+TimageLong ) && 
+			(bOption.height <= y && y <= bOption.height+TimageLarg )){
+			
+			stateMenuSelected = 2;
+			console.log("option clicke");
 
-		console.log("option clicke");
-		this.menu_setting();
 
 		}//if
 }
 
 /*ajout du listener sur le menu difficulte*/
 function listenerMenuDifficulte(event){
-
+	
 	var x=event.pageX - canvasLeft,
 		y=event.pageY - canvasTop;
 
@@ -183,42 +297,42 @@ function listenerMenuDifficulte(event){
 		//boutons du menu difficulte
 		**************************/
 
-		if( (this.bEasy.width <= x &&  x <= this.bEasy.width+this.TimageLong ) && 
-		(this.bEasy.height <= y && y <= this.bEasy.height+this.TimageLarg)) {
+		if( (bEasy.width <= x &&  x <= bEasy.width+TimageLong ) && 
+		(bEasy.height <= y && y <= bEasy.height+TimageLarg)) {
 		
 		console.log("easy clicke");
+		stateMenuSelected = 3;
 	
 		
 		}//if
 
-		if( (this.bMedium.width <= x &&  x <= this.bMedium.width+this.TimageLong ) && 
-			(this.bMedium.height <= y && y <= this.bMedium.height+this.TimageLarg )){
+		if( (bMedium.width <= x &&  x <= bMedium.width+TimageLong ) && 
+			(bMedium.height <= y && y <= bMedium.height+TimageLarg )){
 		
 		console.log("medium clicke");
-
+		stateMenuSelected = 3;
 
 		}//if
 
-		if( (this.bHard.width <= x &&  x <= this.bHard.width+this.TimageLong ) && 
-			(this.bHard.height <= y && y <= this.bHard.height+this.TimageLarg )){
+		if( (bHard.width <= x &&  x <= bHard.width+TimageLong ) && 
+			(bHard.height <= y && y <= bHard.height+TimageLarg )){
 		
 		console.log("hard clicke");
-
+		stateMenuSelected = 3;
 
 		}//if
 		
-		if( (this.bBack.width <= x &&  x <= this.bBack.width+this.TimageLong ) && 
-			(this.bBack.height <= y && y <= this.bBack.height+this.TimageLarg )){
+		if( (bBack.width <= x &&  x <= bBack.width+TimageLong ) && 
+			(bBack.height <= y && y <= bBack.height+TimageLarg )){
 		
-		console.log("back clicke");
-
-
+			stateMenuSelected = 0;
+			console.log("back clicke");
 		}//if
 }
 
 /*ajout du listener sur le menu setting*/
 function listenerMenuSetting(event){
-
+	
 	var x=event.pageX - canvasLeft,
 		y=event.pageY - canvasTop;
 
@@ -226,27 +340,68 @@ function listenerMenuSetting(event){
 		//boutons du menu setting
 		**************************/
 
-		if( (this.bOn.width <= x &&  x <= this.bOn.width+this.TimageLong ) && 
-		(this.bOn.height <= y && y <= this.bOn.height+this.TimageLarg )){
+		if( (bOn.width <= x &&  x <= bOn.width+TimageLong ) && 
+		(bOn.height <= y && y <= bOn.height+TimageLarg )){
 		
 		console.log("on clicke");
 	
 
 		}//if
 
-		if( (this.bOff.width <= x &&  x <= this.bOff.width+this.TimageLong ) && 
-			(this.bOff.height <= y && y <= this.bOff.height+this.TimageLarg )){
+		if( (bOff.width <= x &&  x <= bOff.width+TimageLong ) && 
+			(bOff.height <= y && y <= bOff.height+TimageLarg )){
 		
 		console.log("off clicke");
 
 
 		}//if
 
-		if( (this.bBack.width <= x &&  x <= this.bBack.width+this.TimageLong ) && 
-			(this.bBack.height <= y && y <= this.bBack.height+this.TimageLarg )){
+		if( (bBack.width <= x &&  x <= bBack.width+TimageLong ) && 
+			(bBack.height <= y && y <= bBack.height+TimageLarg )){
 		
-		console.log("back2 clicke");
+			console.log("back2 clicke");
+			stateMenuSelected = 0;
 
 
 		}//if
 }
+
+/*ajout du listener sur le menu choix vaisseau*/
+function listenerMenuChoiceShip(event){
+	
+	var x=event.pageX - canvasLeft,
+		y=event.pageY - canvasTop;
+
+		/*************************
+		//boutons du menu choice ship
+		**************************/
+
+
+		if( (bBack.width <= x &&  x <= bBack.width+TimageLong ) && 
+			(bBack.height <= y && y <= bBack.height+TimageLarg )){
+		
+			console.log("back3 clicke");
+			stateMenuSelected = 1;
+
+
+		}//if
+}
+/*Mainframe : fonction principale */
+function fenetre()
+{
+if(compteurImagesTotales==compteurImagesChargees){
+	switch(stateMenuSelected){
+		case 0 : menu_principal();
+				 break;
+		case 1 : menu_difficulte();
+				 break;
+		case 2 : menu_setting();
+				 break;
+		case 3 : menuChoiceShip();
+				 break;
+	}
+}//if
+	requestAnimationFrame(fenetre);
+}
+
+fenetre();
