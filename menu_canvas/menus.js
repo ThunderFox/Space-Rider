@@ -48,62 +48,62 @@ var stateMenuSelected = 0;
 ajout des images	
 **********************************/
 
-	bplay.src='button_play.png';
+	bplay.src='./img_menu/button_play.png';
 	compteurImagesTotales++;
 	bplay.onload = function(){
 		compteurImagesChargees++;
 	};
 
-	bOption.src='button_settings.png';
+	bOption.src='./img_menu/button_settings.png';
 	compteurImagesTotales++;
 	bOption.onload = function(){
 		compteurImagesChargees++;
 	};
 	
-	titre.src = 'title.png';
+	titre.src = './img_menu/title.png';
 	compteurImagesTotales++;
 	titre.onload = function(){
 		compteurImagesChargees++;
 	};
 
-	mode_select.src = 'mode_select.png';
+	mode_select.src = './img_menu/mode_select.png';
 	compteurImagesTotales++;
 	mode_select.onload = function(){
 		compteurImagesChargees++;
 	};
-	bEasy.src='easy.png';
+	bEasy.src='./img_menu/easy.png';
 	compteurImagesTotales++;
 	bEasy.onload = function(){
 		compteurImagesChargees++;
 	};
-	bMedium.src='medium.png';
+	bMedium.src='./img_menu/medium.png';
 	compteurImagesTotales++;
 	bMedium.onload = function(){
 		compteurImagesChargees++;
 	};
-	bHard.src='hard.png';
+	bHard.src='./img_menu/hard.png';
 	compteurImagesTotales++;
 	bHard.onload = function(){
 		compteurImagesChargees++;
 	};
-	bBack.src='button_back.png';
+	bBack.src='./img_menu/button_back.png';
 	compteurImagesTotales++;
 	bBack.onload = function(){
 		compteurImagesChargees++;
 	};	
 	
-	bOn.src='play.jpg';
+	bOn.src='./img_menu/play.jpg';
 	compteurImagesTotales++;
 	bOn.onload = function(){
 		compteurImagesChargees++;
 	};
-	bOff.src='option.jpg';
+	bOff.src='./img_menu/option.jpg';
 	compteurImagesTotales++;
 	bOff.onload = function(){
 		compteurImagesChargees++;
 	};
 
-	imageback.src = 'back.png';
+	imageback.src = './img_menu/back.png';
 	compteurImagesTotales++;
 	imageback.onload = function(){
 		compteurImagesChargees++;
@@ -155,26 +155,19 @@ function init_posBouton(){
 /*Canvas propriete - preparation du canvas*/
 function canvas_propriete() {
 
-	this.canvas = document.getElementById('myCanvas');
-	this.context= this.canvas.getContext('2d');
-	this.canvas.width = 600;
-	this.canvas.height = 400;
-	this.imageback.src = './img_menu/back.png';//image background
-	this.init_posBouton();
-	this.context.drawImage(this.imageback, 0, 0);
+	canvas = document.getElementById('myCanvas');
+	context= canvas.getContext('2d');
+	canvas.width = 600;
+	canvas.height = 400;
+	init_posBouton();
+	context.drawImage(imageback, 0, 0);
 
 }
 
 /*Menu principal*/
 function menu_principal(){
-
-	titre = new Image();
-	titre.src = './img_menu/title.png';
-
-	this.canvas_propriete();
-	this.bplay.src='./img_menu/button_play.png';
-	this.bOption.src='./img_menu/button_settings.png';
-
+	
+	canvas_propriete();
 	
 	context.drawImage(titre, 80, 60);
 
@@ -192,15 +185,7 @@ function menu_principal(){
 /*Menu difficulte*/
 function menu_difficulte(){
 
-	mode_select = new Image();
-	mode_select.src = './img_menu/mode_select.png';
-
-	this.canvas_propriete();
-	
-	this.bEasy.src='./img_menu/easy.png';
-	this.bMedium.src='./img_menu/medium.png';
-	this.bHard.src='./img_menu/hard.png';
-	this.bBack.src='./img_menu/button_back.png';
+	canvas_propriete();
 	
 	context.drawImage(mode_select, 150, 60);
 
@@ -221,10 +206,6 @@ function menu_setting() {
 
 	canvas_propriete();
 	
-	this.bOn.src='./img_menu/play.jpg';
-	this.bOff.src='./img_menu/option.jpg';
-	this.bBack.src='./img_menu/button_back.png';
-
 	context.font = "25pt Calibri,Geneva,Arial";
 	context.fillStyle = "#FFFF00";
 	context.fillText("Sound On/Off", 200, 60);
