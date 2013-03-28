@@ -16,23 +16,39 @@ var bBack=new Image();//bouton back
 var bOn=new Image();//bouton On sound
 var bOff=new Image();//bouton Off sound
 var titre = new Image();//image titre
+var title_settings = new Image();//image titre options
+var image_on = new Image();//image sound on
+var image_off = new Image();//image sound off
+var sound = new Image();//image sound
 var mode_select = new Image();//image selection mode
+var ship_selection = new Image();//image titre vaisseaux
+var button_ship_1 = new Image();//icones servant à sélectionner son vaisseau
+var button_ship_2 = new Image();
+var button_ship_3 = new Image();
+var button_ship_4 = new Image();
 var TimageLong=230;
 var TimageLarg=40, TimageLargBack=30;
 var ModLong=160;
 var ModLarg=50;
+var music = document.getElementById('music');//musique du menu
 //coordonnées du bouton back
 var bBackCoordsY=330, bBackCoordsX=180;
 //position des boutons menu principal
-var bPlayCoordsY=180, bPlayCoordsX=180;
-var b0ptionCoordsY=260,bOptionsCoordsX=180;
+var titreCoordsY=90 , titreCoordsX=75;
+var bPlayCoordsY=210, bPlayCoordsX=180;
+var b0ptionCoordsY=290,bOptionsCoordsX=180;
 //position des boutons menu difficulte
 var bEasyCoordsY=120, bEasyCoordsX=220;
 var bMediumCoordsY=180, bMediumCoordsX=220;
 var bHardCoordsY=240, bHardCoordsX=220;
 //position des boutons menu setting
-var bOnCoordsY=80, bOnCoordsX=210;
-var bOffCoordsY=170, bOffCoordsX=210;
+var bOnCoordsY=170, bOnCoordsX=265;
+var bOffCoordsY=240, bOffCoordsX=265;
+//position des boutons menu vaisseaux
+var ship1CoordsY=175, ship1CoordsX=20;
+var ship2CoordsY=175, ship2CoordsX=165;
+var ship3CoordsY=175, ship3CoordsX=305;
+var ship4CoordsY=175, ship4CoordsX=450;
 //different etat du menu
 var stateMenu = {
 	menuPrincipal : 0,
@@ -108,8 +124,61 @@ ajout des images
 	imageback.onload = function(){
 		compteurImagesChargees++;
 	};
+	
+	image_on.src = './img_menu/button_on.png';
+	compteurImagesTotales++;
+	image_on.onload = function(){
+		compteurImagesChargees++;
+	};
 
+	image_off.src = './img_menu/button_off.png';
+	compteurImagesTotales++;
+	image_off.onload = function(){
+		compteurImagesChargees++;
+	};
+	
+	title_settings.src = './img_menu/title_settings.png';
+	compteurImagesTotales++;
+	title_settings.onload = function(){
+		compteurImagesChargees++;
+	};
+	
+	sound.src = './img_menu/sound.png';
+	compteurImagesTotales++;
+	sound.onload = function(){
+		compteurImagesChargees++;
+	};
+	
+	ship_selection.src = './img_menu/ship_selection.png';
+	compteurImagesTotales++;
+	ship_selection.onload = function(){
+		compteurImagesChargees++;
+	};
 
+	button_ship_1.src = './img_menu/button_ship_1.png';
+	compteurImagesTotales++;
+	button_ship_1.onload = function(){
+		compteurImagesChargees++;
+	};
+	
+	button_ship_2.src = './img_menu/button_ship_2.png';
+	compteurImagesTotales++;
+	button_ship_2.onload = function(){
+		compteurImagesChargees++;
+	};
+	
+	button_ship_3.src = './img_menu/button_ship_3.png';
+	compteurImagesTotales++;
+	button_ship_3.onload = function(){
+		compteurImagesChargees++;
+	};
+	
+	button_ship_4.src = './img_menu/button_ship_4.png';
+	compteurImagesTotales++;
+	button_ship_4.onload = function(){
+		compteurImagesChargees++;
+	};
+	
 var myInterval = (function() {
 	return window.requestAnimationFrame ||
 		   window.mozRequestAnimationFrame ||
@@ -169,7 +238,7 @@ function menu_principal(){
 	
 	canvas_propriete();
 	
-	context.drawImage(titre, 80, 60);
+	context.drawImage(titre, titreCoordsX, titreCoordsY);
 
 	context.drawImage(bplay, bPlayCoordsX, bPlayCoordsY,TimageLong,TimageLarg);
 	context.drawImage(bOption, bOptionsCoordsX, b0ptionCoordsY,TimageLong,TimageLarg);
@@ -178,6 +247,8 @@ function menu_principal(){
 	window.removeEventListener('click', listenerMenuDifficulte, false);
 	window.removeEventListener('click', listenerMenuChoiceShip, false);
 	window.addEventListener('click',listenerMenuPrincipal,false);
+	
+	music.play();
 
 }
 
@@ -205,12 +276,11 @@ function menu_setting() {
 
 	canvas_propriete();
 	
-	context.font = "25pt Calibri,Geneva,Arial";
-	context.fillStyle = "#FFFF00";
-	context.fillText("Sound On/Off", 200, 60);
-
-	context.drawImage(bOn, bOnCoordsX, bOnCoordsY,TimageLong,TimageLarg);
-	context.drawImage(bOff, bOffCoordsX, bOffCoordsY,TimageLong,TimageLarg);
+	context.drawImage(title_settings, 155, 60);
+	context.drawImage(sound, 250,130);
+	
+	context.drawImage(image_on, bOnCoordsX, bOnCoordsY,80,60);
+	context.drawImage(image_off, bOffCoordsX, bOffCoordsY,80,60);
 	context.drawImage(bBack, bBackCoordsX, bBackCoordsY,TimageLong,TimageLargBack);
 	
 	window.removeEventListener('click', listenerMenuPrincipal, false);
@@ -224,13 +294,12 @@ function menuChoiceShip() {
 
 	canvas_propriete();
 	
-	context.font = "25pt Calibri,Geneva,Arial";
-	context.fillStyle = "#FFFF00";
-	context.fillText("vaisseau", 200, 60);
-/****************************************************************
-code vaisseau à placer ici
-
-*********************************************************************/
+	context.drawImage(ship_selection, 140,65);
+	
+	context.drawImage(button_ship_1,ship1CoordsX,ship1CoordsY,140,95);
+	context.drawImage(button_ship_2,ship2CoordsX,ship2CoordsY,140,95);
+	context.drawImage(button_ship_3,ship3CoordsX,ship3CoordsY,140,95);
+	context.drawImage(button_ship_4,ship4CoordsX,ship4CoordsY,140,95);
 	
 	context.drawImage(bBack, bBackCoordsX, bBackCoordsY,TimageLong,TimageLargBack);
 	
