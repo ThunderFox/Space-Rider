@@ -27,7 +27,7 @@ var button_ship_2 = new Image();
 var button_ship_3 = new Image();
 var button_ship_4 = new Image();
 var TimageLong=230;
-var TimageLarg=40, TimageLargBack=30;
+var TimageLarg=40, TimageLargBack=30;//taille image 
 var ModLong=160;
 var ModLarg=50;
 var music = document.getElementById('music');//musique du menu
@@ -44,11 +44,14 @@ var bHardCoordsY=240, bHardCoordsX=220;
 //position des boutons menu setting
 var bOnCoordsY=170, bOnCoordsX=265;
 var bOffCoordsY=240, bOffCoordsX=265;
+var TSoundImageLong=80, TSoundImageLarg=60;
 //position des boutons menu vaisseaux
+var shipTitleCoordX=140,shipTitleCoordY=65;
 var ship1CoordsY=175, ship1CoordsX=20;
 var ship2CoordsY=175, ship2CoordsX=165;
 var ship3CoordsY=175, ship3CoordsX=305;
 var ship4CoordsY=175, ship4CoordsX=450;
+var TShipImageLong=140, TShipImageLarg=95;// taille des vignettes "vaisseau"
 //different etat du menu
 var stateMenu = {
 	menuPrincipal : 0,
@@ -87,33 +90,38 @@ ajout des images
 	mode_select.onload = function(){
 		compteurImagesChargees++;
 	};
+	
 	bEasy.src='./img_menu/easy.png';
 	compteurImagesTotales++;
 	bEasy.onload = function(){
 		compteurImagesChargees++;
 	};
+	
 	bMedium.src='./img_menu/medium.png';
 	compteurImagesTotales++;
 	bMedium.onload = function(){
 		compteurImagesChargees++;
 	};
+	
 	bHard.src='./img_menu/hard.png';
 	compteurImagesTotales++;
 	bHard.onload = function(){
 		compteurImagesChargees++;
 	};
+	
 	bBack.src='./img_menu/button_back.png';
 	compteurImagesTotales++;
 	bBack.onload = function(){
 		compteurImagesChargees++;
 	};	
 	
-	bOn.src='./img_menu/play.jpg';
+	bOn.src='./img_menu/button_on.png';
 	compteurImagesTotales++;
 	bOn.onload = function(){
 		compteurImagesChargees++;
 	};
-	bOff.src='./img_menu/option.jpg';
+	
+	bOff.src='./img_menu/button_off.png';
 	compteurImagesTotales++;
 	bOff.onload = function(){
 		compteurImagesChargees++;
@@ -124,19 +132,7 @@ ajout des images
 	imageback.onload = function(){
 		compteurImagesChargees++;
 	};
-	
-	image_on.src = './img_menu/button_on.png';
-	compteurImagesTotales++;
-	image_on.onload = function(){
-		compteurImagesChargees++;
-	};
 
-	image_off.src = './img_menu/button_off.png';
-	compteurImagesTotales++;
-	image_off.onload = function(){
-		compteurImagesChargees++;
-	};
-	
 	title_settings.src = './img_menu/title_settings.png';
 	compteurImagesTotales++;
 	title_settings.onload = function(){
@@ -177,8 +173,9 @@ ajout des images
 	compteurImagesTotales++;
 	button_ship_4.onload = function(){
 		compteurImagesChargees++;
-	};
-	
+	}
+
+/*vérifie la compatibilité du navigateur*/
 var myInterval = (function() {
 	return window.requestAnimationFrame ||
 		   window.mozRequestAnimationFrame ||
@@ -212,6 +209,16 @@ function init_posBouton(){
 	bOn.height=bOnCoordsY;
 	bOff.width=bOffCoordsX;
 	bOff.height=bOffCoordsY;
+	
+	//menu choix vaisseau
+	button_ship_1.width=ship1CoordsX;
+	button_ship_1.height=ship1CoordsY;
+	button_ship_2.width=ship2CoordsX;
+	button_ship_2.height=ship2CoordsY;
+	button_ship_3.width=ship3CoordsX;
+	button_ship_3.height=ship3CoordsY;
+	button_ship_4.width=ship4CoordsX;
+	button_ship_4.height=ship4CoordsY;
 	
 	//bouton back
 	bBack.width=bBackCoordsX;
@@ -279,8 +286,8 @@ function menu_setting() {
 	context.drawImage(title_settings, 155, 60);
 	context.drawImage(sound, 250,130);
 	
-	context.drawImage(image_on, bOnCoordsX, bOnCoordsY,80,60);
-	context.drawImage(image_off, bOffCoordsX, bOffCoordsY,80,60);
+	context.drawImage(bOn, bOnCoordsX, bOnCoordsY,TSoundImageLong,TSoundImageLarg);
+	context.drawImage(bOff, bOffCoordsX, bOffCoordsY,TSoundImageLong,TSoundImageLarg);
 	context.drawImage(bBack, bBackCoordsX, bBackCoordsY,TimageLong,TimageLargBack);
 	
 	window.removeEventListener('click', listenerMenuPrincipal, false);
@@ -294,12 +301,12 @@ function menuChoiceShip() {
 
 	canvas_propriete();
 	
-	context.drawImage(ship_selection, 140,65);
+	context.drawImage(ship_selection, shipTitleCoordX,shipTitleCoordY);
 	
-	context.drawImage(button_ship_1,ship1CoordsX,ship1CoordsY,140,95);
-	context.drawImage(button_ship_2,ship2CoordsX,ship2CoordsY,140,95);
-	context.drawImage(button_ship_3,ship3CoordsX,ship3CoordsY,140,95);
-	context.drawImage(button_ship_4,ship4CoordsX,ship4CoordsY,140,95);
+	context.drawImage(button_ship_1,ship1CoordsX,ship1CoordsY,TShipImageLong,TShipImageLarg);
+	context.drawImage(button_ship_2,ship2CoordsX,ship2CoordsY,TShipImageLong,TShipImageLarg);
+	context.drawImage(button_ship_3,ship3CoordsX,ship3CoordsY,TShipImageLong,TShipImageLarg);
+	context.drawImage(button_ship_4,ship4CoordsX,ship4CoordsY,TShipImageLong,TShipImageLarg);
 	
 	context.drawImage(bBack, bBackCoordsX, bBackCoordsY,TimageLong,TimageLargBack);
 	
@@ -431,9 +438,36 @@ function listenerMenuChoiceShip(event){
 		
 			console.log("back3 clicke");
 			stateMenuSelected = 1;
-
-
 		}//if
+		
+		if( (button_ship_1.width <= x &&  x <= button_ship_1.width+TShipImageLong ) && 
+			(button_ship_1.height <= y && y <= button_ship_1.height+TShipImageLarg )){
+		
+			console.log("vaisseau button_ship_1 clike");
+		
+		}//if
+		
+		if( (button_ship_2.width <= x &&  x <= button_ship_2.width+TShipImageLong ) && 
+			(button_ship_2.height <= y && y <= button_ship_2.height+TShipImageLarg )){
+		
+			console.log("vaisseau button_ship_2 clike");
+		
+		}//if
+		
+		if( (button_ship_3.width <= x &&  x <= button_ship_3.width+TShipImageLong ) && 
+			(button_ship_3.height <= y && y <= button_ship_3.height+TShipImageLarg )){
+		
+			console.log("vaisseau button_ship_3 clike");
+		
+		}//if
+		
+		if( (button_ship_4.width <= x &&  x <= button_ship_4.width+TShipImageLong ) && 
+			(button_ship_4.height <= y && y <= button_ship_4.height+TShipImageLarg )){
+		
+			console.log("vaisseau button_ship_4 clike");
+		
+		}//if
+		
 }
 /*Mainframe : fonction principale */
 function fenetre()

@@ -228,8 +228,6 @@ function start(){
 	
 	
 	
-	
-	
 	this.contextJeu.clearRect(0, 0, 600, 400);//on rafraichi notre canvas
 	
 	this.creerTerrain();//appel a la création du terrain et du vaisseau
@@ -390,7 +388,8 @@ function creerTerrain()
 	
 	this.contextJeu.font="20px gameOver";
 	this.contextJeu.fillStyle="red";
-	this.contextJeu.fillText("Pause",220,30);// sera remplacé par un bouton pause
+	//this.contextJeu.drawImage(bOn, bOnCoordsX, bOnCoordsY,80,60);
+	//this.contextJeu.fillText("Pause",220,30);// sera remplacé par un bouton pause
 	
 	/*playPause = new Image();
 	playPause.src = 'img/PlayPauseStop.png';
