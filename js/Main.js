@@ -42,7 +42,8 @@ var imgTerrain = {
 
 function launchGame(num_ship){
 	init();
-	sleep(1000);
+	start();
+	//sleep(1000);
 	typeImages.vaisseau.src='img/main_ship_'+num_ship+'.png';
 	if(stop!=1)
 	{
@@ -154,10 +155,11 @@ function init(){
 	typeImages.obstacle.src='img/meteorites.png';
 	
 	this.canvasJeu = document.getElementById("canvasGame");
+	this.contextJeu = canvasJeu.getContext("2d");
 	this.canvasJeu.width = 600;
 	this.canvasJeu.height = 400;
 	
-	this.contextJeu = canvasJeu.getContext("2d");
+
 	
 	this.scoreBarre = new ScoreBarre(0,0,this.canvasJeu.width,40,1); //creation de la barre de scores
 	
@@ -191,7 +193,6 @@ function init(){
 	
 }
 //***********************************************************************************
-
 
 //Fonction qui marque le debut du jeu
 function start(){
@@ -304,7 +305,6 @@ function start(){
 }
 //***********************************************************************************
 
-
 //Fonction permettant d'avoir un sleep
 function sleep(time)
 {
@@ -335,7 +335,6 @@ function generateObstacle(max,min)
 }
 //***********************************************************************************
 
-
 //Fonction pour bouger les obstacles
 function mooveObstacle()
 {
@@ -347,7 +346,6 @@ function mooveObstacle()
 	}
 }
 //***********************************************************************************
-
 
 //Fonction pour avoir une couleur alternative
 function randomColor()
@@ -535,7 +533,6 @@ function gererScore()
 
 }
 //***********************************************************************************
-
 
 //Fonction permettant de stocker la meilleure distance
 function saveBestScore()

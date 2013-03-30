@@ -2,7 +2,7 @@
 var compteurImagesChargees = 0;
 var compteurImagesTotales = 0;
 var canvas;
-var context;
+var contextJeu;
 //permet de déterminer la position de l'élément dans le canvas
 var canvasLeft;
 var canvasTop;
@@ -225,19 +225,19 @@ function init_posBouton(){
 	bBack.width=bBackCoordsX;
 	bBack.height=bBackCoordsY;
 	
-	canvasLeft=canvas.offsetLeft;
-	canvasTop=canvas.offsetTop;
+	canvasLeft=canvasJeu.offsetLeft;
+	canvasTop=canvasJeu.offsetTop;
 }
 
 /*Canvas propriete - preparation du canvas*/
 function canvas_propriete() {
 
-	canvas = document.getElementById('myCanvas');
-	context= canvas.getContext('2d');
-	canvas.width = 600;
-	canvas.height = 400;
+	canvasJeu = document.getElementById('myCanvas');
+	contextJeu= canvasJeu.getContext('2d');
+	canvasJeu.width = 600;
+	canvasJeu.height = 400;
 	init_posBouton();
-	context.drawImage(imageback, 0, 0);
+	contextJeu.drawImage(imageback, 0, 0);
 
 }
 
@@ -246,10 +246,10 @@ function menu_principal(){
 	
 	canvas_propriete();
 	
-	context.drawImage(titre, titreCoordsX, titreCoordsY);
+	contextJeu.drawImage(titre, titreCoordsX, titreCoordsY);
 
-	context.drawImage(bplay, bPlayCoordsX, bPlayCoordsY,TimageLong,TimageLarg);
-	context.drawImage(bOption, bOptionsCoordsX, b0ptionCoordsY,TimageLong,TimageLarg);
+	contextJeu.drawImage(bplay, bPlayCoordsX, bPlayCoordsY,TimageLong,TimageLarg);
+	contextJeu.drawImage(bOption, bOptionsCoordsX, b0ptionCoordsY,TimageLong,TimageLarg);
 	
 	window.removeEventListener('click', listenerMenuSetting, false);
 	window.removeEventListener('click', listenerMenuDifficulte, false);
@@ -265,12 +265,12 @@ function menu_difficulte(){
 
 	canvas_propriete();
 	
-	context.drawImage(mode_select, 150, 60);
+	contextJeu.drawImage(mode_select, 150, 60);
 
-	context.drawImage(bEasy, bEasyCoordsX, bEasyCoordsY,ModLong,ModLarg);
-	context.drawImage(bMedium, bMediumCoordsX, bMediumCoordsY,ModLong,ModLarg);
-	context.drawImage(bHard, bHardCoordsX, bHardCoordsY,ModLong,ModLarg);
-	context.drawImage(bBack, bBackCoordsX, bBackCoordsY,TimageLong,TimageLargBack);
+	contextJeu.drawImage(bEasy, bEasyCoordsX, bEasyCoordsY,ModLong,ModLarg);
+	contextJeu.drawImage(bMedium, bMediumCoordsX, bMediumCoordsY,ModLong,ModLarg);
+	contextJeu.drawImage(bHard, bHardCoordsX, bHardCoordsY,ModLong,ModLarg);
+	contextJeu.drawImage(bBack, bBackCoordsX, bBackCoordsY,TimageLong,TimageLargBack);
 	
 	window.removeEventListener('click', listenerMenuPrincipal, false);
 	window.removeEventListener('click', listenerMenuSetting, false);
@@ -284,12 +284,12 @@ function menu_setting() {
 
 	canvas_propriete();
 	
-	context.drawImage(title_settings, 155, 60);
-	context.drawImage(sound, 250,130);
+	contextJeu.drawImage(title_settings, 155, 60);
+	contextJeu.drawImage(sound, 250,130);
 	
-	context.drawImage(bOn, bOnCoordsX, bOnCoordsY,TSoundImageLong,TSoundImageLarg);
-	context.drawImage(bOff, bOffCoordsX, bOffCoordsY,TSoundImageLong,TSoundImageLarg);
-	context.drawImage(bBack, bBackCoordsX, bBackCoordsY,TimageLong,TimageLargBack);
+	contextJeu.drawImage(bOn, bOnCoordsX, bOnCoordsY,TSoundImageLong,TSoundImageLarg);
+	contextJeu.drawImage(bOff, bOffCoordsX, bOffCoordsY,TSoundImageLong,TSoundImageLarg);
+	contextJeu.drawImage(bBack, bBackCoordsX, bBackCoordsY,TimageLong,TimageLargBack);
 	
 	window.removeEventListener('click', listenerMenuPrincipal, false);
 	window.removeEventListener('click', listenerMenuDifficulte, false);	
@@ -302,14 +302,14 @@ function menuChoiceShip() {
 
 	canvas_propriete();
 	
-	context.drawImage(ship_selection, shipTitleCoordX,shipTitleCoordY);
+	contextJeu.drawImage(ship_selection, shipTitleCoordX,shipTitleCoordY);
 	
-	context.drawImage(button_ship_1,ship1CoordsX,ship1CoordsY,TShipImageLong,TShipImageLarg);
-	context.drawImage(button_ship_2,ship2CoordsX,ship2CoordsY,TShipImageLong,TShipImageLarg);
-	context.drawImage(button_ship_3,ship3CoordsX,ship3CoordsY,TShipImageLong,TShipImageLarg);
-	context.drawImage(button_ship_4,ship4CoordsX,ship4CoordsY,TShipImageLong,TShipImageLarg);
+	contextJeu.drawImage(button_ship_1,ship1CoordsX,ship1CoordsY,TShipImageLong,TShipImageLarg);
+	contextJeu.drawImage(button_ship_2,ship2CoordsX,ship2CoordsY,TShipImageLong,TShipImageLarg);
+	contextJeu.drawImage(button_ship_3,ship3CoordsX,ship3CoordsY,TShipImageLong,TShipImageLarg);
+	contextJeu.drawImage(button_ship_4,ship4CoordsX,ship4CoordsY,TShipImageLong,TShipImageLarg);
 	
-	context.drawImage(bBack, bBackCoordsX, bBackCoordsY,TimageLong,TimageLargBack);
+	contextJeu.drawImage(bBack, bBackCoordsX, bBackCoordsY,TimageLong,TimageLargBack);
 	
 	window.removeEventListener('click', listenerMenuPrincipal, false);
 	window.removeEventListener('click', listenerMenuDifficulte, false);
