@@ -10,72 +10,84 @@ var play = 0; //si je jeu est en route
 var pause = 0;//si la pause est active
 var stop = 0;//si le jeu est fini
 var positionObstacle = 0;//permet d'avoir la position de l'obstacle dans la liste
-var obsEntrant = null;//initialise obsEntrant
-var obsEx = null;//initialise obsEx
-var vitesse = 20;//vitesse de deplacement des obstacles
+var vitesse;//vitesse de deplacement des obstacles
 var collisionVaisseau;//permet de savoir si une collision est survenue
 var nbToursStart=0;//compte le nombre d'appels de la fonction start
 var limiteTop;//limite du terrain en haut
 var limiteDown;//limite du terrain en bas
 var niveauFini = false;//pour savoir si le niveau est fini ou non
-var score;
- 
+var score = 0;//variable de score
+var collision = false;//variable de collision
+var cptBackground = 0;
+var cadreTerrainDroit = 300;
+var cadreTerrainGauche = 0;
+var myReq;
+var appearTimer;//gere la frequence d'apparition d'obstacles
+var appearTimerObstacle = 10;
+var scoreRequis;
+var gravite;
+var niveau = 1;
 
-init();
-sleep(1000);
 
-if(stop!=1)
-{
-	start();
+var typeImages = {
+	"vaisseau":new Image(),
+	"obstacle":new Image()
+};
+var imgTerrain = {
+	"play":new Image(),
+	"fini":new Image(),
+	"perdu":new Image(),
+	"crash":new Image(),
+};
+
+function launchGame(num_ship){
+	init();
+	sleep(1000);
+	typeImages.vaisseau.src='img/main_ship_'+num_ship+'.png';
+	if(stop!=1)
+	{
+		requestAnimationFrame(start);
+	}
+	else
+	{
+		alert("sorti du jeu");
+
+	}
 }
-else
-{
-	alert("sorti du jeu");
-
-}
-
 
 
 //Fonction permettant de dessiner un rectangle en lui passant les parametres requis
 function dessiner(type,x,y,w,h){
 
-	console.log("rentre dans dessiner");
+
 	
 	if(type=="vaisseau")
 	{
-		//this.contextJeu.fillStyle="black";
-		//this.contextJeu.fillRect(x,y,w,h);
-		ship = new Image();
-		ship.src = 'img/spatiale.png';
-		this.contextJeu.drawImage(ship, x, y);
+		//this.contextJeu.drawImage(typeImages.vaisseau, 152, 323, 100, 100, x, y, 80, 60); // il faut modifier la taille du vaisseau en accord avec limage utilisée
+		this.contextJeu.drawImage(typeImages.vaisseau, x, y, 100, 60);
 	}
 	else if(type=="obstacle")
 	{
-		//this.contextJeu.fillStyle=this.randomColor();
-		obst = new Image();
-		obst.src = 'img/obstacle.png';
-		this.contextJeu.drawImage(obst, x, y);
-		//this.contextJeu.fillStyle="red";
-		//this.contextJeu.fillRect(x,y,w,h);
+		this.contextJeu.drawImage(typeImages.obstacle, 0, 0, 40, 40, x, y, 50, 50); // il faut modifier la taille de l'obstacle en accord avec l'image utilisée
 	}
 	else if(type=="scoreBarre")
 	{
 		this.contextJeu.fillStyle="black";
 		this.contextJeu.fillRect(x,y,w,h);
-		this.contextJeu.strokeStyle="black";
+		this.contextJeu.strokeStyle="red";
 		this.contextJeu.strokeRect(x,y,w,h);
 	}
 	else if(type=="score")
 	{
-		this.contextJeu.fillStyle="white";
-		this.contextJeu.font="25px Arial";
+		this.contextJeu.fillStyle=this.randomColor();
+		this.contextJeu.font="20px gameOver";
 		this.contextJeu.fillText(this.gererScore(),x,y);
 	}
 	else if(type=="bestScore")
 	{
 		this.contextJeu.fillStyle="white";
-		this.contextJeu.font="25px Arial";
-		this.contextJeu.fillText(this.saveBestScore(),x,y);
+		this.contextJeu.font="14px gameOver";
+		this.contextJeu.fillText("Best : "+this.saveBestScore(),x,y);
 	}
 	
 	
@@ -87,7 +99,59 @@ function dessiner(type,x,y,w,h){
 //Fonction d'initialisation du jeu
 function init(){
 
-	console.log("init");
+	//initialisation du localStorage
+	if(!localStorage){
+		console.error("Votre navigateur ne supporte pas locaStorage");
+	}else if (localStorage.bestScore === undefined){
+		localStorage.bestScore = 0;
+	}
+	
+	
+	this.appearTimer=0;
+	
+	//initialisation du niveau et de la difficulté
+	if(this.niveau==1)
+	{
+		this.appearTimer = 25;
+		this.scoreRequis = 20;
+		this.vitesse = 20;
+		this.gravite = 5;
+		imgTerrain.play.src='img/spaceBackground2.png';
+	}
+	else if(this.niveau==2)
+	{
+		this.appearTimer = 20;
+		this.scoreRequis = 40;
+		this.vitesse = 22;
+		this.gravite = 5;
+		imgTerrain.play.src='img/spaceBackground4.png';
+	}
+	else if(this.niveau==3)
+	{
+		this.appearTimer = 15;
+		this.scoreRequis = 50;
+		this.vitesse = 24;
+		this.gravite = 6;
+		imgTerrain.play.src='img/spaceBackground4.png';
+	}
+	else if(this.niveau==4)
+	{
+		this.appearTimer = 10;
+		this.scoreRequis = 50;
+		this.vitesse = 24;
+		this.gravite = 7;
+		imgTerrain.play.src='img/spaceBackground5.png';
+	}
+	
+	
+	//initialisation des images
+	//imgTerrain.play.src='img/spaceBackground5.png';
+	imgTerrain.fini.src='img/StarWarsBackground.jpg';
+	imgTerrain.perdu.src='';
+	imgTerrain.crash.src='';
+	
+	//typeImages.vaisseau.src='img/vaisseaux.png';
+	typeImages.obstacle.src='img/meteorites.png';
 	
 	this.canvasJeu = document.getElementById("canvasGame");
 	this.canvasJeu.width = 600;
@@ -107,29 +171,23 @@ function init(){
 	mesObstacles = new Obstacles();
 	
 	
-	mesObstacles.add(this.generateObstacle(this.limiteDown-30,this.limiteTop));
-	mesObstacles.add(this.generateObstacle(this.limiteDown-30,this.limiteTop));
-	mesObstacles.add(this.generateObstacle(this.limiteDown-30,this.limiteTop));
-	mesObstacles.add(this.generateObstacle(this.limiteDown-30,this.limiteTop));
-	mesObstacles.add(this.generateObstacle(this.limiteDown-30,this.limiteTop));
-	mesObstacles.add(this.generateObstacle(this.limiteDown-30,this.limiteTop));
+	myInterval = (function() {
+	return window.requestAnimationFrame ||
+		window.webkitRequestAnimationFrame ||
+		window.mozRequestAnimationFrame ||
+		window.oRequestAnimationFrame ||
+		window.msRequestAnimationFrame ||
+		function (callback) {
+			window.setTimeout(callback, 1000/60);
+		};
+	})();
 	
-	
-	/*mesObstacles.add(this.generateObstacle(350,10));
-	mesObstacles.add(this.generateObstacle(350,10));
-	mesObstacles.add(this.generateObstacle(350,10));
-	mesObstacles.add(this.generateObstacle(350,10));
-	mesObstacles.add(this.generateObstacle(350,10));
-	mesObstacles.add(this.generateObstacle(350,10));
-	mesObstacles.add(this.generateObstacle(350,10));
-	mesObstacles.add(this.generateObstacle(350,10));
-	mesObstacles.add(this.generateObstacle(350,10));
-	mesObstacles.add(this.generateObstacle(350,10));
-	mesObstacles.add(this.generateObstacle(350,10));
-	mesObstacles.add(this.generateObstacle(350,10));
-	mesObstacles.add(this.generateObstacle(350,10));*/
-	
-	myInterval = setInterval(start, 1000/30);
+	window.requestAnimationFrame = myInterval;
+
+
+	//this.stop=0;
+	this.pause = 0;
+	this.play = 1;
 	
 }
 //***********************************************************************************
@@ -138,24 +196,36 @@ function init(){
 //Fonction qui marque le debut du jeu
 function start(){
 	
+	
 	//on ajoute le listener
 	ajoutListener();
+	
 	
 	//on récupère le bruitage du reacteur du vaisseau
 	var reactor = document.getElementById('reactor');
 	
 	//GERER LE TEMPS DE JEU
-	this.nbToursStart++;
-	if(this.nbToursStart==20)
+	if(play)
 	{
-		this.tempsJeu++;
-		this.nbToursStart=0;
+		this.nbToursStart++;
+		if(this.nbToursStart==20)
+		{
+			this.tempsJeu++;
+			this.nbToursStart=0;
+			//mesObstacles.add(this.generateObstacle(canvasJeu.height-30,10)); // AJOUTER UN OBSTACLE A LA LISTE TOUTES LES SECONDES
+		}
+		
+		this.cptBackground++;
+		if(this.cptBackground==3)
+		{
+			if(this.cadreTerrainGauche+this.cadreTerrainDroit<480)
+			{
+				this.cadreTerrainGauche = this.cadreTerrainGauche + 1;
+			}
+		this.cptBackground=0;
+		}
 	}
 	
-	
-	//this.stop=0;
-	this.pause = 0;
-	this.play = 1;
 	
 	
 	this.contextJeu.clearRect(0, 0, 600, 400);//on rafraichi notre canvas
@@ -163,28 +233,73 @@ function start(){
 	this.creerTerrain();//appel a la création du terrain et du vaisseau
 
 	
-	console.log("nb obstacles : "+mesObstacles.getNb());
 	//dessiner("obstacle",mesObstacles.get(0).getPosX(), mesObstacles.get(0).getPosY(), mesObstacles.get(0).getWidth(), mesObstacles.get(0).getHeight());
-	
-	
-
-		if(stop!=1 && pause!=1)//si le jeu n'est pas en pause ou stopé
+		/*if(niveauFini)
 		{
-			//mesObstacles.add(this.generateObstacle(canvasJeu.height-30,10));
-			this.mooveObstacle();
-			this.attractionTerrestre();
-			reactor.play();
+			console.log("rentre dans niveauFini");
+			
+			this.niveauFini = false;
+			this.stop=0;
+			
+			this.sleep(10000);
+		}*/
+		if(pause)
+		{
+			this.play = 0;
+			this.pauseJeu();
 		}
-		else
+		if(collision)
 		{
+			this.play=0;
+			this.stop=1;
+			this.niveauFini = false;
 			reactor.pause();
 			reactor.currentTime = 0;
-			clearInterval(this.myInterval);
+			//clearInterval(this.myInterval);
 			this.stopJeu();
 			this.supprimerListener();
 		}
-
+		else if(stop!=1 && pause!=1)//si le jeu n'est pas en pause ou stopé
+		{
+			//mesObstacles.add(this.generateObstacle(canvasJeu.height-30,10));
+			this.mooveObstacle();
+			
+			//gestion des apparitions d'obstacles
+			if(this.appearTimerObstacle--<0 && this.score<scoreRequis+1){
+				mesObstacles.add(this.generateObstacle(this.limiteDown-30,this.limiteTop));
+				//this.appearTimer=10+Math.floor(Math.random() * 30);
+				this.appearTimerObstacle=this.appearTimer;
+			}
+			else if(this.score>=this.scoreRequis && this.mesObstacles.getNb()==0)
+			{
+				console.log("rentre dans la condition niveau fini");
+				this.niveauFini = true;
+				this.stop = 1;
+				this.play = 0;
+			
+			}
+			
+			this.attractionTerrestre();
+				
+			//on test la collision
+			this.testCollision();
 	
+			reactor.play();
+		}
+		else if(stop==1)
+		{
+			reactor.pause();
+			reactor.currentTime = 0;
+			//clearInterval(this.myInterval);
+			this.stopJeu();
+			this.supprimerListener();
+			console.log("le jeu est stopé");
+		}
+		
+		
+	
+
+	requestAnimationFrame(start);
 	
 }
 //***********************************************************************************
@@ -193,7 +308,6 @@ function start(){
 //Fonction permettant d'avoir un sleep
 function sleep(time)
 {
-	console.log("sleep");
 	
 	d=new Date();
 	diff=0;
@@ -208,13 +322,12 @@ function sleep(time)
 //Fonction permettant de retourner un nouvel obstacle avec des parametres randoms
 function generateObstacle(max,min)
 {
-	console.log("generate");
 	
 	var obstacle;
 	var x = 600
 	var y = Math.floor(Math.random() * (max - min +1)) + min
-	var w = 25;
-	var h = 20;
+	var w = 50;//typeImages.obstacle.width;
+	var h = 50;//typeImages.obstacle.height;
 	
 	obstacle = new Obstacle(x,y,w,h);
 
@@ -226,166 +339,11 @@ function generateObstacle(max,min)
 //Fonction pour bouger les obstacles
 function mooveObstacle()
 {
-	var obsExPrecedent;
-	
-	if(obsEntrant==null && stop!=1)//si obsEntrant n'a pas été initialisé
-	{
-		obsEntrant = this.mesObstacles.get(this.positionObstacle);
-		obsEx = this.mesObstacles.get(this.positionObstacle-1);
-	}
-	
-	
-	if(obsEx!=null)//si obs a été initialisé
-	{
-		obsExPrecedent = true;
-		console.log("obsEx est l'obstacle precedent obsEntrant");
-	}
-	else//si obsEx n'existe pas (si lobjet precedent de la liste a été remove ou qu'on se trouve au debut de la liste)
-	{
-		obsExPrecedent = false;
-		console.log("obsEx est le meme obstacle que obsEntrant");
-		obsEx = this.mesObstacles.get(this.positionObstacle);
-		console.log("position obstacle actuel = "+positionObstacle);
-	}
-
-	if(stop!=1)
-	{
-		this.contextJeu.clearRect(0,0,canvasJeu.width,canvasJeu.height);
-		this.creerTerrain();
-	}
-	
-	if(obsEntrant!=null)
-	{
-		this.dessiner("obstacle",obsEntrant.getPosX(),obsEntrant.getPosY(),obsEntrant.getWidth(),obsEntrant.getHeight());
-
-	
-		if(obsEntrant.getPosX() >= -24)//on teste si le premier obstacle est dans le canvas
-		{
-			console.log("mooveObstacle, rentre dans le premier if");
-			
-			if(obsEntrant.getPosX() >= (this.canvasJeu.width/2))//si il est du coté droit du canvas
-			{	
-				console.log("mooveObstacle, rentre dans le deuxieme if");
-				dessiner("obstacle",obsEx.getPosX(),obsEx.getPosY(),obsEx.getWidth(),obsEx.getHeight());//dessiner obsEx
-				console.log("vitesse à droite = "+this.vitesse);
-				obsEntrant.setPosX(obsEntrant.getPosX()-this.vitesse);//on deplace obsEntrant vers la gauche (-10)
-				
-				if(obsExPrecedent)//si obsEx est precedent de obsEntrant
-				{
-					console.log("rentre dans obsExPrecedent");
-					obsEx.setPosX(obsEx.getPosX()-this.vitesse);//on deplace obsEx vers la gauche
-				}
-				
-				console.log("deuxieme if : obsEntrant (new) = "+obsEntrant.getPosX());
-				console.log("deuxieme if : obsEx (entrant) = "+obsEx.getPosX());
-				
-			}
-			else if(obsEntrant.getPosX() <= (canvasJeu.width/2))//si il est du coté gauche du canvas
-			{
-				positionObstacle++;
-				console.log("mooveObstacle, rentre dans le troisieme if, position = "+this.positionObstacle);
-				obsTMP = mesObstacles.get(this.positionObstacle);// obsTMP recoit l'objet d'apres dans la liste
-				
-				
-				if(obsTMP!=null)//si obsTMP existe 
-				{
-					console.log("mooveObstacle, rentre dans le quatrieme if");
-					
-					if(obsEntrant==obsEx)//si obsEx = obsEntrant
-					{
-						console.log("mooveObstacle, rentre dans le cinquieme if");
-					
-						obsEntrant = obsTMP;//obsEntrant recoi obsTMP
-						obsEntrant.setPosX(obsEntrant.getPosX()-this.vitesse);//on deplace obsEntrant vers la gauche
-						obsEx.setPosX(obsEx.getPosX()-this.vitesse);//on deplace obsEx vers la gauche
-						console.log("cinquieme if : obsEntrant (new) = "+obsEntrant.getPosX());
-						console.log("cinquieme if : obsEx (entrant) = "+obsEx.getPosX());
-						dessiner("obstacle",obsEx.getPosX(),obsEx.getPosY(),obsEx.getWidth(),obsEx.getHeight());
-						dessiner("obstacle",obsEntrant.getPosX(),obsEntrant.getPosY(),obsEntrant.getWidth(),obsEntrant.getHeight());
-						obsTMP = null;// on remet obsTMP a null
-					}
-					else
-					{
-						console.log("mooveObstacle, rentre dans le cinquieme if ELSE");
-						
-						obsTMP.setPosX(obsTMP.getPosX()-this.vitesse);//on deplace obsTMP vers la gauche
-						obsEntrant.setPosX(obsEntrant.getPosX()-this.vitesse);//on deplace obsEntrant vers la gauche
-						obsEx.setPosX(obsEx.getPosX()-this.vitesse);//on deplace obsEx vers la gauche
-						console.log("cinquieme if : obsTMP (new) = "+obsTMP.getPosX());
-						console.log("cinquieme if : obsEntrant (courant) = "+obsEntrant.getPosX());
-						console.log("cinquieme if : obsEx (precedent) = "+obsEx.getPosX());
-						dessiner("obstacle",obsEx.getPosX(),obsEx.getPosY(),obsEx.getWidth(),obsEx.getHeight());
-						dessiner("obstacle",obsEntrant.getPosX(),obsEntrant.getPosY(),obsEntrant.getWidth(),obsEntrant.getHeight());
-						dessiner("obstacle",obsTMP.getPosX(),obsTMP.getPosY(),obsTMP.getWidth(),obsTMP.getHeight());
-					}
-				}
-				else
-				{
-					console.log("mooveObstacle, rentre dans le quatrieme if ELSE");
-					obsEntrant.setPosX(obsEntrant.getPosX()-this.vitesse);//on deplace obsEntrant vers la gauche
-					if(obsEx!=null)
-					{
-						obsEx.setPosX(obsEx.getPosX()-this.vitesse);//on deplace obsEx vers la gauche
-						console.log("quatrieme if ELSE : obsEx (entrant) = "+obsEx.getPosX());
-						dessiner("obstacle",obsEx.getPosX(),obsEx.getPosY(),obsEx.getWidth(),obsEx.getHeight());
-					}
-					console.log("quatrieme if ELSE : obsEntrant (new) = "+obsEntrant.getPosX());
-					
-					
-					dessiner("obstacle",obsEntrant.getPosX(),obsEntrant.getPosY(),obsEntrant.getWidth(),obsEntrant.getHeight());
-				
-				
-				}
-				
-				
-				if( obsEx!=null && obsEx.getPosX() <= -25)//si obsEx n'est plus visible alors qu'il existe
-				{
-					console.log("obsEx nest plus visible = "+positionObstacle);
-					
-					if(obsTMP!=null)//si obsTMP contient un objet
-					{
-						console.log("obsTMP existe");
-						this.mesObstacles.removeFirst();
-						this.obsEx = obsEntrant;
-						this.obsEntrant = obsTMP;
-						this.positionObstacle--;
-					}
-					else
-					{
-						console.log("obsTMP est null");
-						if(mesObstacles.get(this.positionObstacle+1)!=null)
-						{
-							mesObstacles.removeFirst();
-							obsEx = obsEntrant;
-							obsEntrant = mesObstacles.get(this.positionObstacle+1);
-						}
-						else
-						{
-							mesObstacles.removeFirst();
-							obsEx = null;
-						
-						}
-					
-					}
-				}
-			}
-			
+	for(var i = 0 ; i < mesObstacles.getNb() ; i++){
+		mesObstacles.get(i).posX-=this.vitesse;
+		if(mesObstacles.get(i).posX<-50){
+			mesObstacles.array.splice(i, 1);
 		}
-		else
-		{
-			console.log("mooveObstacle, va direct dans le else");
-			
-			//supprimer obsEntrant de la liste
-			
-			this.play=0;
-			this.stop=1;
-			this.niveauFini = true;
-			
-			
-			
-		
-		}
-	
 	}
 }
 //***********************************************************************************
@@ -407,7 +365,7 @@ function randomColor()
 		case 5 : couleur="brown"; break;
 		case 6 : couleur="grey"; break;
 		case 7 : couleur="purple"; break;
-		case 8 : couleur="black"; break;
+		case 8 : couleur="gold"; break;
 		case 9 : couleur="white"; break;
 	}
 
@@ -419,24 +377,40 @@ function randomColor()
 //Fonction qui creer le terrain et le vaisseau
 function creerTerrain()
 {
-	background = new Image();
-	background.src = 'img/bacMilieu.png';
-	this.contextJeu.drawImage(background, 0, 0);//arriere plan
 	
-	//this.contextJeu.fillStyle="yellow";
-	//this.contextJeu.fillRect(0,0,canvasJeu.width, canvasJeu.height);
+	
+	this.contextJeu.drawImage(imgTerrain.play, this.cadreTerrainGauche, 0, this.cadreTerrainDroit, imgTerrain.play.height, 0, 0, 600, 400);//arriere plan
 	
 	this.dessiner("scoreBarre",this.scoreBarre.getPosX(),this.scoreBarre.getPosY(),this.scoreBarre.getWidth(),this.scoreBarre.getHeight());//barre de score
 	
-	this.dessiner("score",this.scoreBarre.getWidth()-70,this.scoreBarre.getPosY()+30,"","");//score
-	this.dessiner("bestScore",30,this.scoreBarre.getPosY()+30,"","");//meilleur score
+	this.dessiner("score",this.scoreBarre.getWidth()-60,this.scoreBarre.getPosY()+30,"","");//score
+	this.dessiner("bestScore",5,this.scoreBarre.getPosY()+30,"","");//meilleur score
 	
-	this.contextJeu.fillText("pause",250,30);// sera remplacé par un bouton pause
+	this.contextJeu.font="20px gameOver";
+	this.contextJeu.fillStyle="red";
+	//this.contextJeu.drawImage(bOn, bOnCoordsX, bOnCoordsY,80,60);
+	//this.contextJeu.fillText("Pause",220,30);// sera remplacé par un bouton pause
+	
+	/*playPause = new Image();
+	playPause.src = 'img/PlayPauseStop.png';
+	this.contextJeu.drawImage(playPause, 0, 0, playPause.width/3, playPause.height, 250, 5, 35, 32);//image, pointDecoupeX, pointDecoupeY, widthDecoupe, heightDecoupe, pointCibleX, pointCibleY, widthCible, heightCible
+	*/
+	
+	/*this.contextJeu.shadowColor = "gold"
+	//this.contextJeu.shadowOffsetX = 0;
+	//this.contextJeu.shadowOffsetY = 0;
+	//this.contextJeu.shadowBlur = 15;
+	//this.contextJeu.strokeStyle="gold";
+	//this.contextJeu.strokeText("pause",250,30);*/
 	
 	this.contextJeu.strokeStyle="black";
 	this.contextJeu.strokeRect(0,0,canvasJeu.width, canvasJeu.height);
 	
+	for (var i = 0 ; i < mesObstacles.getNb() ; i++){
+		this.dessiner("obstacle",mesObstacles.get(i).getPosX(),mesObstacles.get(i).getPosY(),mesObstacles.get(i).getWidth(),mesObstacles.get(i).getHeight());
+	}
 	
+	this.dessiner("vaisseau",monVaisseau.getPosX(),monVaisseau.getPosY(),monVaisseau.getWidth(),monVaisseau.getHeight());
 
 }
 //***********************************************************************************
@@ -445,28 +419,41 @@ function creerTerrain()
 function stopJeu()
 {
 	this.mesObstacles.removeAll();
-			
-	this.obsEx = null;
-	this.obsEntrant = null;
 	
 	if(niveauFini)
-	{
-		this.contextJeu.fillStyle="red";
-		this.contextJeu.fillRect(0,0,canvasJeu.width,canvasJeu.height);
-		this.contextJeu.fillStyle="white";
-		this.contextJeu.font="40px Arial";
-		this.contextJeu.fillText("NIVEAU TERMINE",120,200);
+	{	
+		console.log("tessssssssssst");
+		this.contextJeu.drawImage(imgTerrain.fini, 0, 0, canvasJeu.width, canvasJeu.height);//arriere plan
+		this.contextJeu.fillStyle=this.randomColor();
+		this.contextJeu.font="30px gameOver";
+		this.contextJeu.fillText("LEVEL "+this.niveau+" CLEAR",58,210);
 	}
-	else
+	else if(collision)
 	{
+		this.contextJeu.fillStyle="yellow";
+		this.contextJeu.fillRect(0,0,canvasJeu.width,canvasJeu.height);
+		this.contextJeu.fillStyle="black";
+		this.contextJeu.font="50px gameOver";
+		this.contextJeu.fillText("CRASH",118,210);
+		this.stop=1;
+		this.play = 0;
+	}
+	else if(stop)
+	{
+		this.contextJeu.save();
 		this.contextJeu.fillStyle="black";
 		this.contextJeu.fillRect(0,0,canvasJeu.width,canvasJeu.height);
 		this.contextJeu.fillStyle="red";
-		this.contextJeu.font="40px Arial";
-		this.contextJeu.fillText("GAME OVER",160,200);
+		this.contextJeu.font="35px gameOver";
+		this.contextJeu.fillText("GAME OVER",88,210);
+		this.contextJeu.restore();
+		this.stop=1;
+		this.play = 0;
 	}
 	
-	this.stop=1;
+	
+	//this.collision = false;
+	
 
 }
 //***********************************************************************************
@@ -490,10 +477,10 @@ function attractionTerrestre()
 	else
 	{
 		var nb = this.monVaisseau.getPosY();
-		nb = nb + 5;
+		nb = nb + this.gravite;
 		
 		this.monVaisseau.setPosY(nb);
-		this.dessiner("vaisseau",monVaisseau.getPosX(),monVaisseau.getPosY(),monVaisseau.getWidth(),monVaisseau.getHeight());
+		//this.dessiner("vaisseau",monVaisseau.getPosX(),monVaisseau.getPosY(),monVaisseau.getWidth(),monVaisseau.getHeight());
 	}
 
 }
@@ -502,8 +489,8 @@ function attractionTerrestre()
 //Fonction qui definie le listener sur le canvas
 function ajoutListener()
 {
-	console.log("ajoutListener");
 	window.addEventListener("mousedown", eventAction, false);
+	window.addEventListener("touchstart", eventAction, false);
 
 }
 //***********************************************************************************
@@ -511,8 +498,8 @@ function ajoutListener()
 //Fonction qui supprime le listener sur le canvas
 function supprimerListener()
 {
-	console.log("supprimeListener");
 	window.removeEventListener("mousedown", eventAction, false);
+	window.removeEventListener("touchstart", eventAction, false);
 
 }
 //***********************************************************************************
@@ -524,7 +511,7 @@ function eventAction()
 	while(i<=10)
 	{
 		var y = this.monVaisseau.getPosY();
-		y = y-3;
+		y = y-4;
 		this.monVaisseau.setPosY(y);
 		i++;
 	}
@@ -537,74 +524,139 @@ function gererScore()
 {
 	var temps = 0;
 	var coefficient = this.scoreBarre.getCoeff();
-	
+	var scoreTmp;
 	
 	temps=this.tempsJeu;
-	score=Math.floor(temps*coefficient);
+	scoreTmp=Math.floor(temps*coefficient);
 	
+	this.score = scoreTmp;
 	return score;
 	
 
 }
 //***********************************************************************************
 
-//Fonction qui gere le temps de partie (NE FONCTIONNE PAS)
-function minuteur()
-{
-	console.log("rentre dans minuteur");
-	
-	var temps=0;
-	var date = new Date();
-	var secA = date.getSeconds();
-	var secB;
-	
-	if(this.play==1)
-	{
-		
-		
-		if(pause==1)
-		{
-			console.log("jeu en pause");
-			this.tempsJeu=this.tempsJeu;
-		}
-		else
-		{
-			secB = date.getSeconds();
-			
-			console.log("rentre dans le while ELSE, secB =  "+secB);
-			
-			if(secA!=secB)
-			{
-				temps++;
-				secA=secB;
-			}
-			
-			
-			
-		}
-		
-		this.tempsJeu=temps;
-	
-	}
-	
-	this.tempsJeu=0;
-	
-}
-//***********************************************************************************
 
 //Fonction permettant de stocker la meilleure distance
 function saveBestScore()
-{	
-	 if (this.score > getBestScore()) {
-            localStorage.bestScore = this.score;
-			alert (this.localStorage.bestScore);
+{
+	 if (eval(this.score) > getBestScore()) {
+            localStorage.bestScore = eval(this.score);
          }
-	return this.localStorage.bestScore;
+	return eval(localStorage.bestScore);
 }
 //***********************************************************************************
 
 //Fonction qui permet de recuperer la meilleure distance
 function getBestScore() {
-      return parseInt(localStorage.bestScore || 0, 10);
+      return eval(localStorage.bestScore);
+}
+//***********************************************************************************
+
+//Fonction permettant de tester si il y a eu une collision (A AMELIORER)
+function testCollision(){
+		
+		//pour chaque obstacle (visible)
+		for(i=0;i<this.mesObstacles.getNb();i++)
+		{
+			var obstacleEnCours = this.mesObstacles.get(i);
+			var largeurObstacleEnCours = obstacleEnCours.getWidth();
+			var hauteurObstacleEnCours = obstacleEnCours.getHeight();
+			var xObstacleEnCours = obstacleEnCours.getPosX();
+			var yObstacleEnCours = obstacleEnCours.getPosY();
+			var xVaisseau = monVaisseau.getPosX();
+			var yVaisseau = monVaisseau.getPosY();
+			var largeurVaisseau = monVaisseau.getWidth();
+			var hauteurVaisseau = monVaisseau.getHeight();
+			
+			//si le vaisseau est suceptible d'avoir les memes coordonnées y que l'obstacle
+			if(yObstacleEnCours >= (yVaisseau - hauteurObstacleEnCours) && yObstacleEnCours <= (yVaisseau + hauteurVaisseau))
+			{
+				//si le vaisseau est suceptible d'avoir les memes coordonnées x que l'obstacle
+				if(xObstacleEnCours >= (xVaisseau - largeurObstacleEnCours) && xObstacleEnCours <= (xVaisseau + largeurVaisseau))
+				{
+					this.collision = true;
+					return this.collision;
+				}
+				else
+				{
+					this.collision = false;
+				}
+			
+			}
+			//si le vaisseau est suceptible d'avoir les memes coordonnées x que l'obstacle
+			else if(xObstacleEnCours >= (xVaisseau - largeurObstacleEnCours) && xObstacleEnCours <= (xVaisseau + largeurVaisseau))
+			{
+				//si le vaisseau est suceptible d'avoir les memes coordonnées y que l'obstacle
+				if(yObstacleEnCours >= (yVaisseau - hauteurObstacleEnCours) && yObstacleEnCours <= (yVaisseau + hauteurVaisseau))
+				{
+					this.collision = true;
+					return this.collision;
+				}
+				else
+				{
+					this.collision = false;
+				}
+			
+			
+			}
+			else
+			{
+				this.collision = false;
+			}
+		
+		
+		}//fin pour
+
+			
+		return this.collision;
+}
+//***********************************************************************************
+
+//Fonction permettant de gerer la pause
+function pauseJeu()
+{
+	if(this.pause==1)
+	{
+		this.play = 0;
+		
+		
+		//figer tous les objets
+		this.monVaisseau.setPosY(this.monVaisseau.getPosY());
+	
+		for(var i = 0 ; i < mesObstacles.getNb() ; i++){
+			mesObstacles.get(i).setPosX(mesObstacles.get(i).getPosX());
+		}
+	
+		//ajouter un canvas gris avec opacité reduite
+		this.creerTerrain();
+		this.contextJeu.fillStyle = "rgba(52, 52, 52, 0.5)";
+		this.contextJeu.fillRect(0,0,this.canvasJeu.width, this.canvasJeu.height);
+	}
+
+}
+//***********************************************************************************
+
+//Fonction permettant de gerer le passage au niveau suivant
+function nextLevel()
+{
+	console.log("rentre dans nextLevel");
+	
+	if(this.niveau++!=null)
+	{
+		console.log("nextLevel >>> rentre dans premier if");
+		//on stop le jeu avec lecran niveau n fini
+		this.stopJeu();
+				
+		//on coupe les sons
+		reactor.pause();
+		reactor.currentTime = 0;
+		
+		//
+	
+	
+	}
+
+
 }
 //***********************************************************************************

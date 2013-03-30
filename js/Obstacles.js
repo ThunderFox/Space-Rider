@@ -7,7 +7,6 @@ function Obstacles(){
 
 		
     Obstacles.prototype.add = function(o) { 
-		console.log("ajout obstacle");
 		this.array.push(o);
     }
 	

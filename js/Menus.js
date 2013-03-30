@@ -175,6 +175,7 @@ ajout des images
 		compteurImagesChargees++;
 	}
 
+	
 /*vérifie la compatibilité du navigateur*/
 var myInterval = (function() {
 	return window.requestAnimationFrame ||
@@ -356,33 +357,33 @@ function listenerMenuDifficulte(event){
 		if( (bEasy.width <= x &&  x <= bEasy.width+TimageLong ) && 
 		(bEasy.height <= y && y <= bEasy.height+TimageLarg)) {
 		
-		console.log("easy clicke");
-		stateMenuSelected = 3;
+			console.log("easy clicke");
+			stateMenuSelected = 3;
 	
-		
 		}//if
 
 		if( (bMedium.width <= x &&  x <= bMedium.width+TimageLong ) && 
 			(bMedium.height <= y && y <= bMedium.height+TimageLarg )){
 		
-		console.log("medium clicke");
-		stateMenuSelected = 3;
+			console.log("medium clicke");
+			stateMenuSelected = 3;
 
 		}//if
 
 		if( (bHard.width <= x &&  x <= bHard.width+TimageLong ) && 
 			(bHard.height <= y && y <= bHard.height+TimageLarg )){
 		
-		console.log("hard clicke");
-		stateMenuSelected = 3;
+			console.log("hard clicke");
+			stateMenuSelected = 3;
 
 		}//if
 		
 		if( (bBack.width <= x &&  x <= bBack.width+TimageLong ) && 
 			(bBack.height <= y && y <= bBack.height+TimageLarg )){
 		
-			stateMenuSelected = 0;
-			console.log("back clicke");
+				stateMenuSelected = 0;
+				console.log("back clicke");
+				
 		}//if
 }
 
@@ -399,18 +400,19 @@ function listenerMenuSetting(event){
 		if( (bOn.width <= x &&  x <= bOn.width+TimageLong ) && 
 		(bOn.height <= y && y <= bOn.height+TimageLarg )){
 		
-		console.log("on clicke");
+			console.log("on clicke");
+			music.play();
 	
-
-		}//if
+		}
 
 		if( (bOff.width <= x &&  x <= bOff.width+TimageLong ) && 
 			(bOff.height <= y && y <= bOff.height+TimageLarg )){
 		
-		console.log("off clicke");
+			console.log("off clicke");
+			music.pause();
+			music.currentTime = 0;
 
-
-		}//if
+		}
 
 		if( (bBack.width <= x &&  x <= bBack.width+TimageLong ) && 
 			(bBack.height <= y && y <= bBack.height+TimageLarg )){
@@ -418,8 +420,7 @@ function listenerMenuSetting(event){
 			console.log("back2 clicke");
 			stateMenuSelected = 0;
 
-
-		}//if
+		}
 }
 
 /*ajout du listener sur le menu choix vaisseau*/
@@ -436,37 +437,41 @@ function listenerMenuChoiceShip(event){
 		if( (bBack.width <= x &&  x <= bBack.width+TimageLong ) && 
 			(bBack.height <= y && y <= bBack.height+TimageLarg )){
 		
-			console.log("back3 clicke");
-			stateMenuSelected = 1;
-		}//if
+				console.log("back3 clicke");
+				stateMenuSelected = 1;
+		}
 		
 		if( (button_ship_1.width <= x &&  x <= button_ship_1.width+TShipImageLong ) && 
 			(button_ship_1.height <= y && y <= button_ship_1.height+TShipImageLarg )){
 		
-			console.log("vaisseau button_ship_1 clike");
-		
-		}//if
+				console.log("vaisseau button_ship_1 clike");
+				launchGame(1);
+
+		}
 		
 		if( (button_ship_2.width <= x &&  x <= button_ship_2.width+TShipImageLong ) && 
 			(button_ship_2.height <= y && y <= button_ship_2.height+TShipImageLarg )){
 		
 			console.log("vaisseau button_ship_2 clike");
+			launchGame(2);
 		
-		}//if
+		}
 		
 		if( (button_ship_3.width <= x &&  x <= button_ship_3.width+TShipImageLong ) && 
 			(button_ship_3.height <= y && y <= button_ship_3.height+TShipImageLarg )){
 		
-			console.log("vaisseau button_ship_3 clike");
+				console.log("vaisseau button_ship_3 clike");
+				launchGame(3);
 		
-		}//if
+		}
 		
 		if( (button_ship_4.width <= x &&  x <= button_ship_4.width+TShipImageLong ) && 
 			(button_ship_4.height <= y && y <= button_ship_4.height+TShipImageLarg )){
 		
-			console.log("vaisseau button_ship_4 clike");
+				console.log("vaisseau button_ship_4 clike");
+				launchGame(4);
 		
-		}//if
+		}
 		
 }
 /*Mainframe : fonction principale */
