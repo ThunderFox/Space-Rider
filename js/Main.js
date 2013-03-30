@@ -37,14 +37,14 @@ var imgTerrain = {
 	"play":new Image(),
 	"fini":new Image(),
 	"perdu":new Image(),
-	"crash":new Image(),
+	"crash":new Image()
 };
 
 function launchGame(num_ship){
+	typeImages.vaisseau.src='img/main_ship_'+num_ship+'.png';
 	init();
 	start();
 	//sleep(1000);
-	typeImages.vaisseau.src='img/main_ship_'+num_ship+'.png';
 	if(stop!=1)
 	{
 		requestAnimationFrame(start);
@@ -154,7 +154,7 @@ function init(){
 	//typeImages.vaisseau.src='img/vaisseaux.png';
 	typeImages.obstacle.src='img/meteorites.png';
 	
-	this.canvasJeu = document.getElementById("canvasGame");
+	this.canvasJeu = document.getElementById("myCanvas");
 	this.contextJeu = canvasJeu.getContext("2d");
 	this.canvasJeu.width = 600;
 	this.canvasJeu.height = 400;
