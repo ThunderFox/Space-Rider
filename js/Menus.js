@@ -52,16 +52,17 @@ var ship2CoordsY=175, ship2CoordsX=165;
 var ship3CoordsY=175, ship3CoordsX=305;
 var ship4CoordsY=175, ship4CoordsX=450;
 var TShipImageLong=140, TShipImageLarg=95;// taille des vignettes "vaisseau"
+
+var selectSong= 0; // permet de gerer le son
 //different etat du menu
 var stateMenu = {
 	menuPrincipal : 0,
 	menuDifficultes : 1,
 	menuSettings : 2,
-	menuChoiceShip :3 
-	
+	menuChoiceShip :3
 	}
 
-var stateMenuSelected = 0;
+var stateMenuSelected = 0;//permet de selectionner le menu
 
 /**********************************
 ajout des images	
@@ -255,9 +256,6 @@ function menu_principal(){
 	window.removeEventListener('click', listenerMenuDifficulte, false);
 	window.removeEventListener('click', listenerMenuChoiceShip, false);
 	window.addEventListener('click',listenerMenuPrincipal,false);
-	
-	music.play();
-
 }
 
 /*Menu difficulte*/
@@ -401,17 +399,14 @@ function listenerMenuSetting(event){
 		(bOn.height <= y && y <= bOn.height+TimageLarg )){
 		
 			console.log("on clicke");
-			music.play();
-	
+			selectSong=0;
 		}
 
 		if( (bOff.width <= x &&  x <= bOff.width+TimageLong ) && 
 			(bOff.height <= y && y <= bOff.height+TimageLarg )){
 		
 			console.log("off clicke");
-			music.pause();
-			music.currentTime = 0;
-
+			selectSong=1;
 		}
 
 		if( (bBack.width <= x &&  x <= bBack.width+TimageLong ) && 
@@ -437,15 +432,16 @@ function listenerMenuChoiceShip(event){
 		if( (bBack.width <= x &&  x <= bBack.width+TimageLong ) && 
 			(bBack.height <= y && y <= bBack.height+TimageLarg )){
 		
-				console.log("back3 clicke");
-				stateMenuSelected = 1;
+			console.log("back3 clicke");
+			stateMenuSelected = 1;
 		}
 		
 		if( (button_ship_1.width <= x &&  x <= button_ship_1.width+TShipImageLong ) && 
 			(button_ship_1.height <= y && y <= button_ship_1.height+TShipImageLarg )){
-		
-				console.log("vaisseau button_ship_1 clike");
-				launchGame(1);
+	
+			console.log("vaisseau button_ship_1 clike");
+			selectSong=1;
+			launchGame(1);
 
 		}
 		
@@ -453,6 +449,7 @@ function listenerMenuChoiceShip(event){
 			(button_ship_2.height <= y && y <= button_ship_2.height+TShipImageLarg )){
 		
 			console.log("vaisseau button_ship_2 clike");
+			selectSong=1;
 			launchGame(2);
 		
 		}
@@ -460,20 +457,23 @@ function listenerMenuChoiceShip(event){
 		if( (button_ship_3.width <= x &&  x <= button_ship_3.width+TShipImageLong ) && 
 			(button_ship_3.height <= y && y <= button_ship_3.height+TShipImageLarg )){
 		
-				console.log("vaisseau button_ship_3 clike");
-				launchGame(3);
+			console.log("vaisseau button_ship_3 clike");
+			selectSong=1;
+			launchGame(3);
 		
 		}
 		
 		if( (button_ship_4.width <= x &&  x <= button_ship_4.width+TShipImageLong ) && 
 			(button_ship_4.height <= y && y <= button_ship_4.height+TShipImageLarg )){
 		
-				console.log("vaisseau button_ship_4 clike");
-				launchGame(4);
-		
+			console.log("vaisseau button_ship_4 clike");
+			selectSong=1;
+			launchGame(4);
+	
 		}
 		
 }
+
 /*Mainframe : fonction principale */
 function fenetre()
 {
@@ -488,6 +488,14 @@ if(compteurImagesTotales==compteurImagesChargees){
 		case 3 : menuChoiceShip();
 				 break;
 	}
+	switch(selectSong){
+		case 0 : music.play();
+				 break;
+		case 1 : music.pause();
+				 music.currentTime = 0;
+				 break;
+	}
+
 }//if
 	requestAnimationFrame(fenetre);
 }

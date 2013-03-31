@@ -9,6 +9,7 @@ var tempsJeu = 0; //permet de savoir cb de secondes la partie dure
 var play = 0; //si je jeu est en route
 var pause = 0;//si la pause est active
 var stop = 0;//si le jeu est fini
+var reactor;
 var positionObstacle = 0;//permet d'avoir la position de l'obstacle dans la liste
 var vitesse;//vitesse de deplacement des obstacles
 var collisionVaisseau;//permet de savoir si une collision est survenue
@@ -33,35 +34,25 @@ var typeImages = {
 	"vaisseau":new Image(),
 	"obstacle":new Image()
 };
+
 var imgTerrain = {
 	"play":new Image(),
 	"fini":new Image(),
 	"perdu":new Image(),
-	"crash":new Image(),
+	"crash":new Image()
 };
 
+//fonction permmetant de lancer le jeu à partir du vaisseau
 function launchGame(num_ship){
+	typeImages.vaisseau.src='img/main_ship_'+num_ship+'.png';
 	init();
 	start();
-	//sleep(1000);
-	typeImages.vaisseau.src='img/main_ship_'+num_ship+'.png';
-	if(stop!=1)
-	{
-		requestAnimationFrame(start);
-	}
-	else
-	{
-		alert("sorti du jeu");
-
-	}
 }
 
 
 //Fonction permettant de dessiner un rectangle en lui passant les parametres requis
 function dessiner(type,x,y,w,h){
 
-
-	
 	if(type=="vaisseau")
 	{
 		//this.contextJeu.drawImage(typeImages.vaisseau, 152, 323, 100, 100, x, y, 80, 60); // il faut modifier la taille du vaisseau en accord avec limage utilisée
@@ -102,7 +93,7 @@ function init(){
 
 	//initialisation du localStorage
 	if(!localStorage){
-		console.error("Votre navigateur ne supporte pas locaStorage");
+		console.error("Votre navigateur ne supporte pas localStorage");
 	}else if (localStorage.bestScore === undefined){
 		localStorage.bestScore = 0;
 	}
@@ -154,8 +145,8 @@ function init(){
 	//typeImages.vaisseau.src='img/vaisseaux.png';
 	typeImages.obstacle.src='img/meteorites.png';
 	
-	this.canvasJeu = document.getElementById("canvasGame");
-	this.contextJeu = canvasJeu.getContext("2d");
+	this.canvasJeu = document.getElementById('myCanvas');
+	this.contextJeu = this.canvasJeu.getContext("2d");
 	this.canvasJeu.width = 600;
 	this.canvasJeu.height = 400;
 	
@@ -199,11 +190,14 @@ function start(){
 	
 	
 	//on ajoute le listener
+	window.removeEventListener('click', listenerMenuSetting, false);
+	window.removeEventListener('click', listenerMenuDifficulte, false);
+	window.removeEventListener('click', listenerMenuChoiceShip, false);
 	ajoutListener();
 	
 	
 	//on récupère le bruitage du reacteur du vaisseau
-	var reactor = document.getElementById('reactor');
+	reactor = document.getElementById('reactor');
 	
 	//GERER LE TEMPS DE JEU
 	if(play)
@@ -255,7 +249,7 @@ function start(){
 			this.stop=1;
 			this.niveauFini = false;
 			reactor.pause();
-			reactor.currentTime = 0;
+		    reactor.currentTime = 0;
 			//clearInterval(this.myInterval);
 			this.stopJeu();
 			this.supprimerListener();
@@ -284,21 +278,18 @@ function start(){
 				
 			//on test la collision
 			this.testCollision();
-	
-			reactor.play();
+		     reactor.play();
 		}
 		else if(stop==1)
 		{
-			reactor.pause();
-			reactor.currentTime = 0;
+			
+			 reactor.pause();
+		     reactor.currentTime = 0;
 			//clearInterval(this.myInterval);
 			this.stopJeu();
 			this.supprimerListener();
 			console.log("le jeu est stopé");
 		}
-		
-		
-	
 
 	requestAnimationFrame(start);
 	
@@ -646,8 +637,9 @@ function nextLevel()
 		this.stopJeu();
 				
 		//on coupe les sons
-		reactor.pause();
-		reactor.currentTime = 0;
+
+		 reactor.pause();
+		 reactor.currentTime = 0;
 		
 		//
 	
