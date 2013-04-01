@@ -1,0 +1,15 @@
+{
+  "name": "SpaceRider",
+  "description": " Space flight goes up, Space flight goes down. If you are not careful, Space flightgoes boom",
+  "launch_path": "index.html",
+  "default_locale": "fr",
+  "fullscreen": "true",
+  "orientation": ["landscape"],
+  "version" : "0.0",
+  "permissions": {
+    "storage": {
+      "description" : "Access to the localStorage",
+      "access" : "localStorage"
+      }
+  }
+}
