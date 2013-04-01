@@ -37,7 +37,7 @@ var imgTerrain = {
 	"play":new Image(),
 	"fini":new Image(),
 	"perdu":new Image(),
-	"crash":new Image(),
+	"crash":new Image()
 };
 
 function launchGame(num_ship){
