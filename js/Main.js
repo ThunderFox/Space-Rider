@@ -290,9 +290,6 @@ function start(){
 			console.log("le jeu est stopé");
 		}
 		
-		
-	
-
 	requestAnimationFrame(start);
 	
 }
