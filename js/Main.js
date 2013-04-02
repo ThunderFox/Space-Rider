@@ -74,7 +74,7 @@ function dessiner(type,x,y,w,h){
 	if(type=="vaisseau")
 	{
 		//contextJeu.drawImage(typeImages.vaisseau, 152, 323, 100, 100, x, y, 80, 60); // il faut modifier la taille du vaisseau en accord avec limage utilisée
-		contextJeu.drawImage(typeImages.vaisseau, 152, 323, 100, 100, x, y, w+10, h+10); // il faut modifier la taille du vaisseau en accord avec limage utilisée
+		contextJeu.drawImage(typeImages.vaisseau, x, y, w+10, h+10); // il faut modifier la taille du vaisseau en accord avec limage utilisée
 	}
 	else if(type=="obstacle1")
 	{
