@@ -31,7 +31,9 @@ var button_ship_4 = new Image();
 var windowWidth = window.innerWidth;
 var windowHeight = window.innerHeight;
 var baseRatio = 600;
-var ratioSize = (windowWidth/2)/baseRatio; //Ratio permettant d'adapter la taille du jeu à la résolution de l'écran
+//Ratio permettant d'adapter la taille du jeu à la résolution de l'écran
+var ratioSize = (windowWidth/2)/baseRatio; 
+if(ratioSize <= 0.75){ratioSize = 0.8} //Ratio minimum en cas de petite résolution d'écran
 var canvasWidth = 600*ratioSize;
 var canvasHeight = 400*ratioSize;
 var TimageLong=230*ratioSize;
@@ -271,9 +273,13 @@ function menu_principal(){
 	contextJeu.drawImage(bOption, bOptionsCoordsX, b0ptionCoordsY,TimageLong,TimageLarg);
 	
 	window.removeEventListener('click', listenerMenuSetting, false);
+	window.removeEventListener("touchstart", listenerMenuSetting, false);
 	window.removeEventListener('click', listenerMenuDifficulte, false);
+	window.removeEventListener("touchstart", listenerMenuDifficulte, false);
 	window.removeEventListener('click', listenerMenuChoiceShip, false);
+	window.removeEventListener("touchstart", listenerMenuChoiceShip, false);
 	window.addEventListener('click',listenerMenuPrincipal,false);
+	window.addEventListener("touchstart", listenerMenuPrincipal, false);
 }
 
 /*Menu difficulte*/
@@ -289,9 +295,13 @@ function menu_difficulte(){
 	contextJeu.drawImage(bBack, bBackCoordsX, bBackCoordsY,TimageLong,TimageLargBack);
 	
 	window.removeEventListener('click', listenerMenuPrincipal, false);
+	window.removeEventListener("touchstart", listenerMenuPrincipal, false);
 	window.removeEventListener('click', listenerMenuSetting, false);
+	window.removeEventListener("touchstart", listenerMenuSetting, false);
 	window.removeEventListener('click', listenerMenuChoiceShip, false);
+	window.removeEventListener("touchstart", listenerMenuChoiceShip, false);
 	window.addEventListener('click', listenerMenuDifficulte,false);
+	window.addEventListener("touchstart", listenerMenuDifficulte, false);
 	
 }
 
@@ -308,9 +318,13 @@ function menu_setting() {
 	contextJeu.drawImage(bBack, bBackCoordsX, bBackCoordsY,TimageLong,TimageLargBack);
 	
 	window.removeEventListener('click', listenerMenuPrincipal, false);
-	window.removeEventListener('click', listenerMenuDifficulte, false);	
+	window.removeEventListener("touchstart", listenerMenuPrincipal, false);
+	window.removeEventListener('click', listenerMenuDifficulte, false);
+	window.removeEventListener("touchstart", listenerMenuDifficulte, false);	
 	window.removeEventListener('click', listenerMenuChoiceShip, false);
+	window.removeEventListener("touchstart", listenerMenuChoiceShip, false);
 	window.addEventListener('click',listenerMenuSetting,false);
+	window.addEventListener("touchstart", listenerMenuSetting, false);
 }
 
 /*Menu choix vaisseau - permet au joueur de choisir un vaiseau*/
@@ -328,9 +342,13 @@ function menuChoiceShip() {
 	contextJeu.drawImage(bBack, bBackCoordsX, bBackCoordsY,TimageLong,TimageLargBack);
 	
 	window.removeEventListener('click', listenerMenuPrincipal, false);
+	window.removeEventListener("touchstart", listenerMenuPrincipal, false);
 	window.removeEventListener('click', listenerMenuDifficulte, false);
+	window.removeEventListener("touchstart", listenerMenuDifficulte, false);
 	window.removeEventListener('click',listenerMenuSetting,false);
+	window.removeEventListener("touchstart", listenerMenuSetting, false);
 	window.addEventListener('click',listenerMenuChoiceShip,false);
+	window.addEventListener("touchstart", listenerMenuChoiceShip, false);
 }
 
 /*ajout du listener sur le menu principal*/
