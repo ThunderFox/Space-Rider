@@ -11,11 +11,11 @@
 
 @font-face {
         font-family: StarWars;
-        src: url('font/STARWARS.ttf') format('trueType');
+        src: url('./font/STARWARS.ttf') format('trueType');
     
     }
 	
 @font-face {
         font-family: gameOver;
-        src: url('font/LVDCGO__.ttf') format('trueType');
+        src: url('./font/LVDCGO__.ttf') format('trueType');
     }
