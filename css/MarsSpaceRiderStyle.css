@@ -1,12 +1,3 @@
-body {
-        margin: 0px;
-        padding: 0px;
-    }
-	
-#myCanvas {
-        border: 1px solid #9C9898;
-}
-
 #canvasGame
 {
 	/*width: device-width;
@@ -20,15 +11,11 @@ body {
 
 @font-face {
         font-family: StarWars;
-        src: url('./font/STARWARS.ttf') format('trueType');
+        src: url('font/STARWARS.ttf') format('trueType');
     
     }
 	
 @font-face {
         font-family: gameOver;
-        src: url('./font/LVDCGO__.ttf') format('trueType');
+        src: url('font/LVDCGO__.ttf') format('trueType');
     }
-	
-@media (min-width:801px) {
-  /* Browser window must be at least 801px wide to get these rules */
- }

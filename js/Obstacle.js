@@ -7,6 +7,7 @@ function Obstacle(x,y,w,h){
 	this.height =  h;
 	this.imgVie = "";
 	this.imgCrash = "";
+	this.phase=0;
 	
 }
 
