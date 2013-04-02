@@ -712,7 +712,7 @@ function attractionTerrestre()
 function ajoutListener()
 {
 	window.addEventListener("mousedown", eventAction, false);
-	window.addEventListener("touchmove", eventAction, false);
+	//window.addEventListener("touchstart", eventAction, false);
 
 }
 //***********************************************************************************
@@ -721,7 +721,7 @@ function ajoutListener()
 function supprimerListener()
 {
 	window.removeEventListener("mousedown", eventAction, false);
-	window.removeEventListener("touchmove", eventAction, false);
+	//window.removeEventListener("touchstart", eventAction, false);
 
 }
 //***********************************************************************************
