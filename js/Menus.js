@@ -492,6 +492,14 @@ function listenerMenuChoiceShip(event){
 		
 }
 
+//permet de supprimer tous les listener
+function removeAllListener() {
+	window.removeEventListener('click',listenerMenuPrincipal,false);
+	window.removeEventListener('click', listenerMenuSetting, false);
+	window.removeEventListener('click', listenerMenuDifficulte, false);
+	window.removeEventListener('click', listenerMenuChoiceShip, false);
+}
+
 /*Mainframe : fonction principale */
 function fenetre()
 {

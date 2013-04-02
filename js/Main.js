@@ -54,7 +54,7 @@ function launchGame(num_ship)
 {
 	typeImages.vaisseau.src='img/main_ship_'+num_ship+'.png';
 	init();
-	sleep(2000);
+	//sleep(2000);
 	if(stop!=1)
 	{
 		requestAnimationFrame(start);
@@ -306,14 +306,10 @@ function init(){
 //Fonction qui marque le debut du jeu
 function start(){
 	
-	
+	removeAllListener();
 	//on ajoute le listener
 	ajoutListener();
-	
 
-	
-	
-	
 	//GERER LE TEMPS DE JEU
 	if(play)
 	{
