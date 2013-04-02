@@ -1,6 +1,10 @@
 body {
         margin: 0px;
         padding: 0px;
+		/*max-height: 800px;
+		max-width: 1200px;
+		height: 100%;
+		width: 100%;*/
     }
 	
 #myCanvas {

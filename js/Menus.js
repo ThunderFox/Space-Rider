@@ -26,32 +26,48 @@ var button_ship_1 = new Image();//icones servant à sélectionner son vaisseau
 var button_ship_2 = new Image();
 var button_ship_3 = new Image();
 var button_ship_4 = new Image();
-var TimageLong=230;
-var TimageLarg=40, TimageLargBack=30;//taille image 
-var ModLong=160;
-var ModLarg=50;
+
+//Définition des tailles et positions
+var windowWidth = window.innerWidth;
+var windowHeight = window.innerHeight;
+var baseRatio = 600;
+var ratioSize = (windowWidth/2)/baseRatio; //Ratio permettant d'adapter la taille du jeu à la résolution de l'écran
+var canvasWidth = 600*ratioSize;
+var canvasHeight = 400*ratioSize;
+var TimageLong=230*ratioSize;
+var TimageLarg=40*ratioSize, TimageLargBack=30*ratioSize;//taille boutons menu principale
+var ModLong=160*ratioSize;
+var ModLarg=50*ratioSize;
 var music = document.getElementById('music');//musique du menu
 //coordonnées du bouton back
-var bBackCoordsY=330, bBackCoordsX=180;
+var bBackCoordsY=330*ratioSize, bBackCoordsX=180*ratioSize;
 //position des boutons menu principal
-var titreCoordsY=90 , titreCoordsX=75;
-var bPlayCoordsY=210, bPlayCoordsX=180;
-var b0ptionCoordsY=290,bOptionsCoordsX=180;
+var titleSizeX=440*ratioSize, titleSizeY=50*ratioSize;
+var titreCoordsY=90*ratioSize , titreCoordsX=75*ratioSize;
+var bPlayCoordsY=210*ratioSize, bPlayCoordsX=180*ratioSize;
+var b0ptionCoordsY=290*ratioSize,bOptionsCoordsX=180*ratioSize;
 //position des boutons menu difficulte
-var bEasyCoordsY=120, bEasyCoordsX=220;
-var bMediumCoordsY=180, bMediumCoordsX=220;
-var bHardCoordsY=240, bHardCoordsX=220;
+var modeSizeX=300*ratioSize, modeSizeY=32*ratioSize;
+var modeSelectX=150*ratioSize, modeSelectY=60*ratioSize;
+var bEasyCoordsY=120*ratioSize, bEasyCoordsX=220*ratioSize;
+var bMediumCoordsY=180*ratioSize, bMediumCoordsX=220*ratioSize;
+var bHardCoordsY=240*ratioSize, bHardCoordsX=220*ratioSize;
 //position des boutons menu setting
-var bOnCoordsY=170, bOnCoordsX=265;
-var bOffCoordsY=240, bOffCoordsX=265;
-var TSoundImageLong=80, TSoundImageLarg=60;
+var settingSizeX=300*ratioSize, settingSizeY=32*ratioSize;
+var settingsX=155*ratioSize, settingsY=60*ratioSize;
+var soundSizeX=110*ratioSize, soundSizeY=28*ratioSize;
+var settingSoundX=250*ratioSize, settingSoundY=130*ratioSize;
+var bOnCoordsY=170*ratioSize, bOnCoordsX=265*ratioSize;
+var bOffCoordsY=240*ratioSize, bOffCoordsX=265*ratioSize;
+var TSoundImageLong=80*ratioSize, TSoundImageLarg=60*ratioSize;
 //position des boutons menu vaisseaux
-var shipTitleCoordX=140,shipTitleCoordY=65;
-var ship1CoordsY=175, ship1CoordsX=20;
-var ship2CoordsY=175, ship2CoordsX=165;
-var ship3CoordsY=175, ship3CoordsX=305;
-var ship4CoordsY=175, ship4CoordsX=450;
-var TShipImageLong=140, TShipImageLarg=95;// taille des vignettes "vaisseau"
+var shipTitleCoordX=140*ratioSize,shipTitleCoordY=65*ratioSize;
+var shipTitleSizeX=330*ratioSize, shipTitleSizeY=35*ratioSize;
+var ship1CoordsY=135*ratioSize, ship1CoordsX=20*ratioSize;
+var ship2CoordsY=135*ratioSize, ship2CoordsX=165*ratioSize;
+var ship3CoordsY=135*ratioSize, ship3CoordsX=305*ratioSize;
+var ship4CoordsY=135*ratioSize, ship4CoordsX=450*ratioSize;
+var TShipImageLong=140*ratioSize, TShipImageLarg=150*ratioSize;// taille des vignettes "vaisseau"
 
 var selectSong= 0; // permet de gerer le son
 //different etat du menu
@@ -235,10 +251,12 @@ function canvas_propriete() {
 
 	canvasJeu = document.getElementById('myCanvas');
 	contextJeu= canvasJeu.getContext('2d');
-	canvasJeu.width = 600;
-	canvasJeu.height = 400;
+	canvasJeu.width = canvasWidth;
+	canvasJeu.height = canvasHeight;
+	//canvasJeu.width  = document.body.offsetWidth;
+    //canvasJeu.height = document.body.offsetHeight;
 	init_posBouton();
-	contextJeu.drawImage(imageback, 0, 0);
+	contextJeu.drawImage(imageback, 0, 0, canvasWidth, canvasHeight);
 
 }
 
@@ -247,7 +265,7 @@ function menu_principal(){
 	
 	canvas_propriete();
 	
-	contextJeu.drawImage(titre, titreCoordsX, titreCoordsY);
+	contextJeu.drawImage(titre, titreCoordsX, titreCoordsY, titleSizeX, titleSizeY);
 
 	contextJeu.drawImage(bplay, bPlayCoordsX, bPlayCoordsY,TimageLong,TimageLarg);
 	contextJeu.drawImage(bOption, bOptionsCoordsX, b0ptionCoordsY,TimageLong,TimageLarg);
@@ -263,7 +281,7 @@ function menu_difficulte(){
 
 	canvas_propriete();
 	
-	contextJeu.drawImage(mode_select, 150, 60);
+	contextJeu.drawImage(mode_select, modeSelectX, modeSelectY, modeSizeX, modeSizeY);
 
 	contextJeu.drawImage(bEasy, bEasyCoordsX, bEasyCoordsY,ModLong,ModLarg);
 	contextJeu.drawImage(bMedium, bMediumCoordsX, bMediumCoordsY,ModLong,ModLarg);
@@ -282,8 +300,8 @@ function menu_setting() {
 
 	canvas_propriete();
 	
-	contextJeu.drawImage(title_settings, 155, 60);
-	contextJeu.drawImage(sound, 250,130);
+	contextJeu.drawImage(title_settings, settingsX, settingsY, settingSizeX, settingSizeY);
+	contextJeu.drawImage(sound, settingSoundX,settingSoundY, soundSizeX, soundSizeY);
 	
 	contextJeu.drawImage(bOn, bOnCoordsX, bOnCoordsY,TSoundImageLong,TSoundImageLarg);
 	contextJeu.drawImage(bOff, bOffCoordsX, bOffCoordsY,TSoundImageLong,TSoundImageLarg);
@@ -300,7 +318,7 @@ function menuChoiceShip() {
 
 	canvas_propriete();
 	
-	contextJeu.drawImage(ship_selection, shipTitleCoordX,shipTitleCoordY);
+	contextJeu.drawImage(ship_selection,shipTitleCoordX,shipTitleCoordY,shipTitleSizeX,shipTitleSizeY);
 	
 	contextJeu.drawImage(button_ship_1,ship1CoordsX,ship1CoordsY,TShipImageLong,TShipImageLarg);
 	contextJeu.drawImage(button_ship_2,ship2CoordsX,ship2CoordsY,TShipImageLong,TShipImageLarg);
