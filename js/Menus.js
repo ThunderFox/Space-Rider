@@ -31,7 +31,9 @@ var button_ship_4 = new Image();
 var windowWidth = window.innerWidth;
 var windowHeight = window.innerHeight;
 var baseRatio = 600;
-var ratioSize = (windowWidth/2)/baseRatio; //Ratio permettant d'adapter la taille du jeu à la résolution de l'écran
+//Ratio permettant d'adapter la taille du jeu à la résolution de l'écran
+var ratioSize = (windowWidth/2)/baseRatio; 
+if(ratioSize <= 0.75){ratioSize = 0.8} //Ratio minimum en cas de petite résolution d'écran
 var canvasWidth = 600*ratioSize;
 var canvasHeight = 400*ratioSize;
 var TimageLong=230*ratioSize;
