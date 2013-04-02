@@ -36,6 +36,7 @@ var scoreBonus = 0;
 var reactor;
 var piece;
 var boom;
+var vaisseauChoisi;
 
 
 var typeImages = {
@@ -52,6 +53,7 @@ var imgTerrain = {
 
 function launchGame(num_ship)
 {
+	vaisseauChoisi = num_ship;
 	typeImages.vaisseau.src='img/main_ship_'+num_ship+'.png';
 	init();
 	//sleep(2000);
@@ -78,57 +80,43 @@ function dessiner(type,x,y,w,h){
 	}
 	else if(type=="obstacle1")
 	{
-		//contextJeu.drawImage(typeImages.obstacle, 0, 0, 40, 40, x, y, 50, 50); // il faut modifier la taille de l'obstacle en accord avec limage utilisée
 		contextJeu.drawImage(typeImages.obstacle, 0, 0, 40, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec limage utilisée
 	}
 	else if(type=="obstacle2")
 	{
-		//contextJeu.drawImage(typeImages.obstacle, 0, 0, 40, 40, x, y, 50, 50); // il faut modifier la taille de l'obstacle en accord avec limage utilisée
 		contextJeu.drawImage(typeImages.obstacle, 40, 0, 35, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec limage utilisée
 	}
 	else if(type=="obstacle3")
 	{
-		//contextJeu.drawImage(typeImages.obstacle, 0, 0, 40, 40, x, y, 50, 50); // il faut modifier la taille de l'obstacle en accord avec limage utilisée
 		contextJeu.drawImage(typeImages.obstacle, 75, 0, 35, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec limage utilisée
 	}
 	else if(type=="obstacle4")
 	{
-		//contextJeu.drawImage(typeImages.obstacle, 0, 0, 40, 40, x, y, 50, 50); // il faut modifier la taille de l'obstacle en accord avec limage utilisée
 		contextJeu.drawImage(typeImages.obstacle, 110, 0, 35, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec limage utilisée
 	}
 	else if(type=="obstacle5")
 	{
-		//contextJeu.drawImage(typeImages.obstacle, 0, 0, 40, 40, x, y, 50, 50); // il faut modifier la taille de l'obstacle en accord avec limage utilisée
 		contextJeu.drawImage(typeImages.obstacle, 145, 0, 33, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec limage utilisée
 	}
 	else if(type=="obstacle6")
 	{
-		//contextJeu.drawImage(typeImages.obstacle, 0, 0, 40, 40, x, y, 50, 50); // il faut modifier la taille de l'obstacle en accord avec limage utilisée
 		contextJeu.drawImage(typeImages.obstacle, 178, 0, 35, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec limage utilisée
 	}
 	else if(type=="bonus1")
 	{
 		contextJeu.drawImage(typeImages.bonusRing1, 0, 95, 62, 62, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec limage utilisée
-		//contextJeu.fillStyle=randomColor();
-		//contextJeu.fillRect(x,y,w,h);
 	}
 	else if(type=="bonus2")
 	{
 		contextJeu.drawImage(typeImages.bonusRing1, 70, 95, 62, 62, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec limage utilisée
-		//contextJeu.fillStyle=randomColor();
-		//contextJeu.fillRect(x,y,w,h);
 	}
 	else if(type=="bonus3")
 	{
 		contextJeu.drawImage(typeImages.bonusRing1, 140, 95, 62, 62, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec limage utilisée
-		//contextJeu.fillStyle=randomColor();
-		//contextJeu.fillRect(x,y,w,h);
 	}
 	else if(type=="bonus4")
 	{
 		contextJeu.drawImage(typeImages.bonusRing1, 210, 95, 62, 62, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec limage utilisée
-		//contextJeu.fillStyle=randomColor();
-		//contextJeu.fillRect(x,y,w,h);
 	}
 	else if(type=="scoreBarre")
 	{
@@ -656,6 +644,10 @@ function stopJeu()
 		contextJeu.fillStyle="black";
 		contextJeu.font="50px gameOver";
 		contextJeu.fillText("CRASH",118,210);
+		contextJeu.font="20px gameOver";
+		contextJeu.fillText("menu",100,220);
+		contextJeu.font="20px gameOver";
+		contextJeu.fillText("rejouer",300,220);
 		stop=1;
 		play = 0;
 	}
