@@ -28,3 +28,7 @@ body {
         font-family: gameOver;
         src: url('./font/LVDCGO__.ttf') format('trueType');
     }
+	
+@media (min-width:801px) {
+  /* Browser window must be at least 801px wide to get these rules */
+ }
