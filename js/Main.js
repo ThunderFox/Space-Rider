@@ -71,81 +71,83 @@ function launchGame(num_ship)
 //Fonction permettant de dessiner un rectangle en lui passant les parametres requis
 function dessiner(type,x,y,w,h){
 
-
+	//on adapte l'affichage des éléments en fonction de la résolution de l'écran
+	w = w*ratioSize;
+	h = h*ratioSize;
 	
 	if(type=="vaisseau")
 	{
-		//contextJeu.drawImage(typeImages.vaisseau, 152, 323, 100, 100, x, y, 80, 60); // il faut modifier la taille du vaisseau en accord avec limage utilisée
-		contextJeu.drawImage(typeImages.vaisseau, x, y, w+10, h+10); // il faut modifier la taille du vaisseau en accord avec limage utilisée
+		//contextJeu.drawImage(typeImages.vaisseau, 152, 323, 100, 100, x, y, 80, 60); // il faut modifier la taille du vaisseau en accord avec l'image utilisée
+		contextJeu.drawImage(typeImages.vaisseau, x, y, w+10, h+10); // il faut modifier la taille du vaisseau en accord avec l'image utilisée
 	}
 	else if(type=="obstacle1")
 	{
-		contextJeu.drawImage(typeImages.obstacle, 0, 0, 40, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec limage utilisée
+		contextJeu.drawImage(typeImages.obstacle, 0, 0, 40, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec l'image utilisée
 	}
 	else if(type=="obstacle2")
 	{
-		contextJeu.drawImage(typeImages.obstacle, 40, 0, 35, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec limage utilisée
+		contextJeu.drawImage(typeImages.obstacle, 40, 0, 35, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec l'image utilisée
 	}
 	else if(type=="obstacle3")
 	{
-		contextJeu.drawImage(typeImages.obstacle, 75, 0, 35, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec limage utilisée
+		contextJeu.drawImage(typeImages.obstacle, 75, 0, 35, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec l'image utilisée
 	}
 	else if(type=="obstacle4")
 	{
-		contextJeu.drawImage(typeImages.obstacle, 110, 0, 35, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec limage utilisée
+		contextJeu.drawImage(typeImages.obstacle, 110, 0, 35, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec l'image utilisée
 	}
 	else if(type=="obstacle5")
 	{
-		contextJeu.drawImage(typeImages.obstacle, 145, 0, 33, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec limage utilisée
+		contextJeu.drawImage(typeImages.obstacle, 145, 0, 33, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec l'image utilisée
 	}
 	else if(type=="obstacle6")
 	{
-		contextJeu.drawImage(typeImages.obstacle, 178, 0, 35, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec limage utilisée
+		contextJeu.drawImage(typeImages.obstacle, 178, 0, 35, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec l'image utilisée
 	}
 	else if(type=="bonus1")
 	{
-		contextJeu.drawImage(typeImages.bonusRing1, 0, 95, 62, 62, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec limage utilisée
+		contextJeu.drawImage(typeImages.bonusRing1, 0, 95, 62, 62, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec l'image utilisée
 	}
 	else if(type=="bonus2")
 	{
-		contextJeu.drawImage(typeImages.bonusRing1, 70, 95, 62, 62, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec limage utilisée
+		contextJeu.drawImage(typeImages.bonusRing1, 70, 95, 62, 62, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec l'image utilisée
 	}
 	else if(type=="bonus3")
 	{
-		contextJeu.drawImage(typeImages.bonusRing1, 140, 95, 62, 62, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec limage utilisée
+		contextJeu.drawImage(typeImages.bonusRing1, 140, 95, 62, 62, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec l'image utilisée
 	}
 	else if(type=="bonus4")
 	{
-		contextJeu.drawImage(typeImages.bonusRing1, 210, 95, 62, 62, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec limage utilisée
+		contextJeu.drawImage(typeImages.bonusRing1, 210, 95, 62, 62, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec l'image utilisée
 	}
 	else if(type=="scoreBarre")
 	{
 		contextJeu.fillStyle="black";
-		contextJeu.fillRect(x,y,w,h);
+		contextJeu.fillRect(x,y,w+100,h+5*ratioSize);
 		contextJeu.strokeStyle="red";
-		contextJeu.strokeRect(x,y,w,h);
+		contextJeu.strokeRect(x,y,w+100,h+5*ratioSize);
 	}
 	else if(type=="score")
 	{
 		contextJeu.fillStyle="white";
-		contextJeu.font="20px gameOver";
-		contextJeu.fillText(gererScore(),x,y);
+		contextJeu.font=20*ratioSize+"px gameOver";
+		contextJeu.fillText(gererScore(),x+30/ratioSize,y);
 	}
 	else if(type=="scoreBonus")
 	{
 		contextJeu.drawImage(typeImages.bonusRing1, 0, 95, 62, 62, x, y, w, h);
 		contextJeu.fillStyle="gold";
-		contextJeu.font="20px gameOver";
+		contextJeu.font=20*ratioSize+"px gameOver";
 		contextJeu.fillText(scoreBonus,x+50,y+20);
 	}
 	else if(type=="bestScore")
 	{
 		contextJeu.fillStyle="red";
-		contextJeu.font="18px gameOver";
+		contextJeu.font=18*ratioSize+"px gameOver";
 		contextJeu.fillText("Best : ",x,y);
 		contextJeu.fillStyle="white";
-		contextJeu.font="20px gameOver";+
-		contextJeu.fillText(""+saveBestScore(),x+140,y);
+		contextJeu.font=20*ratioSize+"px gameOver";+
+		contextJeu.fillText(""+saveBestScore(),x+140*ratioSize,y);
 	}
 	
 	
@@ -163,7 +165,7 @@ function init(){
 	collision=false;
 	
 	cptBackground = 0;
-	cadreTerrainDroit = 300;
+	cadreTerrainDroit = 400;
 	cadreTerrainGauche = 0;
 	
 	tempsJeu = 0; //permet de savoir cb de secondes la partie dure
@@ -175,6 +177,7 @@ function init(){
 	appearTimerObstacle = 10;
 	appearTimerBonus = 30;
 	appearTimer=0;
+	
 	//*************************************
 	
 	//initialisation du localStorage
@@ -184,7 +187,6 @@ function init(){
 		localStorage.bestScore = 0;
 	}
 	//***********************************
-	
 	
 	
 	
@@ -241,8 +243,8 @@ function init(){
 	
 	//get the canvas from html
 	canvasJeu = document.getElementById("myCanvas");
-	canvasJeu.width = 600;
-	canvasJeu.height = 400;
+	canvasJeu.width = 600*ratioSize;
+	canvasJeu.height = 400*ratioSize;
 	
 	//context creation
 	contextJeu = canvasJeu.getContext("2d");
@@ -309,7 +311,7 @@ function start(){
 			//mesObstacles.add(generateObstacle(canvasJeu.height-30,10)); // AJOUTER UN OBSTACLE A LA LISTE TOUTES LES SECONDES
 		}
 		
-		//GERER LE DEFILLEMENT DU TERRAIN
+		//GERER LE DEFILEMENT DU TERRAIN
 		cptBackground++;
 		if(cptBackground==3)
 		{
@@ -322,10 +324,7 @@ function start(){
 	}
 	
 	
-	
-	
-	
-	contextJeu.clearRect(0, 0, 600, 400);//on rafraichi notre canvas
+	contextJeu.clearRect(0, 0, canvasJeu.width, canvasJeu.height);//on rafraichi notre canvas
 	
 	creerTerrain();//appel a la création du terrain et du vaisseau
 
@@ -429,8 +428,8 @@ function generateObstacle(max,min)
 {
 	
 	var obstacle;
-	var x = 600
-	var y = Math.floor(Math.random() * (max - min +1)) + min
+	var x = 600*ratioSize;
+	var y = Math.floor(Math.random() * (max - min +1)) + min;
 	var w = 40;//typeImages.obstacle.width;
 	var h = 40;//typeImages.obstacle.height;
 	
@@ -458,8 +457,8 @@ function generateBonus(max,min)
 {
 	
 	var bonus;
-	var x = 600
-	var y = Math.floor(Math.random() * (max - min +1)) + min
+	var x = 600*ratioSize;
+	var y = Math.floor(Math.random() * (max - min +1)) + min;
 	var w = 20;//typeImages.obstacle.width;
 	var h = 20;//typeImages.obstacle.height;
 	
@@ -515,16 +514,14 @@ function creerTerrain()
 	
 	dessiner("scoreBarre",scoreBarre.getPosX(),scoreBarre.getPosY(),scoreBarre.getWidth(),scoreBarre.getHeight());//barre de score
 	
-	contextJeu.font="18px gameOver";
+	contextJeu.font=18*ratioSize+"px gameOver";
 	contextJeu.fillStyle="red";
-	contextJeu.fillText("Score : ",scoreBarre.getWidth()-340,scoreBarre.getPosY()+30);// sera remplacé par un bouton pause
+	contextJeu.fillText("Score : ",scoreBarre.getWidth()-340*ratioSize,scoreBarre.getPosY()+30);// sera remplacé par un bouton pause
 	
 	dessiner("score",scoreBarre.getWidth()-180,scoreBarre.getPosY()+30,"","");//score
 	dessiner("bestScore",5,scoreBarre.getPosY()+30,"","");//meilleur score
 	
 	dessiner("scoreBonus",scoreBarre.getWidth()-100,scoreBarre.getPosY()+10,30,25);//scoreBonus
-	
-	
 	
 	/*playPause = new Image();
 	playPause.src = 'img/PlayPauseStop.png';
@@ -603,9 +600,9 @@ function creerTerrain()
 	dessiner("vaisseau",monVaisseau.getPosX(),monVaisseau.getPosY(),monVaisseau.getWidth(),monVaisseau.getHeight());
 	
 	//Bouton pause
-	contextJeu.font="20px gameOver";
+	contextJeu.font=20*ratioSize+"px gameOver";
 	contextJeu.fillStyle="red";
-	contextJeu.fillText("Pause",canvasJeu.width-150,limiteDown);// sera remplacé par un bouton pause
+	contextJeu.fillText("Pause",canvasJeu.width-150*ratioSize,limiteDown);// sera remplacé par un bouton pause
 	//contextJeu.strokeStyle="black";
 	//contextJeu.strokeText("Pause",canvasJeu.width-150,limiteDown);
 
@@ -621,19 +618,19 @@ function stopJeu()
 	{	
 		contextJeu.drawImage(imgTerrain.fini, 0, 0, canvasJeu.width, canvasJeu.height);//arriere plan
 		contextJeu.fillStyle=randomColor();
-		contextJeu.font="30px gameOver";
-		contextJeu.fillText("LEVEL "+niveau+" CLEAR",58,160);
+		contextJeu.font=30*ratioSize+"px gameOver";
+		contextJeu.fillText("LEVEL "+niveau+" CLEAR",58*ratioSize,160*ratioSize);
 		if(niveau+1<5)
 		{
 			contextJeu.fillStyle="white";
-			contextJeu.font="12px gameOver";
-			contextJeu.fillText("Touch the screen to play the next level",26,260);
+			contextJeu.font=12*ratioSize+"px gameOver";
+			contextJeu.fillText("Touch the screen to play the next level",26*ratioSize,260*ratioSize);
 		}
 		else
 		{
 			contextJeu.fillStyle="white";
-			contextJeu.font="12px gameOver";
-			contextJeu.fillText("CONGRATULATION, you won this game!!!",40,260);
+			contextJeu.font=12*ratioSize+"px gameOver";
+			contextJeu.fillText("CONGRATULATION, you won this game!",40*ratioSize,260*ratioSize);
 		}
 	}
 	
@@ -642,12 +639,12 @@ function stopJeu()
 		contextJeu.fillStyle="yellow";
 		contextJeu.fillRect(0,0,canvasJeu.width,canvasJeu.height);
 		contextJeu.fillStyle="black";
-		contextJeu.font="50px gameOver";
-		contextJeu.fillText("CRASH",118,210);
-		contextJeu.font="20px gameOver";
-		contextJeu.fillText("menu",100,220);
-		contextJeu.font="20px gameOver";
-		contextJeu.fillText("rejouer",300,220);
+		contextJeu.font=50*ratioSize+"px gameOver";
+		contextJeu.fillText("CRASH",118*ratioSize,210*ratioSize);
+		contextJeu.font=20*ratioSize+"px gameOver";
+		contextJeu.fillText("menu",100*ratioSize,260*ratioSize);
+		contextJeu.font=20*ratioSize+"px gameOver";
+		contextJeu.fillText("rejouer",300*ratioSize,260*ratioSize);
 		stop=1;
 		play = 0;
 	}
@@ -657,8 +654,8 @@ function stopJeu()
 		contextJeu.fillStyle="black";
 		contextJeu.fillRect(0,0,canvasJeu.width,canvasJeu.height);
 		contextJeu.fillStyle="red";
-		contextJeu.font="35px gameOver";
-		contextJeu.fillText("GAME OVER",88,210);
+		contextJeu.font=35*ratioSize+"px gameOver";
+		contextJeu.fillText("GAME OVER",88*ratioSize,210*ratioSize);
 		contextJeu.restore();
 		stop=1;
 		play = 0;
@@ -966,9 +963,9 @@ function pauseJeu()
 		contextJeu.fillStyle = "rgba(50, 50, 50, 0.8)";
 		contextJeu.fillRect(0,0,canvasJeu.width, canvasJeu.height);
 		
-		contextJeu.font="60px gameOver";
+		contextJeu.font=60*ratioSize+"px gameOver";
 		contextJeu.fillStyle="white";
-		contextJeu.fillText("Pause",90,210);// sera remplacé par un bouton pause
+		contextJeu.fillText("Pause",100*ratioSize,210*ratioSize);// sera remplacé par un bouton pause
 	}
 	else if(pause==0)
 	{
