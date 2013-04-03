@@ -32,9 +32,9 @@ var windowWidth = window.innerWidth;
 var windowHeight = window.innerHeight;
 var baseRatio = 600;
 //Ratio permettant d'adapter la taille du jeu à la résolution de l'écran
-var ratioSize = (windowWidth/2)/baseRatio; 
+var ratioSize = ((windowWidth/2)/baseRatio)+0.6; 
 if(ratioSize <= 0.8){ratioSize = 0.8} //Ratio minimum en cas de petite résolution d'écran
-else if(ratioSize >= 1.4){ratioSize = 1.4} //Ratio maximum
+else if(ratioSize >= 2){ratioSize = 2} //Ratio maximum
 var canvasWidth = 600*ratioSize;
 var canvasHeight = 400*ratioSize;
 var TimageLong=230*ratioSize;

@@ -131,23 +131,23 @@ function dessiner(type,x,y,w,h){
 	{
 		contextJeu.fillStyle="white";
 		contextJeu.font=20*ratioSize+"px gameOver";
-		contextJeu.fillText(gererScore(),x+30/ratioSize,y);
+		contextJeu.fillText(gererScore(),x-40*ratioSize,y+5);
 	}
 	else if(type=="scoreBonus")
 	{
-		contextJeu.drawImage(typeImages.bonusRing1, 0, 95, 62, 62, x, y, w, h);
+		contextJeu.drawImage(typeImages.bonusRing1, 0, 95, 62, 62, x-10*ratioSize, y, w, h);
 		contextJeu.fillStyle="gold";
 		contextJeu.font=20*ratioSize+"px gameOver";
-		contextJeu.fillText(scoreBonus,x+50,y+20);
+		contextJeu.fillText(scoreBonus,x+50,y+25);
 	}
 	else if(type=="bestScore")
 	{
 		contextJeu.fillStyle="red";
 		contextJeu.font=18*ratioSize+"px gameOver";
-		contextJeu.fillText("Best : ",x,y);
+		contextJeu.fillText("Best : ",x,y+5);
 		contextJeu.fillStyle="white";
 		contextJeu.font=20*ratioSize+"px gameOver";+
-		contextJeu.fillText(""+saveBestScore(),x+140*ratioSize,y);
+		contextJeu.fillText(""+saveBestScore(),x+140*ratioSize,y+5);
 	}
 	
 	
@@ -516,7 +516,7 @@ function creerTerrain()
 	
 	contextJeu.font=18*ratioSize+"px gameOver";
 	contextJeu.fillStyle="red";
-	contextJeu.fillText("Score : ",scoreBarre.getWidth()-340*ratioSize,scoreBarre.getPosY()+30);// sera remplacé par un bouton pause
+	contextJeu.fillText("Score : ",scoreBarre.getWidth()-340*ratioSize,scoreBarre.getPosY()+35);
 	
 	dessiner("score",scoreBarre.getWidth()-180,scoreBarre.getPosY()+30,"","");//score
 	dessiner("bestScore",5,scoreBarre.getPosY()+30,"","");//meilleur score
@@ -603,8 +603,6 @@ function creerTerrain()
 	contextJeu.font=20*ratioSize+"px gameOver";
 	contextJeu.fillStyle="red";
 	contextJeu.fillText("Pause",canvasJeu.width-150*ratioSize,limiteDown);// sera remplacé par un bouton pause
-	//contextJeu.strokeStyle="black";
-	//contextJeu.strokeText("Pause",canvasJeu.width-150,limiteDown);
 
 }
 //***********************************************************************************
@@ -724,7 +722,7 @@ function eventAction(e)
 		
 	if(!niveauFini && !pause)
 	{
-		if( (x >= canvasJeu.width-160 &&  x <= canvasJeu.width ) && (y >= limiteDown-30 && y <= canvasJeu.height ))
+		if( (x >= canvasJeu.width-160*ratioSize &&  x <= canvasJeu.width ) && (y >= limiteDown-30*ratioSize && y <= canvasJeu.height ))
 		{	
 			pause=1;
 			pauseJeu();
