@@ -206,7 +206,7 @@ function init(){
 		scoreRequis = 40;
 		vitesse = 22;
 		gravite = 5;
-		imgTerrain.play.src='img/tn_spaceBackground4.png';
+		imgTerrain.play.src='img/tn_spaceBackground3.png';
 		tailleBackgroundMax = 840;
 	}
 	else if(niveau==3)
@@ -232,7 +232,7 @@ function init(){
 	
 	//initialisation des images
 	//imgTerrain.play.src='img/spaceBackground5.png';
-	imgTerrain.fini.src='img/StarWarsBackground.jpg';
+	imgTerrain.fini.src='img/StarBackground.jpg';
 	imgTerrain.perdu.src='';
 	imgTerrain.crash.src='';
 	
