@@ -87,109 +87,109 @@ var stateMenuSelected = 0;//permet de selectionner le menu
 ajout des images	
 **********************************/
 
-	bplay.src='./img_menu/button_play.png';
+	bplay.src='./img/menus/button_play.png';
 	compteurImagesTotales++;
 	bplay.onload = function(){
 		compteurImagesChargees++;
 	};
 
-	bOption.src='./img_menu/button_settings.png';
+	bOption.src='./img/menus/button_settings.png';
 	compteurImagesTotales++;
 	bOption.onload = function(){
 		compteurImagesChargees++;
 	};
 	
-	titre.src = './img_menu/title.png';
+	titre.src = './img/menus/title.png';
 	compteurImagesTotales++;
 	titre.onload = function(){
 		compteurImagesChargees++;
 	};
 
-	mode_select.src = './img_menu/mode_select.png';
+	mode_select.src = './img/menus/mode_select.png';
 	compteurImagesTotales++;
 	mode_select.onload = function(){
 		compteurImagesChargees++;
 	};
 	
-	bEasy.src='./img_menu/easy.png';
+	bEasy.src='./img/menus/easy.png';
 	compteurImagesTotales++;
 	bEasy.onload = function(){
 		compteurImagesChargees++;
 	};
 	
-	bMedium.src='./img_menu/medium.png';
+	bMedium.src='./img/menus/medium.png';
 	compteurImagesTotales++;
 	bMedium.onload = function(){
 		compteurImagesChargees++;
 	};
 	
-	bHard.src='./img_menu/hard.png';
+	bHard.src='./img/menus/hard.png';
 	compteurImagesTotales++;
 	bHard.onload = function(){
 		compteurImagesChargees++;
 	};
 	
-	bBack.src='./img_menu/button_back.png';
+	bBack.src='./img/menus/button_back.png';
 	compteurImagesTotales++;
 	bBack.onload = function(){
 		compteurImagesChargees++;
 	};	
 	
-	bOn.src='./img_menu/button_on.png';
+	bOn.src='./img/menus/button_on.png';
 	compteurImagesTotales++;
 	bOn.onload = function(){
 		compteurImagesChargees++;
 	};
 	
-	bOff.src='./img_menu/button_off.png';
+	bOff.src='./img/menus/button_off.png';
 	compteurImagesTotales++;
 	bOff.onload = function(){
 		compteurImagesChargees++;
 	};
 
-	imageback.src = './img_menu/back.png';
+	imageback.src = './img/menus/back.png';
 	compteurImagesTotales++;
 	imageback.onload = function(){
 		compteurImagesChargees++;
 	};
 
-	title_settings.src = './img_menu/title_settings.png';
+	title_settings.src = './img/menus/title_settings.png';
 	compteurImagesTotales++;
 	title_settings.onload = function(){
 		compteurImagesChargees++;
 	};
 	
-	sound.src = './img_menu/sound.png';
+	sound.src = './img/menus/sound.png';
 	compteurImagesTotales++;
 	sound.onload = function(){
 		compteurImagesChargees++;
 	};
 	
-	ship_selection.src = './img_menu/ship_selection.png';
+	ship_selection.src = './img/menus/ship_selection.png';
 	compteurImagesTotales++;
 	ship_selection.onload = function(){
 		compteurImagesChargees++;
 	};
 
-	button_ship_1.src = './img_menu/button_ship_1.png';
+	button_ship_1.src = './img/menus/button_ship_1.png';
 	compteurImagesTotales++;
 	button_ship_1.onload = function(){
 		compteurImagesChargees++;
 	};
 	
-	button_ship_2.src = './img_menu/button_ship_2.png';
+	button_ship_2.src = './img/menus/button_ship_2.png';
 	compteurImagesTotales++;
 	button_ship_2.onload = function(){
 		compteurImagesChargees++;
 	};
 	
-	button_ship_3.src = './img_menu/button_ship_3.png';
+	button_ship_3.src = './img/menus/button_ship_3.png';
 	compteurImagesTotales++;
 	button_ship_3.onload = function(){
 		compteurImagesChargees++;
 	};
 	
-	button_ship_4.src = './img_menu/button_ship_4.png';
+	button_ship_4.src = './img/menus/button_ship_4.png';
 	compteurImagesTotales++;
 	button_ship_4.onload = function(){
 		compteurImagesChargees++;
@@ -367,7 +367,7 @@ function listenerMenuPrincipal(event){
 			stateMenuSelected = 1;
 			console.log("play clicke");
 
-		}//if
+		}
 
 		if( (bOption.width <= x &&  x <= bOption.width+TimageLong ) && 
 			(bOption.height <= y && y <= bOption.height+TimageLarg )){
@@ -376,7 +376,7 @@ function listenerMenuPrincipal(event){
 			console.log("option clicke");
 
 
-		}//if
+		}
 }
 
 /*ajout du listener sur le menu difficulte*/
@@ -395,7 +395,7 @@ function listenerMenuDifficulte(event){
 			console.log("easy clicke");
 			stateMenuSelected = 3;
 	
-		}//if
+		}
 
 		if( (bMedium.width <= x &&  x <= bMedium.width+TimageLong ) && 
 			(bMedium.height <= y && y <= bMedium.height+TimageLarg )){
@@ -403,7 +403,7 @@ function listenerMenuDifficulte(event){
 			console.log("medium clicke");
 			stateMenuSelected = 3;
 
-		}//if
+		}
 
 		if( (bHard.width <= x &&  x <= bHard.width+TimageLong ) && 
 			(bHard.height <= y && y <= bHard.height+TimageLarg )){
@@ -411,7 +411,7 @@ function listenerMenuDifficulte(event){
 			console.log("hard clicke");
 			stateMenuSelected = 3;
 
-		}//if
+		}
 		
 		if( (bBack.width <= x &&  x <= bBack.width+TimageLong ) && 
 			(bBack.height <= y && y <= bBack.height+TimageLarg )){
@@ -419,7 +419,7 @@ function listenerMenuDifficulte(event){
 				stateMenuSelected = 0;
 				console.log("back clicke");
 				
-		}//if
+		}
 }
 
 /*ajout du listener sur le menu setting*/
@@ -546,7 +546,7 @@ if(compteurImagesTotales==compteurImagesChargees){
 				 break;
 	}
 
-}//if
+}
 	requestAnimationFrame(fenetre);
 }
 
