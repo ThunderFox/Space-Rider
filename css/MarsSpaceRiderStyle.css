@@ -2,16 +2,12 @@ body {
         margin: 0px;
         padding: 0px;
 		background:black;
-		/*max-height: 800px;
-		max-width: 1200px;
-		height: 100%;
-		width: 100%;*/
     }
 	
 #myCanvas {
-        /*border: 1px solid #9C9898;*/
+
 		font-family: gameOver;
-		/*font-family: StarWars;*/
+		
 }
 
 @font-face {

@@ -1,55 +1,55 @@
-/* variables globales*/
+/* global variables */
 var compteurImagesChargees = 0;
 var compteurImagesTotales = 0;
 var canvas;
 var contextJeu;
-//permet de déterminer la position de l'élément dans le canvas
+//determines the position of the element in the canvas
 var canvasLeft;
 var canvasTop;
-var imageback=new Image(); //background du menu
-var bplay=new Image();//bouton play
-var bOption=new Image();//bouton option
-var bEasy=new Image();//bouton easy
-var bMedium=new Image();//bouton meduim
-var bHard=new Image();//bouton hard
-var bBack=new Image();//bouton back
-var bOn=new Image();//bouton On sound
-var bOff=new Image();//bouton Off sound
-var titre = new Image();//image titre
-var title_settings = new Image();//image titre options
+var imageback=new Image(); //menu background
+var bplay=new Image();//play button
+var bOption=new Image();//option button
+var bEasy=new Image();//easy button
+var bMedium=new Image();//medium button
+var bHard=new Image();//hard button
+var bBack=new Image();//back button
+var bOn=new Image();//button On sound
+var bOff=new Image();//button Off sound
+var titre = new Image();//title image
+var title_settings = new Image();//title image options
 var image_on = new Image();//image sound on
 var image_off = new Image();//image sound off
 var sound = new Image();//image sound
 var mode_select = new Image();//image selection mode
-var ship_selection = new Image();//image titre vaisseaux
-var button_ship_1 = new Image();//icones servant à sélectionner son vaisseau
+var ship_selection = new Image();//image title ships
+var button_ship_1 = new Image();//icons for select his ship
 var button_ship_2 = new Image();
 var button_ship_3 = new Image();
 var button_ship_4 = new Image();
 
-//Définition des tailles et positions
+//Defining sizes and positions
 var windowWidth = window.innerWidth;
 var windowHeight = window.innerHeight;
 var baseRatio = 600;
-//Ratio permettant d'adapter la taille du jeu à la résolution de l'écran
+//Ratio to adapt the size of the game screen resolution
 var ratioSize = ((windowWidth/2)/baseRatio)+0.6; 
-if(ratioSize <= 0.8){ratioSize = 0.8} //Ratio minimum en cas de petite résolution d'écran
-else if(ratioSize >= 2){ratioSize = 2} //Ratio maximum
+if(ratioSize <= 0.8){ratioSize = 0.8} //Minimum ratio in case of small screen resolution
+else if(ratioSize >= 2){ratioSize = 2} //Maximum ratio
 var canvasWidth = 600*ratioSize;
 var canvasHeight = 400*ratioSize;
 var TimageLong=230*ratioSize;
-var TimageLarg=40*ratioSize, TimageLargBack=30*ratioSize;//taille boutons menu principale
+var TimageLarg=40*ratioSize, TimageLargBack=30*ratioSize;//size main menu buttons
 var ModLong=160*ratioSize;
 var ModLarg=50*ratioSize;
-var music = document.getElementById('music');//musique du menu
-//coordonnées du bouton back
+var music = document.getElementById('music');//menu music
+//coordinates back button
 var bBackCoordsY=330*ratioSize, bBackCoordsX=180*ratioSize;
-//position des boutons menu principal
+//position of the main menu buttons
 var titleSizeX=440*ratioSize, titleSizeY=50*ratioSize;
 var titreCoordsY=90*ratioSize , titreCoordsX=75*ratioSize;
 var bPlayCoordsY=210*ratioSize, bPlayCoordsX=180*ratioSize;
 var b0ptionCoordsY=290*ratioSize,bOptionsCoordsX=180*ratioSize;
-//position des boutons menu difficulte
+//position of menu buttons difficulty
 var modeSizeX=300*ratioSize, modeSizeY=32*ratioSize;
 var modeSelectX=150*ratioSize, modeSelectY=60*ratioSize;
 var bEasyCoordsY=120*ratioSize, bEasyCoordsX=220*ratioSize;
@@ -63,29 +63,30 @@ var settingSoundX=250*ratioSize, settingSoundY=130*ratioSize;
 var bOnCoordsY=170*ratioSize, bOnCoordsX=265*ratioSize;
 var bOffCoordsY=240*ratioSize, bOffCoordsX=265*ratioSize;
 var TSoundImageLong=80*ratioSize, TSoundImageLarg=60*ratioSize;
-//position des boutons menu vaisseaux
+//position setting menu buttons
 var shipTitleCoordX=140*ratioSize,shipTitleCoordY=65*ratioSize;
 var shipTitleSizeX=330*ratioSize, shipTitleSizeY=35*ratioSize;
 var ship1CoordsY=135*ratioSize, ship1CoordsX=20*ratioSize;
 var ship2CoordsY=135*ratioSize, ship2CoordsX=165*ratioSize;
 var ship3CoordsY=135*ratioSize, ship3CoordsX=305*ratioSize;
 var ship4CoordsY=135*ratioSize, ship4CoordsX=450*ratioSize;
-var TShipImageLong=140*ratioSize, TShipImageLarg=150*ratioSize;// taille des vignettes "vaisseau"
+var TShipImageLong=140*ratioSize, TShipImageLarg=150*ratioSize;//thumbnail size "ship"
 
-var selectSong= 0; // permet de gerer le son
-//different etat du menu
+var selectSong= 0; //can manage the sound
+
+//differents states of the menu
 var stateMenu = {
 	menuPrincipal : 0,
 	menuDifficultes : 1,
 	menuSettings : 2,
 	menuChoiceShip :3
-	}
+}
 
-var stateMenuSelected = 0;//permet de selectionner le menu
+var stateMenuSelected = 0;//allows to select the menu
 
-/**********************************
-ajout des images	
-**********************************/
+	/**********************************
+	uploading images	
+	**********************************/
 
 	bplay.src='./img/menus/button_play.png';
 	compteurImagesTotales++;
@@ -196,7 +197,7 @@ ajout des images
 	}
 
 	
-/*vérifie la compatibilité du navigateur*/
+/*browser compatibility checks*/
 var myInterval = (function() {
 	return window.requestAnimationFrame ||
 		   window.mozRequestAnimationFrame ||
@@ -209,15 +210,16 @@ var myInterval = (function() {
 
 window.requestAnimationFrame = myInterval;
 
-/*permet d'initaliser la position des boutons dans la canvas*/
+/*initialize the position of the buttons on the canvas*/
 function init_posBouton(){
-	//menu principal
+
+	//main menu
 	bplay.width=bPlayCoordsX; 
 	bplay.height=bPlayCoordsY;
 	bOption.width=bOptionsCoordsX;
 	bOption.height=b0ptionCoordsY;
 	
-	//menu difficulte
+	//level menu
 	bEasy.width=bEasyCoordsX; 
 	bEasy.height=bEasyCoordsY;
 	bMedium.width=bMediumCoordsX;
@@ -225,13 +227,13 @@ function init_posBouton(){
 	bHard.width=bHardCoordsX;
 	bHard.height=bHardCoordsY;
 	
-	//menu setting
+	//settings menu
 	bOn.width=bOnCoordsX;
 	bOn.height=bOnCoordsY;
 	bOff.width=bOffCoordsX;
 	bOff.height=bOffCoordsY;
 	
-	//menu choix vaisseau
+	//ship menu
 	button_ship_1.width=ship1CoordsX;
 	button_ship_1.height=ship1CoordsY;
 	button_ship_2.width=ship2CoordsX;
@@ -241,7 +243,7 @@ function init_posBouton(){
 	button_ship_4.width=ship4CoordsX;
 	button_ship_4.height=ship4CoordsY;
 	
-	//bouton back
+	//button back
 	bBack.width=bBackCoordsX;
 	bBack.height=bBackCoordsY;
 	
@@ -249,21 +251,19 @@ function init_posBouton(){
 	canvasTop=canvasJeu.offsetTop;
 }
 
-/*Canvas propriete - preparation du canvas*/
+/*Canvas propriete - preparation of canvas*/
 function canvas_propriete() {
 
 	canvasJeu = document.getElementById('myCanvas');
 	contextJeu= canvasJeu.getContext('2d');
 	canvasJeu.width = canvasWidth;
 	canvasJeu.height = canvasHeight;
-	//canvasJeu.width  = document.body.offsetWidth;
-    //canvasJeu.height = document.body.offsetHeight;
 	init_posBouton();
 	contextJeu.drawImage(imageback, 0, 0, canvasWidth, canvasHeight);
 
 }
 
-/*Menu principal*/
+/*Main menu*/
 function menu_principal(){
 	
 	canvas_propriete();
@@ -283,7 +283,7 @@ function menu_principal(){
 	window.addEventListener("touchstart", listenerMenuPrincipal, false);
 }
 
-/*Menu difficulte*/
+/*Level difficulty menu*/
 function menu_difficulte(){
 
 	canvas_propriete();
@@ -306,7 +306,7 @@ function menu_difficulte(){
 	
 }
 
-/*Menu parametre*/
+/*Settings menu*/
 function menu_setting() {
 
 	canvas_propriete();
@@ -328,7 +328,7 @@ function menu_setting() {
 	window.addEventListener("touchstart", listenerMenuSetting, false);
 }
 
-/*Menu choix vaisseau - permet au joueur de choisir un vaiseau*/
+/*Ship menu - allows the player to choose a ship*/
 function menuChoiceShip() {
 
 	canvas_propriete();
@@ -352,41 +352,41 @@ function menuChoiceShip() {
 	window.addEventListener("touchstart", listenerMenuChoiceShip, false);
 }
 
-/*ajout du listener sur le menu principal*/
+/*Adding listener on the main menu*/
 function listenerMenuPrincipal(event){
 	var x=event.pageX - canvasLeft,
 		y=event.pageY - canvasTop;
 
 	/*************************
-	//boutons du menu principal
+	Main menu buttons
 	**************************/
 		
-		if( (bplay.width <= x &&  x <= bplay.width+TimageLong ) && 
-			(bplay.height <= y && y <= bplay.height+TimageLarg)) {
+	if( (bplay.width <= x &&  x <= bplay.width+TimageLong ) && 
+		(bplay.height <= y && y <= bplay.height+TimageLarg)) {
 
-			stateMenuSelected = 1;
-			console.log("play clicke");
+		stateMenuSelected = 1;
+		console.log("play clicke");
 
-		}
+	}
 
-		if( (bOption.width <= x &&  x <= bOption.width+TimageLong ) && 
-			(bOption.height <= y && y <= bOption.height+TimageLarg )){
-			
-			stateMenuSelected = 2;
-			console.log("option clicke");
+	if( (bOption.width <= x &&  x <= bOption.width+TimageLong ) && 
+		(bOption.height <= y && y <= bOption.height+TimageLarg )){
+		
+		stateMenuSelected = 2;
+		console.log("option clicke");
 
 
-		}
+	}
 }
 
-/*ajout du listener sur le menu difficulte*/
+/*Adding listener on the difficulty menu*/
 function listenerMenuDifficulte(event){
 	
 	var x=event.pageX - canvasLeft,
 		y=event.pageY - canvasTop;
 
 		/*************************
-		//boutons du menu difficulte
+		Difficulty menu buttons
 		**************************/
 
 		if( (bEasy.width <= x &&  x <= bEasy.width+TimageLong ) && 
@@ -422,14 +422,14 @@ function listenerMenuDifficulte(event){
 		}
 }
 
-/*ajout du listener sur le menu setting*/
+/*Adding listener on the settings menu*/
 function listenerMenuSetting(event){
 	
 	var x=event.pageX - canvasLeft,
 		y=event.pageY - canvasTop;
 
 		/*************************
-		//boutons du menu setting
+		Settings menu buttons
 		**************************/
 
 		if( (bOn.width <= x &&  x <= bOn.width+TimageLong ) && 
@@ -455,14 +455,14 @@ function listenerMenuSetting(event){
 		}
 }
 
-/*ajout du listener sur le menu choix vaisseau*/
+/*Adding listener on the ship selection menu*/
 function listenerMenuChoiceShip(event){
 	
 	var x=event.pageX - canvasLeft,
 		y=event.pageY - canvasTop;
 
 		/*************************
-		//boutons du menu choice ship
+		Ship selection menu buttons 
 		**************************/
 
 
@@ -511,7 +511,7 @@ function listenerMenuChoiceShip(event){
 		
 }
 
-//permet de supprimer tous les listener
+//allow to removes all listeners
 function removeAllListener() {
 	window.removeEventListener('click',listenerMenuPrincipal,false);
 	window.removeEventListener('click', listenerMenuPrincipal, false);
@@ -524,7 +524,7 @@ function removeAllListener() {
 	
 }
 
-/*Mainframe : fonction principale */
+/* Mainframe : main function */
 function fenetre()
 {
 if(compteurImagesTotales==compteurImagesChargees){

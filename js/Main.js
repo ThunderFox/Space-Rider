@@ -56,7 +56,6 @@ function launchGame(num_ship)
 	vaisseauChoisi = num_ship;
 	typeImages.vaisseau.src='img/main_ship_'+num_ship+'.png';
 	init();
-	//sleep(2000);
 	if(stop!=1)
 	{
 		requestAnimationFrame(start);
@@ -77,7 +76,6 @@ function dessiner(type,x,y,w,h){
 	
 	if(type=="vaisseau")
 	{
-		//contextJeu.drawImage(typeImages.vaisseau, 152, 323, 100, 100, x, y, 80, 60); // il faut modifier la taille du vaisseau en accord avec l'image utilisée
 		contextJeu.drawImage(typeImages.vaisseau, x, y, w+10, h+10); // il faut modifier la taille du vaisseau en accord avec l'image utilisée
 	}
 	else if(type=="obstacle1")
@@ -231,12 +229,10 @@ function init(){
 	
 	
 	//initialisation des images
-	//imgTerrain.play.src='img/spaceBackground5.png';
 	imgTerrain.fini.src='img/StarBackground.jpg';
 	imgTerrain.perdu.src='';
 	imgTerrain.crash.src='';
 	
-	//typeImages.vaisseau.src='../img/vaisseaux.png';
 	typeImages.obstacle.src='img/meteorites.png';
 	typeImages.bonusRing1.src='img/rings2.png';
 
@@ -455,7 +451,6 @@ function mooveObstacle()
 //Fonction permettant de retourner un nouveau bonus avec des parametres randoms
 function generateBonus(max,min)
 {
-	
 	var bonus;
 	var x = 600*ratioSize;
 	var y = Math.floor(Math.random() * (max - min +1)) + min;
@@ -660,10 +655,8 @@ function stopJeu()
 		supprimerListener();
 	}
 	
-	
 	//collision = false;
 	
-
 }
 //***********************************************************************************
 
@@ -772,6 +765,7 @@ function eventAction(e)
 	}
 
 }
+
 //***********************************************************************************
 
 //Fonction qui gere le calcul du score
@@ -789,6 +783,7 @@ function gererScore()
 	
 
 }
+
 //***********************************************************************************
 
 
@@ -800,13 +795,16 @@ function saveBestScore()
          }
 	return eval(localStorage.bestScore);
 }
+
 //***********************************************************************************
 
 //Fonction qui permet de recuperer la meilleure distance
 function getBestScore() {
       return eval(localStorage.bestScore);
 }
+
 //***********************************************************************************
+
 
 //Fonction permettant de tester si il y a eu une collision avec un Obstacle
 function testCollision(){
@@ -862,12 +860,12 @@ function testCollision(){
 				collision = false;
 			}
 		
-		
-		}//fin pour
-
+		}
 			
 		return collision;
+		
 }
+
 //***********************************************************************************
 
 //Fonction permettant de tester si il y a eu une collision avec un Bonus
@@ -931,7 +929,6 @@ function testCollisionBonus(){
 		
 		}//fin pour
 
-			
 		return collisionBonus;
 }
 //***********************************************************************************
@@ -975,6 +972,7 @@ function pauseJeu()
 }
 //***********************************************************************************
 
+
 //Fonction permettant de gerer le passage au niveau suivant NE SERT A RIEN POUR L'INSTANT
 function nextLevel()
 {
@@ -999,7 +997,6 @@ function nextLevel()
 		console.log("nextLevel >>> rentre dans else");
 	
 	}
-
 
 }
 //***********************************************************************************

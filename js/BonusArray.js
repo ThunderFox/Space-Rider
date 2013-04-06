@@ -1,4 +1,4 @@
-//création de l'objet bonus
+//object creation bonus
 function BonusArray(){
  
 	this.array = new Array();
