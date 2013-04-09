@@ -1,4 +1,4 @@
-//création de l'objet vaisseau
+//Ship object creation
 function Vaisseau(x,y,w,h){
  
     this.posX =  x;

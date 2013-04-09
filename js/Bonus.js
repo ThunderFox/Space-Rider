@@ -1,4 +1,4 @@
-//création de l'objet bonus
+//Bonus object creation
 function Bonus(x,y,w,h){
  
     this.posX =  x;

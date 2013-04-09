@@ -1,4 +1,4 @@
-//création de l'objet obstacle
+//Obstacle object creation
 function Obstacle(x,y,w,h){
  
     this.posX =  x;

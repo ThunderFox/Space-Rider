@@ -1,4 +1,4 @@
-//création de l'objet obstacles
+//Obstacles creation
 function Obstacles(){
  
 	this.array = new Array();

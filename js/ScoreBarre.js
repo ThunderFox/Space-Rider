@@ -1,4 +1,4 @@
-//création de la barre de score
+//Score barre creation
 function ScoreBarre(x,y,w,h,c){
  
     this.posX =  x;

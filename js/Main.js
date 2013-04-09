@@ -1,31 +1,31 @@
-var canvasJeu; //mon canvas
-var contextJeu; //le context du canvas
-var monVaisseau; //le vaisseau avec le quel je joue
-var scoreBarre; //la barre contenant les infos comme le score
-var mesObstacles; // la collection d'obstacles
-var unObstacle; //un obstacle de la liste
+var canvasJeu; //Canvas game
+var contextJeu; //Canvas context
+var monVaisseau; //The playes's ship
+var scoreBarre; //Bar containing informations and score
+var mesObstacles; //Obstacles collections
+var unObstacle; //One obstacle in the list
 var mesBonus;
 var unBonus;
-var myInterval; //l'interval permettant de gerer la boucle principale
-var tempsJeu; //permet de savoir cb de secondes la partie dure
-var play; //si je jeu est en route
-var pause;//si la pause est active
-var stop;//si le jeu est fini
-var positionObstacle = 0;//permet d'avoir la position de l'obstacle dans la liste
-var vitesse;//vitesse de deplacement des obstacles
-var collisionVaisseau;//permet de savoir si une collision est survenue
-var nbToursStart;//compte le nombre d'appels de la fonction start
-var limiteTop;//limite du terrain en haut
-var limiteDown;//limite du terrain en bas
-var niveauFini;//pour savoir si le niveau est fini ou non
-var score;//variable de score
-var collision;//variable de collision
+var myInterval; //The interval to manage the main loop
+var tempsJeu; //playing time
+var play; //If game is started
+var pause; //If pause is actived
+var stop; //If game is over
+var positionObstacle = 0; //Allows for the position of the obstacle in the list
+var vitesse; //Speed of obstacles
+var collisionVaisseau; //Indicates if a collision has occurred
+var nbToursStart; //Counts the number of start function call
+var limiteTop; //Top limit background
+var limiteDown; //Down limit background
+var niveauFini; //Indiccates if the level is finished or not
+var score; //Score variable
+var collision; //Collision variaible
 var collisionBonus;
 var cptBackground;
 var cadreTerrainDroit;
 var cadreTerrainGauche;
 var myReq;
-var appearTimer;//gere la frequence d'apparition d'obstacles
+var appearTimer; //Manages the frequency occurrence of obstacles
 var appearTimerObstacle;
 var appearTimerBonus;
 var scoreRequis;
@@ -77,61 +77,57 @@ function launchGame(selectSong,difficulty,num_ship)
 
 }
 
-//Fonction permettant de dessiner un rectangle en lui passant les parametres requis
+//Function to draw a rectangle by passing the required parameters
 function dessiner(type,x,y,w,h){
 
-  //on adapte l'affichage des éléments en fonction de la résolution de l'écran
-  w = w;
-  h = h;
-  
   if(type=="vaisseau")
   {
-    //contextJeu.drawImage(typeImages.vaisseau, 152, 323, 100, 100, x, y, 80, 60); // il faut modifier la taille du vaisseau en accord avec l'image utilisée
-    contextJeu.drawImage(typeImages.vaisseau, x, y, w+10, h+10); // il faut modifier la taille du vaisseau en accord avec l'image utilisée
+    //contextJeu.drawImage(typeImages.vaisseau, 152, 323, 100, 100, x, y, 80, 60);
+    contextJeu.drawImage(typeImages.vaisseau, x, y, w+10, h+10); //Must change the size of the ship in accordance with the image used
   }
   else if(type=="obstacle1")
   {
-    contextJeu.drawImage(typeImages.obstacle, 0, 0, 40, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec l'image utilisée
+    contextJeu.drawImage(typeImages.obstacle, 0, 0, 40, 40, x, y, w+10, h+10); //Must change the size of the obstacle in accordance with the image used
   }
   else if(type=="obstacle2")
   {
-    contextJeu.drawImage(typeImages.obstacle, 40, 0, 35, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec l'image utilisée
+    contextJeu.drawImage(typeImages.obstacle, 40, 0, 35, 40, x, y, w+10, h+10); //Must change the size of the obstacle in accordance with the image used
   }
   else if(type=="obstacle3")
   {
-    contextJeu.drawImage(typeImages.obstacle, 75, 0, 35, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec l'image utilisée
+    contextJeu.drawImage(typeImages.obstacle, 75, 0, 35, 40, x, y, w+10, h+10); //Must change the size of the obstacle in accordance with the image used
   }
   else if(type=="obstacle4")
   {
-    contextJeu.drawImage(typeImages.obstacle, 110, 0, 35, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec l'image utilisée
+    contextJeu.drawImage(typeImages.obstacle, 110, 0, 35, 40, x, y, w+10, h+10); //Must change the size of the obstacle in accordance with the image used
   }
   else if(type=="obstacle5")
   {
-    contextJeu.drawImage(typeImages.obstacle, 145, 0, 33, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec l'image utilisée
+    contextJeu.drawImage(typeImages.obstacle, 145, 0, 33, 40, x, y, w+10, h+10); //Must change the size of the obstacle in accordance with the image used
   }
   else if(type=="obstacle6")
   {
-    contextJeu.drawImage(typeImages.obstacle, 178, 0, 35, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec l'image utilisée
+    contextJeu.drawImage(typeImages.obstacle, 178, 0, 35, 40, x, y, w+10, h+10); //Must change the size of the obstacle in accordance with the image used
   }
   else if(type=="obstacle7")
   {
-    contextJeu.drawImage(typeImages.obstacle, 210, 0, 35, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec l'image utilisée
+    contextJeu.drawImage(typeImages.obstacle, 210, 0, 35, 40, x, y, w+10, h+10); //Must change the size of the obstacle in accordance with the image used
   }
   else if(type=="bonus1")
   {
-    contextJeu.drawImage(typeImages.bonusRing1, 0, 95, 62, 62, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec l'image utilisée
+    contextJeu.drawImage(typeImages.bonusRing1, 0, 95, 62, 62, x, y, w+10, h+10); //Must change the size of the bonus in accordance with the image used
   }
   else if(type=="bonus2")
   {
-    contextJeu.drawImage(typeImages.bonusRing1, 70, 95, 62, 62, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec l'image utilisée
+    contextJeu.drawImage(typeImages.bonusRing1, 70, 95, 62, 62, x, y, w+10, h+10); //Must change the size of the bonus in accordance with the image used
   }
   else if(type=="bonus3")
   {
-    contextJeu.drawImage(typeImages.bonusRing1, 140, 95, 62, 62, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec l'image utilisée
+    contextJeu.drawImage(typeImages.bonusRing1, 140, 95, 62, 62, x, y, w+10, h+10); //Must change the size of the bonus in accordance with the image used
   }
   else if(type=="bonus4")
   {
-    contextJeu.drawImage(typeImages.bonusRing1, 210, 95, 62, 62, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec l'image utilisée
+    contextJeu.drawImage(typeImages.bonusRing1, 210, 95, 62, 62, x, y, w+10, h+10); //Must change the size of the bonus in accordance with the image used
   }
   
   else if(type=="scoreBarre")
@@ -170,10 +166,10 @@ function dessiner(type,x,y,w,h){
 }
 //***********************************************************************************
 
-//Fonction d'initialisation du jeu
+//Initialization game function
 function init(){
   
-  //initialisation des variables de jeu
+  //Initialization game variables
   score=0;
   niveauFini=false;
   collision=false;
@@ -183,9 +179,9 @@ function init(){
   cadreTerrainDroit = 350;
   cadreTerrainGauche = 0;
   
-  tempsJeu = 0; //permet de savoir cb de secondes la partie dure
-  play = 0; //si je jeu est en route
-  pause = 0;//si la pause est active
+  tempsJeu = 0; //indicates playing time
+  play = 0; //if game is launched
+  pause = 0;//if pause is actived
   stop = 0;
   
   nbToursStart=0;
@@ -195,7 +191,7 @@ function init(){
   
   //*************************************
   
-  //initialisation du localStorage
+  //LocalStorage initialisation
   if(!localStorage){
     console.error("Votre navigateur ne supporte pas locaStorage");
   }else if (localStorage.bestScore === undefined){
@@ -203,7 +199,7 @@ function init(){
   }
   //***********************************
   
-  //variables caracteristiques selon vaisseau choisi
+  //Specific ship caracteristics
   var v, p, m;
   switch(vaisseauChoisi)
   {
@@ -213,7 +209,7 @@ function init(){
     case 4 : v=1; p=2; m=1; break;
   }
   
-  //initialisation du niveau et de la difficulté
+  //Difficulty and level initialisation
   if(niveau==1)
   {
     appearTimer = 50; //meteor frequency (decrease to add dificulty)
