@@ -501,16 +501,13 @@ function listenerMenuPrincipal(event){
       (bplay.height <= y && y <= bplay.height+TimageLarg)) {
 
       stateMenuSelected = 1;
-      console.log("play clicke");
-
+    
     }
 
     if( (bOption.width <= x &&  x <= bOption.width+TimageLong ) && 
       (bOption.height <= y && y <= bOption.height+TimageLarg )){
       
       stateMenuSelected = 2;
-      console.log("option clicke");
-
 
     }
 }
@@ -528,7 +525,6 @@ function listenerMenuDifficulte(event){
     if( (bEasy.width <= x &&  x <= bEasy.width+TimageLong ) && 
     (bEasy.height <= y && y <= bEasy.height+TimageLarg)) {
     
-      console.log("easy clicke");
       difficulty = 1;
       stateMenuSelected = 3;
   
@@ -537,7 +533,6 @@ function listenerMenuDifficulte(event){
     if( (bMedium.width <= x &&  x <= bMedium.width+TimageLong ) && 
       (bMedium.height <= y && y <= bMedium.height+TimageLarg )){
     
-      console.log("medium clicke");
       difficulty = 2;
       stateMenuSelected = 3;
 
@@ -546,7 +541,6 @@ function listenerMenuDifficulte(event){
     if( (bHard.width <= x &&  x <= bHard.width+TimageLong ) && 
       (bHard.height <= y && y <= bHard.height+TimageLarg )){
     
-      console.log("hard clicke");
       difficulty = 3;
       stateMenuSelected = 3;
 
@@ -555,9 +549,8 @@ function listenerMenuDifficulte(event){
     if( (bBack.width <= x &&  x <= bBack.width+TimageLong ) && 
       (bBack.height <= y && y <= bBack.height+TimageLarg )){
     
-        stateMenuSelected = 0;
-        console.log("back clicke");
-        
+       stateMenuSelected = 0;
+   
     }
 }
 
@@ -574,21 +567,18 @@ function listenerMenuSetting(event){
     if( (bOn.width <= x &&  x <= bOn.width+TimageLong ) && 
     (bOn.height <= y && y <= bOn.height+TimageLarg )){
     
-      console.log("on clicke");
       selectSong=0;
     }
 
     if( (bOff.width <= x &&  x <= bOff.width+TimageLong ) && 
       (bOff.height <= y && y <= bOff.height+TimageLarg )){
     
-      console.log("off clicke");
       selectSong=1;
     }
 
     if( (bBack.width <= x &&  x <= bBack.width+TimageLong ) && 
       (bBack.height <= y && y <= bBack.height+TimageLarg )){
     
-      console.log("back2 clicke");
       stateMenuSelected = 0;
 
     }
@@ -608,47 +598,36 @@ function listenerMenuChoiceShip(event){
     if( (bBack.width <= x &&  x <= bBack.width+TimageLong ) && 
       (bBack.height <= y && y <= bBack.height+TimageLarg )){
     
-      console.log("back3 clicke");
       stateMenuSelected = 1;
     }
     
     if( (button_ship_1.width <= x &&  x <= button_ship_1.width+TShipImageLong ) && 
       (button_ship_1.height <= y && y <= button_ship_1.height+TShipImageLarg )){
   
-      console.log("vaisseau button_ship_1 clike");
-      //selectSong=1;
       num_ship = 1;
-      //launchGame(1);
 
     }
     
     if( (button_ship_2.width <= x &&  x <= button_ship_2.width+TShipImageLong ) && 
       (button_ship_2.height <= y && y <= button_ship_2.height+TShipImageLarg )){
-    
-      console.log("vaisseau button_ship_2 clike");
-      //selectSong=1;
+
       num_ship = 2;
-      //launchGame(2);
     
     }
     
     if( (button_ship_3.width <= x &&  x <= button_ship_3.width+TShipImageLong ) && 
       (button_ship_3.height <= y && y <= button_ship_3.height+TShipImageLarg )){
     
-      console.log("vaisseau button_ship_3 clike");
-      //selectSong=1;
       num_ship = 3;
-      //launchGame(3);
-    
+
     }
     
     if( (button_ship_4.width <= x &&  x <= button_ship_4.width+TShipImageLong ) && 
       (button_ship_4.height <= y && y <= button_ship_4.height+TShipImageLarg )){
     
       console.log("vaisseau button_ship_4 clike");
-      //selectSong=1;
+
       num_ship = 4;
-      //launchGame(4);
   
     }
     

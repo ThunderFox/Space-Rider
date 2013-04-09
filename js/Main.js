@@ -45,9 +45,9 @@ var esquive;
 
 
 var typeImages = {
-  "vaisseau":new Image(),
-  "obstacle":new Image(),
-  "bonusRing1":new Image()
+  "vaisseau": new Image(),
+  "obstacle": new Image(),
+  "bonusRing1": new Image()
 };
 var imgTerrain = {
   "play":new Image(),
@@ -65,7 +65,6 @@ function launchGame(selectSong,difficulty,num_ship)
   niveau = 1;
   scoreBonus = 0;
   init();
-  //sleep(2000);
   if(stop!=1)
   {
     requestAnimationFrame(start);
@@ -193,8 +192,7 @@ function init(){
   
   //LocalStorage initialisation
   if(!localStorage){
-    console.error("Votre navigateur ne supporte pas locaStorage");
-  }else if (localStorage.bestScore === undefined){
+     }else if (localStorage.bestScore === undefined){
     localStorage.bestScore = 0;
   }
   //***********************************
@@ -253,8 +251,7 @@ function init(){
   //***********************************
   
   
-  //initialisation des images
-  //imgTerrain.play.src='img/spaceBackground5.png';
+  //initialization of images
   imgTerrain.fini.src='img/StarBackground.jpg';
   imgTerrain.perdu.src='';
   imgTerrain.crash.src='';
@@ -273,16 +270,16 @@ function init(){
   //score bar creation
   scoreBarre = new ScoreBarre(0,0,canvasJeu.width,40,1); 
   
-  //limite top et down representent les limites de generation d'obstacles et de navigation du vaisseau
+  //limit top and down represent the limits of generation of obstacles and navigation of the ship
   limiteTop = scoreBarre.getHeight();
   limiteDown = canvasJeu.height-30;
   
-  monVaisseau = new Vaisseau(50, limiteTop+100, 70, 50); //creation du vaisseau
+  monVaisseau = new Vaisseau(50, limiteTop+100, 70, 50); //creation of vessel
   
-  //initialisation de la liste d'obstacles
+  //initializing the list of obstacles
   mesObstacles = new Obstacles();
   
-  //initialisation de la liste de bonus
+  //list initialization bonus
   mesBonus = new BonusArray();
   
 
@@ -305,7 +302,7 @@ function init(){
   pause = 0;
   play = 1;
   
-  //on récupère le bruitage du reacteur du vaisseau
+  //sound effects of the reactor vessel
   reactor = document.getElementById('reactor');
   piece = document.getElementById('piece');
   boom = document.getElementById('boom');
@@ -314,20 +311,20 @@ function init(){
 //***********************************************************************************
 
 
-//Fonction qui marque le debut du jeu
+//Function that marks the beginning of the game
 function start(){
   
-  //enlever les listeners du menu
+  //remove menu listeners 
   removeAllListener();
   
-  //on ajoute le listener du jeu
+  //listener is added the game
   ajoutListener();
   
-  //modifier les tailles de scoreBarre et limiteDown
+  //change the size and scoreBarre limiteDown
   scoreBarre.width = canvasJeu.width;
   limiteDown = canvasJeu.height-30;
 
-  //Gestion du temps de jeu et du deffilement du terrain
+  //Time management game and deffilement ground
   if(play)
   {
     nbToursStart++;
@@ -337,7 +334,7 @@ function start(){
       nbToursStart=0;
     }
     
-    //Gestion du defilement du terrain
+    //Defilement of the land management
     cptBackground++;
     if(cptBackground==1)
     {
@@ -351,9 +348,9 @@ function start(){
   
   
   //clear le canvas
-  contextJeu.clearRect(0, 0, canvasJeu.width, canvasJeu.height);//on rafraichi notre canvas
+  contextJeu.clearRect(0, 0, canvasJeu.width, canvasJeu.height);//we refreshed our canvas
   
-  //appel a la création du terrain et du vaisseau
+  //the creation of the land and the ship
   creerTerrain();
 
     if(pause)
@@ -368,30 +365,27 @@ function start(){
       niveauFini = false;
       reactor.pause();
       reactor.currentTime = 0;
-      //clearInterval(myInterval);
       stopJeu();
     }
-    else if(stop!=1 && pause!=1)//si le jeu n'est pas en pause ou stopé
+    else if(stop!=1 && pause!=1)//if the game is not paused or Stopp
     {
-      //bouger les obstacles et bonus
+      //moving obstacles and bonuses
       mooveObstacle();
       mooveBonus();
       
-      //gestion des apparitions de bonus
+      //management bonus appearances
       if(appearTimerBonus--<0){
         mesBonus.add(generateBonus(limiteDown-30,limiteTop));
-        //appearTimerBonus=10+Math.floor(Math.random() * 30); //apparition aleatoire
         appearTimerBonus=appearTimer+40;
       }
       
-      //gestion des apparitions d'obstacles
+      //Management appearances obstacles
       if(appearTimerObstacle--<0 && score<scoreRequis+1){
         mesObstacles.add(generateObstacle(limiteDown-30,limiteTop));
         appearTimerObstacle=appearTimer;
       }
       else if(score>=scoreRequis && mesObstacles.getNb()==0)
       {
-        console.log("rentre dans la condition niveau fini");
         niveauFini = true;
         stop = 1;
         play = 0;
@@ -399,7 +393,7 @@ function start(){
       
       attractionTerrestre();
         
-      //on test la collision
+      //we test the collision
       testCollision();
       testCollisionBonus();
   
@@ -412,10 +406,8 @@ function start(){
     {
       reactor.pause();
       reactor.currentTime = 0;
-      //clearInterval(myInterval);
       stopJeu();
-      
-      console.log("le jeu est stopé");
+    
     }
     
     
@@ -427,7 +419,7 @@ function start(){
 //***********************************************************************************
 
 
-//Fonction permettant d'avoir un sleep
+//Function to have a sleep
 function sleep(time)
 {
   
@@ -441,7 +433,7 @@ function sleep(time)
 }
 //***********************************************************************************
 
-//Fonction permettant de retourner un nouvel obstacle avec des parametres randoms
+//Function to return a new obstacle with randoms parameters
 function generateObstacle(max,min)
 {
   
@@ -458,7 +450,7 @@ function generateObstacle(max,min)
 //***********************************************************************************
 
 
-//Fonction pour bouger les obstacles
+//Function for moving obstacles
 function mooveObstacle()
 {
   for(var i = 0 ; i < mesObstacles.getNb() ; i++){
@@ -470,7 +462,7 @@ function mooveObstacle()
 }
 //***********************************************************************************
 
-//Fonction permettant de retourner un nouveau bonus avec des parametres randoms
+//Function to return a new bonus with randoms parameters
 function generateBonus(max,min)
 {
   
@@ -487,7 +479,7 @@ function generateBonus(max,min)
 //***********************************************************************************
 
 
-//Fonction permettant de gerer le mouvement des bonus
+//Function to manage the movement bonus
 function mooveBonus()
 {
   for(var i = 0 ; i < mesBonus.getNb() ; i++){
@@ -500,7 +492,7 @@ function mooveBonus()
 }
 //***********************************************************************************
 
-//Fonction pour avoir une couleur alternative
+//Function for an alternate color
 function randomColor()
 {
   var couleur = "";
@@ -525,19 +517,19 @@ function randomColor()
 }
 //***********************************************************************************
 
-//Fonction qui creer le terrain et le vaisseau
+//Function that create the ground and the ship
 function creerTerrain()
 {
-  //resizing des polices
+  //resizing of fonts
   taillePolice();
   
-  //arriere plan
+  //background
   contextJeu.drawImage(imgTerrain.play, cadreTerrainGauche, 0, cadreTerrainDroit, imgTerrain.play.height, 0, 0, canvasJeu.width, canvasJeu.height);
   
-  //barre de score
+  //bar score
   dessiner("scoreBarre",scoreBarre.getPosX(),scoreBarre.getPosY(),scoreBarre.getWidth(),scoreBarre.getHeight());
   
-  //meilleur score
+  //best score
   dessiner("bestScore",5,scoreBarre.getPosY()+30,"","");
   
   //score
@@ -556,11 +548,11 @@ function creerTerrain()
     dessiner("scoreBonus",scoreBarre.getWidth()-emplacementDynamique(10),scoreBarre.getPosY()+10,30,25);
   }
   
-  //contour du jeu
+  //outline of the game
   contextJeu.strokeStyle="black";
   contextJeu.strokeRect(0,0,canvasJeu.width, canvasJeu.height);
   
-  //dessin des obstacles
+  //draw obstacles
   for (var i = 0 ; i < mesObstacles.getNb() ; i++){
     dessiner("obstacle",mesObstacles.get(i).getPosX(),mesObstacles.get(i).getPosY(),mesObstacles.get(i).getWidth(),mesObstacles.get(i).getHeight());
     
@@ -602,7 +594,7 @@ function creerTerrain()
     
   }
   
-  //dessin des bonus
+  //draw bonus
   for (var i = 0 ; i < mesBonus.getNb() ; i++){
     if(mesBonus.get(i).phase<7)
     {
@@ -626,10 +618,10 @@ function creerTerrain()
     }
   }
   
-  //dessin vaisseau
+  //draw ship
   dessiner("vaisseau",monVaisseau.getPosX(),monVaisseau.getPosY(),monVaisseau.getWidth(),monVaisseau.getHeight());
   
-  //Bouton pause
+  //Button pause
   contextJeu.font=grandCaractere+"px gameOver";
   contextJeu.fillStyle="red";
   contextJeu.fillText("Pause",canvasJeu.width - (grandCaractere*8),limiteDown);// sera remplacé par un bouton pause
@@ -637,7 +629,7 @@ function creerTerrain()
 }
 //***********************************************************************************
 
-//Fonction permettant de stoper le jeu
+//function for stop the game
 function stopJeu()
 {
   mesObstacles.removeAll();
@@ -717,17 +709,11 @@ function stopJeu()
     play = 0;
     scoreBonus = 0;
     gameOver=true;
-    //supprimerListener();
   }
-  
-  
-  //collision = false;
-  
-
 }
 //***********************************************************************************
 
-//Fonction qui simule l'attraction Terrestre
+//Function that simulates the Land attraction
 function attractionTerrestre()
 {
   var bool;
@@ -738,8 +724,6 @@ function attractionTerrestre()
   if(monVaisseau.getPosY()>=endroitCle || monVaisseau.getPosY()<=limiteTop-10)
   {
     bool=false;
-    
-    //monVaisseau.setVivant(false);
     stop=1;
     play=0;
   }
@@ -747,15 +731,13 @@ function attractionTerrestre()
   {
     var nb = monVaisseau.getPosY();
     nb = nb + gravite;
-    
     monVaisseau.setPosY(nb);
-    //dessiner("vaisseau",monVaisseau.getPosX(),monVaisseau.getPosY(),monVaisseau.getWidth(),monVaisseau.getHeight());
   }
 
 }
 //***********************************************************************************
 
-//Fonction qui definie le listener sur le canvas
+//function add listener
 function ajoutListener()
 {
   window.addEventListener("mousedown", eventAction, false);
@@ -764,7 +746,7 @@ function ajoutListener()
 }
 //***********************************************************************************
 
-//Fonction qui supprime le listener sur le canvas
+//Function that removes the listener on canvas
 function supprimerListener()
 {
   window.removeEventListener("mousedown", eventAction, false);
@@ -773,7 +755,7 @@ function supprimerListener()
 }
 //***********************************************************************************
 
-//Fonction qui definie le comportement suite à l'execution d'un listener sur le canvas
+//Function that defines the behavior after the execution of a listener on the canvas
 function eventAction(e)
 {
   var event = e;
@@ -800,15 +782,14 @@ function eventAction(e)
       }
     }
   }
-  else if(pause) //action si le jeu est en pause
+  else if(pause) //action if the game is paused
   {
     pause = 0;
     pauseJeu();
   }
-  else if(niveauFini) //action si le jeu est fini
+  else if(niveauFini) //action if the game is finished
   {
-    console.log("action niveau fini");
-    
+
     if(niveau+1<5)
     {
       stop=0;
@@ -820,7 +801,6 @@ function eventAction(e)
     }
     else
     {
-      console.log("action fin de jeu");
       stop=0;
       play=0;
       niveau=0;
@@ -833,7 +813,6 @@ function eventAction(e)
   }
   else if(gameOver)
   {
-    console.log("action game over");
     stop=0;
     play=0;
     niveau=0;
@@ -845,10 +824,9 @@ function eventAction(e)
   }
   else if(collision)
   {  
-    //si clic menu
+	//if menu was clicked
     if( ( x >= ( (canvasJeu.width/2)-emplacementDynamique(25) ) &&  x <= ( (canvasJeu.width/2)-emplacementDynamique(10) ) ) && ( y >= ((canvasJeu.height/2)+emplacementDynamique(8)) && y <= ((canvasJeu.height/2)+emplacementDynamique(10))) )
     {  
-      console.log("clic menu");
       collision=false;
       stop=0;
       play=0;
@@ -857,24 +835,22 @@ function eventAction(e)
       stateMenuSelected=0;
       sleep(1000);
       fenetre();
-    } //sinon si clic rejouer
+    } //else if replay click
     else if( ( x >= ( (canvasJeu.width/2)+emplacementDynamique(6) ) &&  x <= ( (canvasJeu.width/2)+emplacementDynamique(25) ) ) && ( y >= ((canvasJeu.height/2)+emplacementDynamique(8)) && y <= ((canvasJeu.height/2)+emplacementDynamique(10))) )
     {  
-      console.log("clic rejouer");
       collision=false;
       stop=0;
       sleep(1000);
       init();
     }
     
-    console.log("clic collision");
-  
+ 
   }
 
 }
 //***********************************************************************************
 
-//Fonction qui gere le calcul du score
+//Function that manages the scoring
 function gererScore()
 {
   var temps = 0;
@@ -893,7 +869,7 @@ function gererScore()
 //***********************************************************************************
 
 
-//Fonction permettant de stocker la meilleure distance
+//Function to store the best distance
 function saveBestScore()
 {
    if (eval(score) > getBestScore()) {
@@ -903,16 +879,16 @@ function saveBestScore()
 }
 //***********************************************************************************
 
-//Fonction qui permet de recuperer la meilleure distance
+//Function to retrieve the best distance
 function getBestScore() {
       return eval(localStorage.bestScore);
 }
 //***********************************************************************************
 
-//Fonction permettant de tester si il y a eu une collision avec un Obstacle
+//Function to test if there was a collision with an obstacle
 function testCollision(){
     
-    //pour chaque obstacle (visible)
+    //for each obstacle (visible)
     for(i=0;i<mesObstacles.getNb();i++)
     {
       var obstacleEnCours = mesObstacles.get(i);
@@ -925,10 +901,10 @@ function testCollision(){
       var largeurVaisseau = monVaisseau.getWidth();
       var hauteurVaisseau = monVaisseau.getHeight();
       
-      //si le vaisseau est suceptible d'avoir les memes coordonnées y que l'obstacle
+      //if the vessel is susceptible to have the same y-coordinate as the obstacle
       if(yObstacleEnCours >= (yVaisseau - hauteurObstacleEnCours - 5) && yObstacleEnCours <= (yVaisseau + hauteurVaisseau - 5))
       {
-        //si le vaisseau est suceptible d'avoir les memes coordonnées x que l'obstacle
+        //if the vessel is susceptible to have the same x-coordinate as the obstacle
         if(xObstacleEnCours >= (xVaisseau - largeurObstacleEnCours - 5) && xObstacleEnCours <= (xVaisseau + largeurVaisseau - 5))
         {
           collision = true;
@@ -941,10 +917,10 @@ function testCollision(){
         }
       
       }
-      //si le vaisseau est suceptible d'avoir les memes coordonnées x que l'obstacle
+      //if the vessel is susceptible to have the same x-coordinate as the obstacle
       else if(xObstacleEnCours >= (xVaisseau - largeurObstacleEnCours - 5) && xObstacleEnCours <= (xVaisseau + largeurVaisseau - 5))
       {
-        //si le vaisseau est suceptible d'avoir les memes coordonnées y que l'obstacle
+        //if the vessel is susceptible to have the same y-coordinate as the obstacle
         if(yObstacleEnCours >= (yVaisseau - hauteurObstacleEnCours - 5) && yObstacleEnCours <= (yVaisseau + hauteurVaisseau - 5))
         {
           collision = true;
@@ -964,17 +940,16 @@ function testCollision(){
       }
     
     
-    }//fin pour
+    }
 
-      
     return collision;
 }
 //***********************************************************************************
 
-//Fonction permettant de tester si il y a eu une collision avec un Bonus
+//Function to test if there was a collision with a Bonus
 function testCollisionBonus(){
     
-    //pour chaque obstacle (visible)
+    //for each canvas(visible)
     for(i=0;i<mesBonus.getNb();i++)
     {
       var bonusEnCours = mesBonus.get(i);
@@ -987,10 +962,10 @@ function testCollisionBonus(){
       var largeurVaisseau = monVaisseau.getWidth();
       var hauteurVaisseau = monVaisseau.getHeight();
       
-      //si le vaisseau est suceptible d'avoir les memes coordonnées y que l'obstacle
+      //if the vessel is susceptible to have the same y-coordinate as the obstacle
       if(yBonusEnCours >= (yVaisseau - hauteurBonusEnCours - 5) && yBonusEnCours <= (yVaisseau + hauteurVaisseau - 5))
       {
-        //si le vaisseau est suceptible d'avoir les memes coordonnées x que l'obstacle
+        //if the vessel is susceptible to have the same x-coordinate as the obstacle
         if(xBonusEnCours >= (xVaisseau - largeurBonusEnCours - 5) && xBonusEnCours <= (xVaisseau + largeurVaisseau - 5))
         {
           collisionBonus = true;
@@ -1005,10 +980,10 @@ function testCollisionBonus(){
         }
       
       }
-      //si le vaisseau est suceptible d'avoir les memes coordonnées x que l'obstacle
+      //if the vessel is susceptible to have the same x-coordinate as the obstacle
       else if(xBonusEnCours >= (xVaisseau - largeurBonusEnCours - 5) && xBonusEnCours <= (xVaisseau + largeurVaisseau - 5))
       {
-        //si le vaisseau est suceptible d'avoir les memes coordonnées y que l'obstacle
+        //if the vessel is susceptible to have the same y-coordinate as the obstacle
         if(yBonusEnCours >= (yVaisseau - hauteurBonusEnCours - 5) && yBonusEnCours <= (yVaisseau + hauteurVaisseau - 5))
         {
           collisionBonus = true;
@@ -1043,10 +1018,9 @@ function testCollisionBonus(){
 //***********************************************************************************
 
 
-//Fonction permettant de gerer la pause
+//Function to manage the break
 function pauseJeu()
 {
-  console.log("rentre dans pause jeu");
   
   if(pause==1)
   {
@@ -1055,14 +1029,14 @@ function pauseJeu()
     reactor.pause();
     reactor.currentTime = 0;
     
-    //figer tous les objets
+    //freeze all objects
     monVaisseau.setPosY(monVaisseau.getPosY());
   
     for(var i = 0 ; i < mesObstacles.getNb() ; i++){
       mesObstacles.get(i).setPosX(mesObstacles.get(i).getPosX());
     }
   
-    //ajouter un canvas gris avec opacité reduite
+    //add a gray canvas with reduced opacity
     creerTerrain();
     contextJeu.fillStyle = "rgba(50, 50, 50, 0.8)";
     contextJeu.fillRect(0,0,canvasJeu.width, canvasJeu.height);
@@ -1083,11 +1057,11 @@ function pauseJeu()
 //***********************************************************************************
 
 
-//Fonction adaptant la police à la taille d'ecran
+//Function adapting the font size Wallpapers
 function taillePolice()
 {
 
-  //parametrage des coefs de taille
+  //SETTING coefs size
   var coefWidth = canvasJeu.width;
   var coefHeight = canvasJeu.height;
   
@@ -1109,7 +1083,7 @@ function taillePolice()
     coefWidth = 2;
   }
   
-  //pour coef heights
+  //SETTING coeffs hight
   if(coefHeight > 480)
   {
     coefHeight = 5;
@@ -1127,16 +1101,16 @@ function taillePolice()
     coefHeight = 2;
   }
   
-  //parametrage de tailles de grandCaractere
+  //SETTING sizes
   grandCaractere = coefWidth*coefHeight;
   
-  //parametrage de tailles de petitCaractere
+  //SETTING sizes
   petitCaractere = grandCaractere - 2;
 
 }
 //***********************************************************************************
 
-//Fonction permettant a l'aide de la taille de la police de renvoyer un emplacement dynamique
+//A function to using the font size to return a dynamic location
 function emplacementDynamique(x)
 {
   var emplacement;
