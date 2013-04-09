@@ -209,36 +209,36 @@ function init(){
 	{
 		case 1 : v=3; p=1; m=2; break;
 		case 2 : v=2; p=1; m=2; break;
-		case 3 : v=2; p=2; m=1; break;
-		case 4 : v=1; p=3; m=1; break;
+		case 3 : v=2; p=1; m=1; break;
+		case 4 : v=1; p=2; m=1; break;
 	}
 	
 	//initialisation du niveau et de la difficulté
 	if(niveau==1)
 	{
-		appearTimer = 25; //meteor frequency (decrease to add dificulty)
+		appearTimer = 50; //meteor frequency (decrease to add dificulty)
 		scoreRequis = 5*difficulte;
-		vitesse = 14*v;//meteor speed (increase to add difficulty)
-		gravite = 3*p;
-		esquive = 3*m;
+		vitesse = 8*v;//meteor speed (increase to add difficulty)
+		gravite = 2*p;
+		esquive = 4*m;
 		imgTerrain.play.src='img/bg_niveau1.png';
 		tailleBackgroundMax = 640;
 	}
 	else if(niveau==2)
 	{
-		appearTimer = 20;
+		appearTimer = 50;
 		scoreRequis = 10*difficulte;
-		vitesse = 15*v;
-		gravite = 3*p;
-		esquive = 2*m;
+		vitesse = 8*v;
+		gravite = 2*p;
+		esquive = 3*m;
 		imgTerrain.play.src='img/bg_niveau2.png';
 		tailleBackgroundMax = 640;
 	}
 	else if(niveau==3)
 	{
-		appearTimer = 15;
+		appearTimer = 45;
 		scoreRequis = 10*difficulte;
-		vitesse = 16*v;
+		vitesse = 9*v;
 		gravite = 3*p;
 		esquive = 3*m;
 		imgTerrain.play.src='img/bg_niveau3.png';
@@ -246,10 +246,10 @@ function init(){
 	}
 	else if(niveau==4)
 	{
-		appearTimer = 10;
+		appearTimer = 40;
 		scoreRequis = 15*difficulte;
-		vitesse = 17*v;
-		gravite = 4*p;
+		vitesse = 10*v;
+		gravite = 3*p;
 		esquive = 1*m;
 		imgTerrain.play.src='img/bg_niveau4.png';
 		tailleBackgroundMax = 640;

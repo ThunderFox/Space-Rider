@@ -412,7 +412,7 @@ function menu_setting() {
 	TimageLargBack = Math.floor(canvasJeu.height / 10);
 	
 	TSoundImageLong = Math.floor(canvasJeu.width / 6);
-	TSoundImageLarg = Math.floor(canvasJeu.height / 11);
+	TSoundImageLarg = Math.floor(canvasJeu.height / 7);
 	
 	settingSizeX = Math.floor((canvasJeu.width / 2) + 100);
 	settingSizeY = Math.floor(canvasJeu.height / 8);
@@ -422,11 +422,11 @@ function menu_setting() {
 	
 	//coordonnées Settings
 	settingsX=Math.floor((canvasJeu.width / 2) - (settingSizeX / 2) );
-	settingsY=Math.floor(10);
+	settingsY=Math.floor(30);
 	
 	//coordonnées Sound
 	settingSoundX=Math.floor((canvasJeu.width / 2) - (soundSizeX / 2) );
-	settingSoundY=Math.floor(40 + settingSizeY);
+	settingSoundY=Math.floor(50 + settingSizeY);
 	
 	//coordonnées du bouton On
 	bOnCoordsX=Math.floor((canvasJeu.width / 2) - (TSoundImageLong / 2) );
