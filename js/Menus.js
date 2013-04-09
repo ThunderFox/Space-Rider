@@ -1,8 +1,8 @@
 /* variables globales*/
 var compteurImagesChargees = 0;
 var compteurImagesTotales = 0;
-var canvas;
-var contextJeu;
+var canvasJeu = document.getElementById('myCanvas');
+var contextJeu = contextJeu= canvasJeu.getContext('2d');
 //permet de déterminer la position de l'élément dans le canvas
 var canvasLeft;
 var canvasTop;
@@ -26,51 +26,90 @@ var button_ship_1 = new Image();//icones servant à sélectionner son vaisseau
 var button_ship_2 = new Image();
 var button_ship_3 = new Image();
 var button_ship_4 = new Image();
+var difficulty;
+var num_ship;
 
 //Définition des tailles et positions
-var windowWidth = window.innerWidth;
-var windowHeight = window.innerHeight;
-var baseRatio = 600;
-//Ratio permettant d'adapter la taille du jeu à la résolution de l'écran
-var ratioSize = ((windowWidth/2)/baseRatio)+0.6; 
-if(ratioSize <= 0.8){ratioSize = 0.8} //Ratio minimum en cas de petite résolution d'écran
-else if(ratioSize >= 2){ratioSize = 2} //Ratio maximum
-var canvasWidth = 600*ratioSize;
-var canvasHeight = 400*ratioSize;
-var TimageLong=230*ratioSize;
-var TimageLarg=40*ratioSize, TimageLargBack=30*ratioSize;//taille boutons menu principale
-var ModLong=160*ratioSize;
-var ModLarg=50*ratioSize;
+//var canvasWidth = window.innerWidth;
+//var canvasHeight = window.innerHeight;
+/*var TimageLong=230;
+var TimageLarg=40, TimageLargBack=30;//taille boutons menu principale
+var ModLong=160;
+var ModLarg=50;
 var music = document.getElementById('music');//musique du menu
 //coordonnées du bouton back
-var bBackCoordsY=330*ratioSize, bBackCoordsX=180*ratioSize;
+var bBackCoordsY=330, bBackCoordsX=180;
 //position des boutons menu principal
-var titleSizeX=440*ratioSize, titleSizeY=50*ratioSize;
-var titreCoordsY=90*ratioSize , titreCoordsX=75*ratioSize;
-var bPlayCoordsY=210*ratioSize, bPlayCoordsX=180*ratioSize;
-var b0ptionCoordsY=290*ratioSize,bOptionsCoordsX=180*ratioSize;
+var titleSizeX=440, titleSizeY=50;
+var titreCoordsY=90 , titreCoordsX=75;
+var bPlayCoordsY=210, bPlayCoordsX=180;
+var b0ptionCoordsY=290,bOptionsCoordsX=180;
 //position des boutons menu difficulte
-var modeSizeX=300*ratioSize, modeSizeY=32*ratioSize;
-var modeSelectX=150*ratioSize, modeSelectY=60*ratioSize;
-var bEasyCoordsY=120*ratioSize, bEasyCoordsX=220*ratioSize;
-var bMediumCoordsY=180*ratioSize, bMediumCoordsX=220*ratioSize;
-var bHardCoordsY=240*ratioSize, bHardCoordsX=220*ratioSize;
+var modeSizeX=300, modeSizeY=32;
+var modeSelectX=150, modeSelectY=60;
+var bEasyCoordsY=120, bEasyCoordsX=220;
+var bMediumCoordsY=180, bMediumCoordsX=220;
+var bHardCoordsY=240, bHardCoordsX=220;
 //position des boutons menu setting
-var settingSizeX=300*ratioSize, settingSizeY=32*ratioSize;
-var settingsX=155*ratioSize, settingsY=60*ratioSize;
-var soundSizeX=110*ratioSize, soundSizeY=28*ratioSize;
-var settingSoundX=250*ratioSize, settingSoundY=130*ratioSize;
-var bOnCoordsY=170*ratioSize, bOnCoordsX=265*ratioSize;
-var bOffCoordsY=240*ratioSize, bOffCoordsX=265*ratioSize;
-var TSoundImageLong=80*ratioSize, TSoundImageLarg=60*ratioSize;
+var settingSizeX=300, settingSizeY=32;
+var settingsX=155, settingsY=60;
+var soundSizeX=110, soundSizeY=28;
+var settingSoundX=250, settingSoundY=130;
+var bOnCoordsY=170, bOnCoordsX=265;
+var bOffCoordsY=240, bOffCoordsX=265;
+var TSoundImageLong=80, TSoundImageLarg=60;
 //position des boutons menu vaisseaux
-var shipTitleCoordX=140*ratioSize,shipTitleCoordY=65*ratioSize;
-var shipTitleSizeX=330*ratioSize, shipTitleSizeY=35*ratioSize;
-var ship1CoordsY=135*ratioSize, ship1CoordsX=20*ratioSize;
-var ship2CoordsY=135*ratioSize, ship2CoordsX=165*ratioSize;
-var ship3CoordsY=135*ratioSize, ship3CoordsX=305*ratioSize;
-var ship4CoordsY=135*ratioSize, ship4CoordsX=450*ratioSize;
-var TShipImageLong=140*ratioSize, TShipImageLarg=150*ratioSize;// taille des vignettes "vaisseau"
+var shipTitleCoordX=140,shipTitleCoordY=65;
+var shipTitleSizeX=330, shipTitleSizeY=35;
+var ship1CoordsY=135, ship1CoordsX=20;
+var ship2CoordsY=135, ship2CoordsX=165;
+var ship3CoordsY=135, ship3CoordsX=305;
+var ship4CoordsY=135, ship4CoordsX=450;
+var TShipImageLong=140, TShipImageLarg=150;// taille des vignettes "vaisseau"
+*/
+
+
+var TimageLong;
+var TimageLarg, TimageLargBack=30;//taille boutons menu principale
+var ModLong=160;
+var ModLarg=50;
+var music = document.getElementById('music');//musique du menu
+
+//coordonnées du bouton back
+var bBackCoordsY, bBackCoordsX;
+
+//position des boutons menu principal
+var titleSizeX, titleSizeY;
+var titreCoordsY, titreCoordsX;
+var bPlayCoordsY, bPlayCoordsX;
+var b0ptionCoordsY,bOptionsCoordsX;
+
+//position des boutons menu difficulte
+var modeSizeX, modeSizeY;
+var modeSelectX, modeSelectY;
+var bEasyCoordsY, bEasyCoordsX;
+var bMediumCoordsY, bMediumCoordsX;
+var bHardCoordsY, bHardCoordsX;
+
+//position des boutons menu setting
+var settingSizeX, settingSizeY;
+var settingsX, settingsY;
+var soundSizeX, soundSizeY;
+var settingSoundX, settingSoundY;
+var bOnCoordsY, bOnCoordsX;
+var bOffCoordsY, bOffCoordsX;
+var TSoundImageLong, TSoundImageLarg;
+
+//position des boutons menu vaisseaux
+var shipTitleCoordX=140,shipTitleCoordY=65;
+var shipTitleSizeX=330, shipTitleSizeY=35;
+var ship1CoordsY=135, ship1CoordsX=20;
+var ship2CoordsY=135, ship2CoordsX=165;
+var ship3CoordsY=135, ship3CoordsX=305;
+var ship4CoordsY=135, ship4CoordsX=450;
+var TShipImageLong=140, TShipImageLarg=150;// taille des vignettes "vaisseau"
+
+
 
 var selectSong= 0; // permet de gerer le son
 //different etat du menu
@@ -252,14 +291,15 @@ function init_posBouton(){
 /*Canvas propriete - preparation du canvas*/
 function canvas_propriete() {
 
-	canvasJeu = document.getElementById('myCanvas');
-	contextJeu= canvasJeu.getContext('2d');
-	canvasJeu.width = canvasWidth;
-	canvasJeu.height = canvasHeight;
+	canvasJeu.width = window.innerWidth;
+	canvasJeu.height = window.innerHeight;
 	//canvasJeu.width  = document.body.offsetWidth;
     //canvasJeu.height = document.body.offsetHeight;
 	init_posBouton();
-	contextJeu.drawImage(imageback, 0, 0, canvasWidth, canvasHeight);
+	//console.log("canvas width : "+canvasJeu.width);
+	//console.log("canvas height : "+canvasJeu.height);
+	//console.log("TimageLong : "+TimageLong);
+	contextJeu.drawImage(imageback, 0, 0, canvasJeu.width, canvasJeu.height);
 
 }
 
@@ -267,6 +307,25 @@ function canvas_propriete() {
 function menu_principal(){
 	
 	canvas_propriete();
+	
+	//adaptation des images en fonction de la taille du canvas
+	titleSizeX = Math.floor(canvasJeu.width  - 100);
+	titleSizeY = Math.floor(canvasJeu.height / 8);
+	
+	TimageLong = Math.floor(canvasJeu.width / 3);
+	TimageLarg = Math.floor(canvasJeu.height / 10);
+	
+	//coordonnées Space Rider
+	titreCoordsX=Math.floor((canvasJeu.width / 2) - (titleSizeX / 2) );
+	titreCoordsY=Math.floor(20);
+	
+	//coordonnées du bouton Play
+	bPlayCoordsX=Math.floor((canvasJeu.width / 2) - (TimageLong / 2) );
+	bPlayCoordsY=Math.floor((canvasJeu.height / 2) - TimageLarg);
+	
+	//coordonnées du bouton Settings
+	bOptionsCoordsX=Math.floor((canvasJeu.width / 2) - (TimageLong / 2) );
+	b0ptionCoordsY=Math.floor((canvasJeu.height / 2) + TimageLarg);
 	
 	contextJeu.drawImage(titre, titreCoordsX, titreCoordsY, titleSizeX, titleSizeY);
 
@@ -288,6 +347,43 @@ function menu_difficulte(){
 
 	canvas_propriete();
 	
+	//taille des elements
+	TimageLong = Math.floor(canvasJeu.width / 3);
+	TimageLargBack = Math.floor(canvasJeu.height / 10);
+	
+	ModLong = Math.floor(canvasJeu.width / 3);
+	ModLarg = Math.floor(canvasJeu.height / 10);
+	
+	modeSizeX = Math.floor(canvasJeu.width / 2);
+	modeSizeY = Math.floor(canvasJeu.height / 8);
+	
+	
+	//coordonnées Select
+	modeSelectX=Math.floor((canvasJeu.width / 2) - (modeSizeX / 2) );
+	modeSelectY=Math.floor(10);
+	
+	//coordonnées du bouton bEasy
+	bEasyCoordsX=Math.floor((canvasJeu.width / 2) - (ModLong / 2) );
+	bEasyCoordsY=Math.floor(modeSelectY + modeSizeY + 20);
+	
+	//coordonnées du bouton bMedium
+	bMediumCoordsX=Math.floor((canvasJeu.width / 2) - (ModLong / 2) );
+	bMediumCoordsY=Math.floor(bEasyCoordsY + ModLarg + 10);
+	
+	//coordonnées du bouton bHard
+	bHardCoordsX=Math.floor((canvasJeu.width / 2) - (ModLong / 2) );
+	bHardCoordsY=Math.floor(bMediumCoordsY + ModLarg + 10);
+	
+	//coordonnées du bouton back
+	bBackCoordsX=Math.floor((canvasJeu.width / 2) - (TimageLong / 2) );
+	bBackCoordsY=Math.floor(canvasJeu.height - 100);
+	if(bBackCoordsY < bHardCoordsY + ModLarg + 30)
+	{
+		bBackCoordsY=Math.floor(bHardCoordsY + ModLarg + 30);
+	}
+	
+
+
 	contextJeu.drawImage(mode_select, modeSelectX, modeSelectY, modeSizeX, modeSizeY);
 
 	contextJeu.drawImage(bEasy, bEasyCoordsX, bEasyCoordsY,ModLong,ModLarg);
@@ -311,6 +407,45 @@ function menu_setting() {
 
 	canvas_propriete();
 	
+	//taille des elements
+	TimageLong = Math.floor(canvasJeu.width / 3);
+	TimageLargBack = Math.floor(canvasJeu.height / 10);
+	
+	TSoundImageLong = Math.floor(canvasJeu.width / 6);
+	TSoundImageLarg = Math.floor(canvasJeu.height / 11);
+	
+	settingSizeX = Math.floor((canvasJeu.width / 2) + 100);
+	settingSizeY = Math.floor(canvasJeu.height / 8);
+	
+	soundSizeX = Math.floor(canvasJeu.width / 3);
+	soundSizeY = Math.floor(canvasJeu.height / 10);
+	
+	//coordonnées Settings
+	settingsX=Math.floor((canvasJeu.width / 2) - (settingSizeX / 2) );
+	settingsY=Math.floor(10);
+	
+	//coordonnées Sound
+	settingSoundX=Math.floor((canvasJeu.width / 2) - (soundSizeX / 2) );
+	settingSoundY=Math.floor(40 + settingSizeY);
+	
+	//coordonnées du bouton On
+	bOnCoordsX=Math.floor((canvasJeu.width / 2) - (TSoundImageLong / 2) );
+	bOnCoordsY=Math.floor(10 + settingSoundY + soundSizeY);
+	
+	//coordonnées du bouton Off
+	bOffCoordsX=Math.floor((canvasJeu.width / 2) - (TSoundImageLong / 2) );
+	bOffCoordsY=Math.floor(bOnCoordsY + TSoundImageLarg + 10);
+	
+	//coordonnées du bouton back
+	bBackCoordsX=Math.floor((canvasJeu.width / 2) - (TimageLong / 2) );
+	//bBackCoordsY=Math.floor((canvasJeu.height / 2) + 100 - TimageLarg);
+	bBackCoordsY=Math.floor(canvasJeu.height - 100);
+	if(bBackCoordsY < bOffCoordsY + TSoundImageLarg + 30)
+	{
+		bBackCoordsY=Math.floor(bOffCoordsY + TSoundImageLarg + 30);
+	}
+	
+	
 	contextJeu.drawImage(title_settings, settingsX, settingsY, settingSizeX, settingSizeY);
 	contextJeu.drawImage(sound, settingSoundX,settingSoundY, soundSizeX, soundSizeY);
 	
@@ -332,6 +467,46 @@ function menu_setting() {
 function menuChoiceShip() {
 
 	canvas_propriete();
+	
+	//taille des elements
+	shipTitleSizeX = Math.floor(canvasJeu.width / 2);
+	shipTitleSizeY = Math.floor(canvasJeu.height / 8);
+	
+	TShipImageLong = Math.floor(canvasJeu.width / 4);
+	TShipImageLarg = Math.floor(canvasJeu.height / 3);
+	
+	TimageLong = Math.floor(canvasJeu.width / 3);
+	TimageLargBack = Math.floor(canvasJeu.height / 10);
+	
+	//coordonnées Selection
+	shipTitleCoordX=Math.floor((canvasJeu.width / 2) - (shipTitleSizeX / 2) );
+	shipTitleCoordY=Math.floor(10);
+	
+	//coordonnées du bouton Ship 1
+	ship1CoordsX=Math.floor(1);
+	ship1CoordsY=Math.floor((canvasJeu.height / 2) - TShipImageLarg + 10);
+	
+	//coordonnées du bouton Ship 2
+	ship2CoordsX=Math.floor(1 + TShipImageLong);
+	ship2CoordsY=Math.floor((canvasJeu.height / 2) - TShipImageLarg + 10);
+	
+	//coordonnées du bouton Ship 3
+	ship3CoordsX=Math.floor((canvasJeu.width / 2) + 1);
+	ship3CoordsY=Math.floor((canvasJeu.height / 2) - TShipImageLarg + 10);
+	
+	//coordonnées du bouton Ship 4
+	ship4CoordsX=Math.floor((canvasJeu.width / 2) + 1 + TShipImageLong);
+	ship4CoordsY=Math.floor((canvasJeu.height / 2) - TShipImageLarg + 10);
+	
+	//coordonnées du bouton back
+	bBackCoordsX=Math.floor((canvasJeu.width / 2) - (TimageLong / 2) );
+	//bBackCoordsY=Math.floor((canvasJeu.height / 2) + 100 - TimageLarg);
+	bBackCoordsY=Math.floor(canvasJeu.height - 100);
+	if(bBackCoordsY < ship4CoordsY + TShipImageLarg + 30)
+	{
+		bBackCoordsY=Math.floor(ship4CoordsY + TShipImageLarg + 30);
+	}
+	
 	
 	contextJeu.drawImage(ship_selection,shipTitleCoordX,shipTitleCoordY,shipTitleSizeX,shipTitleSizeY);
 	
@@ -393,6 +568,7 @@ function listenerMenuDifficulte(event){
 		(bEasy.height <= y && y <= bEasy.height+TimageLarg)) {
 		
 			console.log("easy clicke");
+			difficulty = 1;
 			stateMenuSelected = 3;
 	
 		}
@@ -401,6 +577,7 @@ function listenerMenuDifficulte(event){
 			(bMedium.height <= y && y <= bMedium.height+TimageLarg )){
 		
 			console.log("medium clicke");
+			difficulty = 2;
 			stateMenuSelected = 3;
 
 		}
@@ -409,6 +586,7 @@ function listenerMenuDifficulte(event){
 			(bHard.height <= y && y <= bHard.height+TimageLarg )){
 		
 			console.log("hard clicke");
+			difficulty = 3;
 			stateMenuSelected = 3;
 
 		}
@@ -477,8 +655,9 @@ function listenerMenuChoiceShip(event){
 			(button_ship_1.height <= y && y <= button_ship_1.height+TShipImageLarg )){
 	
 			console.log("vaisseau button_ship_1 clike");
-			selectSong=1;
-			launchGame(1);
+			//selectSong=1;
+			num_ship = 1;
+			//launchGame(1);
 
 		}
 		
@@ -486,8 +665,9 @@ function listenerMenuChoiceShip(event){
 			(button_ship_2.height <= y && y <= button_ship_2.height+TShipImageLarg )){
 		
 			console.log("vaisseau button_ship_2 clike");
-			selectSong=1;
-			launchGame(2);
+			//selectSong=1;
+			num_ship = 2;
+			//launchGame(2);
 		
 		}
 		
@@ -495,8 +675,9 @@ function listenerMenuChoiceShip(event){
 			(button_ship_3.height <= y && y <= button_ship_3.height+TShipImageLarg )){
 		
 			console.log("vaisseau button_ship_3 clike");
-			selectSong=1;
-			launchGame(3);
+			//selectSong=1;
+			num_ship = 3;
+			//launchGame(3);
 		
 		}
 		
@@ -504,11 +685,13 @@ function listenerMenuChoiceShip(event){
 			(button_ship_4.height <= y && y <= button_ship_4.height+TShipImageLarg )){
 		
 			console.log("vaisseau button_ship_4 clike");
-			selectSong=1;
-			launchGame(4);
+			//selectSong=1;
+			num_ship = 4;
+			//launchGame(4);
 	
 		}
 		
+		launchGame(selectSong,difficulty,num_ship);
 }
 
 //permet de supprimer tous les listener
@@ -527,6 +710,7 @@ function removeAllListener() {
 /*Mainframe : fonction principale */
 function fenetre()
 {
+supprimerListener();
 if(compteurImagesTotales==compteurImagesChargees){
 	switch(stateMenuSelected){
 		case 0 : menu_principal();

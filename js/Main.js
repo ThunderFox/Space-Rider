@@ -37,6 +37,11 @@ var reactor;
 var piece;
 var boom;
 var vaisseauChoisi;
+var grandCaractere, petitCaractere;
+var gameOver;
+var etatSon;
+var difficulte;
+var esquive;
 
 
 var typeImages = {
@@ -51,10 +56,14 @@ var imgTerrain = {
 	"crash":new Image(),
 };
 
-function launchGame(num_ship)
+function launchGame(selectSong,difficulty,num_ship)
 {
 	vaisseauChoisi = num_ship;
+	etatSon = selectSong;
+	difficulte = difficulty;
 	typeImages.vaisseau.src='img/main_ship_'+num_ship+'.png';
+	niveau = 1;
+	scoreBonus = 0;
 	init();
 	//sleep(2000);
 	if(stop!=1)
@@ -72,8 +81,8 @@ function launchGame(num_ship)
 function dessiner(type,x,y,w,h){
 
 	//on adapte l'affichage des éléments en fonction de la résolution de l'écran
-	w = w*ratioSize;
-	h = h*ratioSize;
+	w = w;
+	h = h;
 	
 	if(type=="vaisseau")
 	{
@@ -104,6 +113,10 @@ function dessiner(type,x,y,w,h){
 	{
 		contextJeu.drawImage(typeImages.obstacle, 178, 0, 35, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec l'image utilisée
 	}
+	else if(type=="obstacle7")
+	{
+		contextJeu.drawImage(typeImages.obstacle, 210, 0, 35, 40, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec l'image utilisée
+	}
 	else if(type=="bonus1")
 	{
 		contextJeu.drawImage(typeImages.bonusRing1, 0, 95, 62, 62, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec l'image utilisée
@@ -120,34 +133,35 @@ function dessiner(type,x,y,w,h){
 	{
 		contextJeu.drawImage(typeImages.bonusRing1, 210, 95, 62, 62, x, y, w+10, h+10); // il faut modifier la taille de l'obstacle en accord avec l'image utilisée
 	}
+	
 	else if(type=="scoreBarre")
 	{
 		contextJeu.fillStyle="black";
-		contextJeu.fillRect(x,y,w+100,h+5*ratioSize);
+		contextJeu.fillRect(x,y,w+100,h+5);
 		contextJeu.strokeStyle="red";
-		contextJeu.strokeRect(x,y,w+100,h+5*ratioSize);
+		contextJeu.strokeRect(x,y,w+100,h+5);
 	}
 	else if(type=="score")
 	{
 		contextJeu.fillStyle="white";
-		contextJeu.font=20*ratioSize+"px gameOver";
-		contextJeu.fillText(gererScore(),x-40*ratioSize,y+5);
+		contextJeu.font=grandCaractere+"px gameOver";
+		contextJeu.fillText(gererScore(),x-40,y+5);
 	}
 	else if(type=="scoreBonus")
 	{
-		contextJeu.drawImage(typeImages.bonusRing1, 0, 95, 62, 62, x-10*ratioSize, y, w, h);
+		contextJeu.drawImage(typeImages.bonusRing1, 0, 95, 62, 62, x-emplacementDynamique(1.5), y+6, w, h);
 		contextJeu.fillStyle="gold";
-		contextJeu.font=20*ratioSize+"px gameOver";
-		contextJeu.fillText(scoreBonus,x+50,y+25);
+		contextJeu.font=grandCaractere+"px gameOver";
+		contextJeu.fillText(scoreBonus,x+emplacementDynamique(5),y+25);
 	}
 	else if(type=="bestScore")
 	{
 		contextJeu.fillStyle="red";
-		contextJeu.font=18*ratioSize+"px gameOver";
+		contextJeu.font=petitCaractere+"px gameOver";
 		contextJeu.fillText("Best : ",x,y+5);
 		contextJeu.fillStyle="white";
-		contextJeu.font=20*ratioSize+"px gameOver";+
-		contextJeu.fillText(""+saveBestScore(),x+140*ratioSize,y+5);
+		contextJeu.font=grandCaractere+"px gameOver";+
+		contextJeu.fillText(""+saveBestScore(),x+emplacementDynamique(15),y+5);
 	}
 	
 	
@@ -163,9 +177,10 @@ function init(){
 	score=0;
 	niveauFini=false;
 	collision=false;
+	gameOver=false;
 	
 	cptBackground = 0;
-	cadreTerrainDroit = 400;
+	cadreTerrainDroit = 350;
 	cadreTerrainGauche = 0;
 	
 	tempsJeu = 0; //permet de savoir cb de secondes la partie dure
@@ -188,44 +203,56 @@ function init(){
 	}
 	//***********************************
 	
-	
+	//variables caracteristiques selon vaisseau choisi
+	var v, p, m;
+	switch(vaisseauChoisi)
+	{
+		case 1 : v=3; p=1; m=2; break;
+		case 2 : v=2; p=1; m=2; break;
+		case 3 : v=2; p=2; m=1; break;
+		case 4 : v=1; p=3; m=1; break;
+	}
 	
 	//initialisation du niveau et de la difficulté
 	if(niveau==1)
 	{
 		appearTimer = 25; //meteor frequency (decrease to add dificulty)
-		scoreRequis = 20;
-		vitesse = 20;//meteor speed (increase to add difficulty)
-		gravite = 5;
-		imgTerrain.play.src='img/spaceBackground2.png';
-		tailleBackgroundMax = 480;
+		scoreRequis = 5*difficulte;
+		vitesse = 14*v;//meteor speed (increase to add difficulty)
+		gravite = 3*p;
+		esquive = 3*m;
+		imgTerrain.play.src='img/bg_niveau1.png';
+		tailleBackgroundMax = 640;
 	}
 	else if(niveau==2)
 	{
 		appearTimer = 20;
-		scoreRequis = 40;
-		vitesse = 22;
-		gravite = 5;
-		imgTerrain.play.src='img/tn_spaceBackground3.png';
-		tailleBackgroundMax = 840;
+		scoreRequis = 10*difficulte;
+		vitesse = 15*v;
+		gravite = 3*p;
+		esquive = 2*m;
+		imgTerrain.play.src='img/bg_niveau2.png';
+		tailleBackgroundMax = 640;
 	}
 	else if(niveau==3)
 	{
 		appearTimer = 15;
-		scoreRequis = 50;
-		vitesse = 24;
-		gravite = 6;
-		imgTerrain.play.src='img/tn_spaceBackground4.png';
-		tailleBackgroundMax = 840;
+		scoreRequis = 10*difficulte;
+		vitesse = 16*v;
+		gravite = 3*p;
+		esquive = 3*m;
+		imgTerrain.play.src='img/bg_niveau3.png';
+		tailleBackgroundMax = 640;
 	}
 	else if(niveau==4)
 	{
 		appearTimer = 10;
-		scoreRequis = 10;
-		vitesse = 24;
-		gravite = 7;
-		imgTerrain.play.src='img/spaceBackground5.png';
-		tailleBackgroundMax = 480;
+		scoreRequis = 15*difficulte;
+		vitesse = 17*v;
+		gravite = 4*p;
+		esquive = 1*m;
+		imgTerrain.play.src='img/bg_niveau4.png';
+		tailleBackgroundMax = 640;
 	}
 	//***********************************
 	
@@ -243,8 +270,8 @@ function init(){
 	
 	//get the canvas from html
 	canvasJeu = document.getElementById("myCanvas");
-	canvasJeu.width = 600*ratioSize;
-	canvasJeu.height = 400*ratioSize;
+	//canvasJeu.width = 600;
+	//canvasJeu.height = 400;
 	
 	//context creation
 	contextJeu = canvasJeu.getContext("2d");
@@ -296,11 +323,17 @@ function init(){
 //Fonction qui marque le debut du jeu
 function start(){
 	
+	//enlever les listeners du menu
 	removeAllListener();
-	//on ajoute le listener
+	
+	//on ajoute le listener du jeu
 	ajoutListener();
+	
+	//modifier les tailles de scoreBarre et limiteDown
+	scoreBarre.width = canvasJeu.width;
+	limiteDown = canvasJeu.height-30;
 
-	//GERER LE TEMPS DE JEU
+	//Gestion du temps de jeu et du deffilement du terrain
 	if(play)
 	{
 		nbToursStart++;
@@ -308,14 +341,13 @@ function start(){
 		{
 			tempsJeu++;
 			nbToursStart=0;
-			//mesObstacles.add(generateObstacle(canvasJeu.height-30,10)); // AJOUTER UN OBSTACLE A LA LISTE TOUTES LES SECONDES
 		}
 		
-		//GERER LE DEFILEMENT DU TERRAIN
+		//Gestion du defilement du terrain
 		cptBackground++;
-		if(cptBackground==3)
+		if(cptBackground==1)
 		{
-			if(cadreTerrainGauche+cadreTerrainDroit<tailleBackgroundMax) //remplacer 480 par tailleBackgroundMax
+			if(cadreTerrainGauche+cadreTerrainDroit<tailleBackgroundMax)
 			{
 				cadreTerrainGauche = cadreTerrainGauche + 1;
 			}
@@ -324,21 +356,12 @@ function start(){
 	}
 	
 	
+	//clear le canvas
 	contextJeu.clearRect(0, 0, canvasJeu.width, canvasJeu.height);//on rafraichi notre canvas
 	
-	creerTerrain();//appel a la création du terrain et du vaisseau
+	//appel a la création du terrain et du vaisseau
+	creerTerrain();
 
-	
-	//dessiner("obstacle",mesObstacles.get(0).getPosX(), mesObstacles.get(0).getPosY(), mesObstacles.get(0).getWidth(), mesObstacles.get(0).getHeight());
-		/*if(niveauFini)
-		{
-			console.log("rentre dans niveauFini");
-			
-			niveauFini = false;
-			stop=0;
-			
-			sleep(10000);
-		}*/
 		if(pause)
 		{
 			play = 0;
@@ -353,25 +376,24 @@ function start(){
 			reactor.currentTime = 0;
 			//clearInterval(myInterval);
 			stopJeu();
-			supprimerListener();
+			//supprimerListener();
 		}
 		else if(stop!=1 && pause!=1)//si le jeu n'est pas en pause ou stopé
 		{
-			//mesObstacles.add(generateObstacle(canvasJeu.height-30,10));
+			//bouger les obstacles et bonus
 			mooveObstacle();
 			mooveBonus();
 			
 			//gestion des apparitions de bonus
 			if(appearTimerBonus--<0){
 				mesBonus.add(generateBonus(limiteDown-30,limiteTop));
-				//appearTimer=10+Math.floor(Math.random() * 30);
+				//appearTimerBonus=10+Math.floor(Math.random() * 30); //apparition aleatoire
 				appearTimerBonus=appearTimer+40;
 			}
 			
 			//gestion des apparitions d'obstacles
 			if(appearTimerObstacle--<0 && score<scoreRequis+1){
 				mesObstacles.add(generateObstacle(limiteDown-30,limiteTop));
-				//appearTimer=10+Math.floor(Math.random() * 30);
 				appearTimerObstacle=appearTimer;
 			}
 			else if(score>=scoreRequis && mesObstacles.getNb()==0)
@@ -388,7 +410,10 @@ function start(){
 			testCollision();
 			testCollisionBonus();
 	
-			reactor.play();
+			if(etatSon)
+			{
+				reactor.play();
+			}
 		}
 		else if(stop==1)
 		{
@@ -428,7 +453,7 @@ function generateObstacle(max,min)
 {
 	
 	var obstacle;
-	var x = 600*ratioSize;
+	var x = canvasJeu.width;
 	var y = Math.floor(Math.random() * (max - min +1)) + min;
 	var w = 40;//typeImages.obstacle.width;
 	var h = 40;//typeImages.obstacle.height;
@@ -457,7 +482,7 @@ function generateBonus(max,min)
 {
 	
 	var bonus;
-	var x = 600*ratioSize;
+	var x = canvasJeu.width;
 	var y = Math.floor(Math.random() * (max - min +1)) + min;
 	var w = 20;//typeImages.obstacle.width;
 	var h = 20;//typeImages.obstacle.height;
@@ -510,70 +535,81 @@ function randomColor()
 //Fonction qui creer le terrain et le vaisseau
 function creerTerrain()
 {
-	contextJeu.drawImage(imgTerrain.play, cadreTerrainGauche, 0, cadreTerrainDroit, imgTerrain.play.height, 0, 0, canvasJeu.width, canvasJeu.height);//arriere plan
+	//resizing des polices
+	taillePolice();
 	
-	dessiner("scoreBarre",scoreBarre.getPosX(),scoreBarre.getPosY(),scoreBarre.getWidth(),scoreBarre.getHeight());//barre de score
+	//arriere plan
+	contextJeu.drawImage(imgTerrain.play, cadreTerrainGauche, 0, cadreTerrainDroit, imgTerrain.play.height, 0, 0, canvasJeu.width, canvasJeu.height);
 	
-	contextJeu.font=18*ratioSize+"px gameOver";
+	//barre de score
+	dessiner("scoreBarre",scoreBarre.getPosX(),scoreBarre.getPosY(),scoreBarre.getWidth(),scoreBarre.getHeight());
+	
+	//meilleur score
+	dessiner("bestScore",5,scoreBarre.getPosY()+30,"","");
+	
+	//score
+	contextJeu.font=petitCaractere+"px gameOver";
 	contextJeu.fillStyle="red";
-	contextJeu.fillText("Score : ",scoreBarre.getWidth()-340*ratioSize,scoreBarre.getPosY()+35);
+	contextJeu.fillText("Score : ",emplacementDynamique(26),scoreBarre.getPosY()+35);
+	dessiner("score",emplacementDynamique(52),scoreBarre.getPosY()+30,"","");
 	
-	dessiner("score",scoreBarre.getWidth()-180,scoreBarre.getPosY()+30,"","");//score
-	dessiner("bestScore",5,scoreBarre.getPosY()+30,"","");//meilleur score
+	//scoreBonus
+	if(canvasJeu.width<480)
+	{
+		dessiner("scoreBonus",emplacementDynamique(66),scoreBarre.getPosY()+10,30,25);
+	}
+	else
+	{
+		dessiner("scoreBonus",scoreBarre.getWidth()-emplacementDynamique(10),scoreBarre.getPosY()+10,30,25);
+	}
 	
-	dessiner("scoreBonus",scoreBarre.getWidth()-100,scoreBarre.getPosY()+10,30,25);//scoreBonus
-	
-	/*playPause = new Image();
-	playPause.src = 'img/PlayPauseStop.png';
-	contextJeu.drawImage(playPause, 0, 0, playPause.width/3, playPause.height, 250, 5, 35, 32);//image, pointDecoupeX, pointDecoupeY, widthDecoupe, heightDecoupe, pointCibleX, pointCibleY, widthCible, heightCible
-	*/
-	
-	/*contextJeu.shadowColor = "gold"
-	//contextJeu.shadowOffsetX = 0;
-	//contextJeu.shadowOffsetY = 0;
-	//contextJeu.shadowBlur = 15;
-	//contextJeu.strokeStyle="gold";
-	//contextJeu.strokeText("pause",250,30);*/
-	
+	//contour du jeu
 	contextJeu.strokeStyle="black";
 	contextJeu.strokeRect(0,0,canvasJeu.width, canvasJeu.height);
 	
+	//dessin des obstacles
 	for (var i = 0 ; i < mesObstacles.getNb() ; i++){
 		dessiner("obstacle",mesObstacles.get(i).getPosX(),mesObstacles.get(i).getPosY(),mesObstacles.get(i).getWidth(),mesObstacles.get(i).getHeight());
 		
-		if(mesObstacles.get(i).phase<6)
+		if(mesObstacles.get(i).phase<5)
 		{
 			dessiner("obstacle1",mesObstacles.get(i).getPosX(),mesObstacles.get(i).getPosY(),mesObstacles.get(i).getWidth(),mesObstacles.get(i).getHeight());
 			mesObstacles.get(i).phase++;
 		}
-		else if(mesObstacles.get(i).phase>5 && mesObstacles.get(i).phase<12)
+		else if(mesObstacles.get(i).phase>4 && mesObstacles.get(i).phase<10)
 		{
 			dessiner("obstacle2",mesObstacles.get(i).getPosX(),mesObstacles.get(i).getPosY(),mesObstacles.get(i).getWidth(),mesObstacles.get(i).getHeight());
 			mesObstacles.get(i).phase++;
 		}
-		else if(mesObstacles.get(i).phase>11 && mesObstacles.get(i).phase<18)
+		else if(mesObstacles.get(i).phase>9 && mesObstacles.get(i).phase<16)
 		{
 			dessiner("obstacle3",mesObstacles.get(i).getPosX(),mesObstacles.get(i).getPosY(),mesObstacles.get(i).getWidth(),mesObstacles.get(i).getHeight());
 			mesObstacles.get(i).phase++;
 		}
-		else if(mesObstacles.get(i).phase>17 && mesObstacles.get(i).phase<24)
+		else if(mesObstacles.get(i).phase>15 && mesObstacles.get(i).phase<20)
 		{
 			dessiner("obstacle4",mesObstacles.get(i).getPosX(),mesObstacles.get(i).getPosY(),mesObstacles.get(i).getWidth(),mesObstacles.get(i).getHeight());
 			mesObstacles.get(i).phase++;
 		}
-		else if(mesObstacles.get(i).phase>23 && mesObstacles.get(i).phase<30)
+		else if(mesObstacles.get(i).phase>19 && mesObstacles.get(i).phase<25)
 		{
 			dessiner("obstacle5",mesObstacles.get(i).getPosX(),mesObstacles.get(i).getPosY(),mesObstacles.get(i).getWidth(),mesObstacles.get(i).getHeight());
 			mesObstacles.get(i).phase++;
 		}
-		else if(mesObstacles.get(i).phase>29)
+		else if(mesObstacles.get(i).phase>24 && mesObstacles.get(i).phase<30)
 		{
 			dessiner("obstacle6",mesObstacles.get(i).getPosX(),mesObstacles.get(i).getPosY(),mesObstacles.get(i).getWidth(),mesObstacles.get(i).getHeight());
+			mesObstacles.get(i).phase++;
+		}
+		else if(mesObstacles.get(i).phase>29)
+		{
+			dessiner("obstacle7",mesObstacles.get(i).getPosX(),mesObstacles.get(i).getPosY(),mesObstacles.get(i).getWidth(),mesObstacles.get(i).getHeight());
 			mesObstacles.get(i).phase=0;
 		}
 		
 	}
 	
+	//dessin des bonus
 	for (var i = 0 ; i < mesBonus.getNb() ; i++){
 		if(mesBonus.get(i).phase<7)
 		{
@@ -597,12 +633,13 @@ function creerTerrain()
 		}
 	}
 	
+	//dessin vaisseau
 	dessiner("vaisseau",monVaisseau.getPosX(),monVaisseau.getPosY(),monVaisseau.getWidth(),monVaisseau.getHeight());
 	
 	//Bouton pause
-	contextJeu.font=20*ratioSize+"px gameOver";
+	contextJeu.font=grandCaractere+"px gameOver";
 	contextJeu.fillStyle="red";
-	contextJeu.fillText("Pause",canvasJeu.width-150*ratioSize,limiteDown);// sera remplacé par un bouton pause
+	contextJeu.fillText("Pause",canvasJeu.width - (grandCaractere*8),limiteDown);// sera remplacé par un bouton pause
 
 }
 //***********************************************************************************
@@ -616,19 +653,44 @@ function stopJeu()
 	{	
 		contextJeu.drawImage(imgTerrain.fini, 0, 0, canvasJeu.width, canvasJeu.height);//arriere plan
 		contextJeu.fillStyle=randomColor();
-		contextJeu.font=30*ratioSize+"px gameOver";
-		contextJeu.fillText("LEVEL "+niveau+" CLEAR",58*ratioSize,160*ratioSize);
-		if(niveau+1<5)
+		var gpx = (grandCaractere*2)-10;
+		var ppx = petitCaractere - 4;
+		contextJeu.font=gpx+"px gameOver";
+		if(canvasJeu.width<400)
 		{
-			contextJeu.fillStyle="white";
-			contextJeu.font=12*ratioSize+"px gameOver";
-			contextJeu.fillText("Touch the screen to play the next level",26*ratioSize,260*ratioSize);
+			contextJeu.fillText("LEVEL "+niveau+" CLEAR",(canvasJeu.width/2)-emplacementDynamique(20),emplacementDynamique(15));
 		}
 		else
 		{
+			contextJeu.fillText("LEVEL "+niveau+" CLEAR",(canvasJeu.width/2)-emplacementDynamique(28),emplacementDynamique(15));
+		}
+		
+		if(niveau+1<5)
+		{
 			contextJeu.fillStyle="white";
-			contextJeu.font=12*ratioSize+"px gameOver";
-			contextJeu.fillText("CONGRATULATION, you won this game!",40*ratioSize,260*ratioSize);
+			contextJeu.font=ppx+"px gameOver";
+			if(canvasJeu.width<400)
+			{
+				contextJeu.fillText("Touch the screen to play next level",(canvasJeu.width/2)-emplacementDynamique(24),emplacementDynamique(24));
+			}
+			else
+			{
+				contextJeu.fillText("Touch the screen to play next level",(canvasJeu.width/2)-emplacementDynamique(33),emplacementDynamique(24));
+			}
+		}
+		else
+		{
+			scoreBonus = 0;
+			contextJeu.fillStyle="white";
+			contextJeu.font=ppx+"px gameOver";
+			if(canvasJeu.width<400)
+			{
+				contextJeu.fillText("CONGRATULATION, you won this game!",(canvasJeu.width/2)-emplacementDynamique(22),emplacementDynamique(24));
+			}
+			else
+			{
+				contextJeu.fillText("CONGRATULATION, you won this game!",(canvasJeu.width/2)-emplacementDynamique(30),emplacementDynamique(24));
+			}
 		}
 	}
 	
@@ -637,14 +699,16 @@ function stopJeu()
 		contextJeu.fillStyle="yellow";
 		contextJeu.fillRect(0,0,canvasJeu.width,canvasJeu.height);
 		contextJeu.fillStyle="black";
-		contextJeu.font=50*ratioSize+"px gameOver";
-		contextJeu.fillText("CRASH",118*ratioSize,210*ratioSize);
-		contextJeu.font=20*ratioSize+"px gameOver";
-		contextJeu.fillText("menu",100*ratioSize,260*ratioSize);
-		contextJeu.font=20*ratioSize+"px gameOver";
-		contextJeu.fillText("rejouer",300*ratioSize,260*ratioSize);
+		var px = grandCaractere*3
+		contextJeu.font=px+"px gameOver";
+		contextJeu.fillText("CRASH",(canvasJeu.width/2)-emplacementDynamique(25),canvasJeu.height/2);
+		contextJeu.font=grandCaractere+"px gameOver";
+		contextJeu.fillText("menu",(canvasJeu.width/2)-emplacementDynamique(25),(canvasJeu.height/2)+emplacementDynamique(10));
+		contextJeu.font=grandCaractere+"px gameOver";
+		contextJeu.fillText("rejouer",(canvasJeu.width/2)+emplacementDynamique(6),(canvasJeu.height/2)+emplacementDynamique(10));
 		stop=1;
 		play = 0;
+		scoreBonus = 0;
 	}
 	else if(stop)
 	{
@@ -652,12 +716,15 @@ function stopJeu()
 		contextJeu.fillStyle="black";
 		contextJeu.fillRect(0,0,canvasJeu.width,canvasJeu.height);
 		contextJeu.fillStyle="red";
-		contextJeu.font=35*ratioSize+"px gameOver";
-		contextJeu.fillText("GAME OVER",88*ratioSize,210*ratioSize);
+		var px = grandCaractere*2;
+		contextJeu.font=px+"px gameOver";
+		contextJeu.fillText("GAME OVER",(canvasJeu.width/2)-emplacementDynamique(28),(canvasJeu.height/2));
 		contextJeu.restore();
-		stop=1;
+		stop = 1;
 		play = 0;
-		supprimerListener();
+		scoreBonus = 0;
+		gameOver=true;
+		//supprimerListener();
 	}
 	
 	
@@ -679,7 +746,7 @@ function attractionTerrestre()
 	{
 		bool=false;
 		
-		monVaisseau.setVivant(false);
+		//monVaisseau.setVivant(false);
 		stop=1;
 		play=0;
 	}
@@ -720,9 +787,9 @@ function eventAction(e)
 	var x=event.pageX;
 		y=event.pageY;
 		
-	if(!niveauFini && !pause)
+	if(!niveauFini && !pause && !gameOver && !collision)
 	{
-		if( (x >= canvasJeu.width-160*ratioSize &&  x <= canvasJeu.width ) && (y >= limiteDown-30*ratioSize && y <= canvasJeu.height ))
+		if( (x >= canvasJeu.width - (grandCaractere*8) &&  x <= canvasJeu.width ) && (y >= limiteDown-30 && y <= canvasJeu.height ))
 		{	
 			pause=1;
 			pauseJeu();
@@ -734,7 +801,7 @@ function eventAction(e)
 			while(i<=10)
 			{
 				var y = monVaisseau.getPosY();
-				y = y-4;
+				y = y-esquive;
 				monVaisseau.setPosY(y);
 				i++;
 			}
@@ -756,18 +823,66 @@ function eventAction(e)
 			niveau++;
 			niveauFini=false;
 			init();
-			sleep(1000);
+			sleep(1500);
 		}
 		else
 		{
-			stop=0;
+			/*stop=0;
 			play=1;
 			niveau=1;
+			scorebonus=0;
 			niveauFini=false;
 			init();
 			sleep(1000);
-			console.log("fin de jeu");
+			console.log("fin de jeu");*/
+			console.log("action fin de jeu");
+			stop=0;
+			play=0;
+			niveau=0;
+			scoreBonus=0;
+			stateMenuSelected=0;
+			sleep(1000);
+			fenetre();
 		}
+	
+	}
+	else if(gameOver)
+	{
+		console.log("action game over");
+		stop=0;
+		play=0;
+		niveau=0;
+		scoreBonus=0;
+		stateMenuSelected=0;
+		sleep(1000);
+		fenetre();
+	
+	}
+	else if(collision)
+	{	
+		//si clic menu
+		if( ( x >= ( (canvasJeu.width/2)-emplacementDynamique(25) ) &&  x <= ( (canvasJeu.width/2)-emplacementDynamique(10) ) ) && ( y >= ((canvasJeu.height/2)+emplacementDynamique(8)) && y <= ((canvasJeu.height/2)+emplacementDynamique(10))) )
+		{	
+			console.log("clic menu");
+			collision=false;
+			stop=0;
+			play=0;
+			niveau=0;
+			scoreBonus=0;
+			stateMenuSelected=0;
+			sleep(1000);
+			fenetre();
+		} //sinon si clic rejouer
+		else if( ( x >= ( (canvasJeu.width/2)+emplacementDynamique(6) ) &&  x <= ( (canvasJeu.width/2)+emplacementDynamique(25) ) ) && ( y >= ((canvasJeu.height/2)+emplacementDynamique(8)) && y <= ((canvasJeu.height/2)+emplacementDynamique(10))) )
+		{	
+			console.log("clic rejouer");
+			collision=false;
+			stop=0;
+			sleep(1000);
+			init();
+		}
+		
+		console.log("clic collision");
 	
 	}
 
@@ -785,6 +900,7 @@ function gererScore()
 	scoreTmp=Math.floor(temps*coefficient);
 	
 	score = scoreTmp;
+	
 	return score;
 	
 
@@ -913,7 +1029,12 @@ function testCollisionBonus(){
 					collisionBonus = true;
 					mesBonus.array.splice(i,1);
 					scoreBonus++;
-					piece.play();
+					
+					if(etatSon)
+					{
+						piece.play();
+					}
+					
 					return collisionBonus;
 				}
 				else
@@ -961,9 +1082,10 @@ function pauseJeu()
 		contextJeu.fillStyle = "rgba(50, 50, 50, 0.8)";
 		contextJeu.fillRect(0,0,canvasJeu.width, canvasJeu.height);
 		
-		contextJeu.font=60*ratioSize+"px gameOver";
+		var px = grandCaractere*3;
+		contextJeu.font=px+"px gameOver";
 		contextJeu.fillStyle="white";
-		contextJeu.fillText("Pause",100*ratioSize,210*ratioSize);// sera remplacé par un bouton pause
+		contextJeu.fillText("Pause",(canvasJeu.width/2)-emplacementDynamique(25),(canvasJeu.height/2)+emplacementDynamique(5));// sera remplacé par un bouton pause
 	}
 	else if(pause==0)
 	{
@@ -975,32 +1097,67 @@ function pauseJeu()
 }
 //***********************************************************************************
 
-//Fonction permettant de gerer le passage au niveau suivant NE SERT A RIEN POUR L'INSTANT
-function nextLevel()
+
+//Fonction adaptant la police à la taille d'ecran
+function taillePolice()
 {
-	console.log("rentre dans nextLevel");
+
+	//parametrage des coefs de taille
+	var coefWidth = canvasJeu.width;
+	var coefHeight = canvasJeu.height;
 	
-	if(niveau++!=null)
+	//pour coef width
+	if(coefWidth > 480)
 	{
-		console.log("nextLevel >>> rentre dans premier if");
-		//on stop le jeu avec lecran niveau n fini
-		stopJeu();
-				
-		//on coupe les sons
-		reactor.pause();
-		reactor.currentTime = 0;
-		
-		//
-	
-	
+		coefWidth = 5;
+	}
+	else if(coefWidth > 320)
+	{
+		coefWidth = 4
+	}
+	else if(coefWidth > 240)
+	{
+		coefWidth = 3;
 	}
 	else
-	{	
-		console.log("nextLevel >>> rentre dans else");
-	
+	{
+		coefWidth = 2;
 	}
-
+	
+	//pour coef heights
+	if(coefHeight > 480)
+	{
+		coefHeight = 5;
+	}
+	else if(coefHeight > 320)
+	{
+		coefHeight = 4
+	}
+	else if(coefHeight > 240)
+	{
+		coefHeight = 3;
+	}
+	else
+	{
+		coefHeight = 2;
+	}
+	
+	//parametrage de tailles de grandCaractere
+	grandCaractere = coefWidth*coefHeight;
+	
+	//parametrage de tailles de petitCaractere
+	petitCaractere = grandCaractere - 2;
 
 }
 //***********************************************************************************
 
+//Fonction permettant a l'aide de la taille de la police de renvoyer un emplacement dynamique
+function emplacementDynamique(x)
+{
+	var emplacement;
+	
+	emplacement = Math.floor(x *(petitCaractere / 2));
+	
+	return emplacement;
+}
+//***********************************************************************************
