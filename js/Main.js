@@ -217,42 +217,42 @@ function init(){
   if(niveau==1)
   {
     appearTimer = 50; //meteor frequency (decrease to add dificulty)
-    scoreRequis = 5*difficulte;
+    scoreRequis = 10*difficulte;
     vitesse = 8*v;//meteor speed (increase to add difficulty)
     gravite = 2*p;
     esquive = 4*m;
     imgTerrain.play.src='img/bg_niveau1.png';
-    tailleBackgroundMax = 640;
+    tailleBackgroundMax = 800;
   }
   else if(niveau==2)
   {
     appearTimer = 50;
-    scoreRequis = 10*difficulte;
+    scoreRequis = 15*difficulte;
     vitesse = 8*v;
     gravite = 2*p;
     esquive = 3*m;
     imgTerrain.play.src='img/bg_niveau2.png';
-    tailleBackgroundMax = 640;
+    tailleBackgroundMax = 800;
   }
   else if(niveau==3)
   {
     appearTimer = 45;
-    scoreRequis = 10*difficulte;
+    scoreRequis = 15*difficulte;
     vitesse = 9*v;
     gravite = 3*p;
     esquive = 3*m;
     imgTerrain.play.src='img/bg_niveau3.png';
-    tailleBackgroundMax = 640;
+    tailleBackgroundMax = 800;
   }
   else if(niveau==4)
   {
     appearTimer = 40;
-    scoreRequis = 15*difficulte;
+    scoreRequis = 20*difficulte;
     vitesse = 10*v;
     gravite = 3*p;
     esquive = 1*m;
     imgTerrain.play.src='img/bg_niveau4.png';
-    tailleBackgroundMax = 640;
+    tailleBackgroundMax = 800;
   }
   //***********************************
   
